@@ -1,0 +1,7 @@
+@CHARSET "UTF-8"; 
+
+#articleItems p{
+	font-size:16px;
+	text-indent: 2em; 
+	line-height:22px;
+}

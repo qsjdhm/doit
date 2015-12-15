@@ -1,0 +1,10 @@
+@CHARSET "UTF-8"; 
+
+.pagination{
+	float: right;
+	margin: 0px;
+}
+
+.clearfix {
+    margin-bottom: 10px;
+}

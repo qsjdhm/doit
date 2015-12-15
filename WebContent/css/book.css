@@ -1,0 +1,43 @@
+@CHARSET "UTF-8"; 
+
+#filters li{
+	padding-top:0px!important;
+	padding-bottom:0px!important;
+}
+.searchKeywordTipsDiv{
+	padding-top:7px;
+	padding-bottom:7px;
+}
+.col-md-12{
+	background-color: #FFFFFF;
+ 	border-bottom: 2px solid #E2E2E9;
+ 	border-radius: 3px;
+ 	box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
+ 	margin-bottom: 20px;
+ 	padding: 10px;
+}
+#tiles li{
+	background: none repeat scroll 0 0 #F8F8F8!important;
+ 	border-color: rgba(0, 0, 0, 0) #EAEAEA #B9B9B9;
+ 	border-style: solid;
+ 	border-width: 0 1px 1px;
+ 	padding: 0 10px 10px;
+}
+#tiles li:hover{
+ 	box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
+ 	border-bottom: 2px solid #E2E2E9;
+}
+
+#tiles li a{
+	color: #6B6B6B;
+}
+
+#tiles li a:hover{
+	color: #00709E;
+}
+
+#tiles li .book_info{
+	float: right;
+}
+
+

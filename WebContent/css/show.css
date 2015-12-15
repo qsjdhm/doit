@@ -1,0 +1,200 @@
+@CHARSET "UTF-8"; 
+
+.container{
+ 	vertical-align: middle !important;
+} 
+ 
+#sidebar .button{
+ 	font-size:1.8rem;
+}
+ 
+#post-msg2 > .item {
+    font-size: 1.8rem;
+}
+
+#replyBoxAri {
+	max-width: 50em;
+}
+.ui.threaded.comments .comment .comments{
+	box-shadow: 0px 0 0 rgba(0, 0, 0, 0.05);
+}
+#collect{
+	background-image:linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 0));
+	box-shadow:0 0 0 0px rgba(0, 0, 0, 0) inset;
+}
+#collect:hover{
+	background-color: #DB3E3A !important;
+}
+#articleItems h3,#articleItems .h3 {
+    font-size: 28px;
+    white-space: nowrap;
+    width: 100%;                  /* IE6 需要定义宽度 */
+    overflow: hidden;            
+    -o-text-overflow: ellipsis;    /* Opera */
+    text-overflow:    ellipsis;    /* IE, Safari (WebKit) */
+    margin-top:10px;
+}
+#post-header{
+	text-align:center;
+}
+#articleDate{
+	font-size:14px;
+}
+#post-content a{
+	color:#008CBA;
+}
+#articleContent{
+	line-height: 24px;
+	font-size: 16px;
+	overflow: auto;
+}
+#articleTags, #articleTags a{
+	transition: all 0.3s;
+	-moz-transition: all 0.3s;
+	-webkit-transition: all 0.3s;
+	-o-transition: all 0.3s;
+	font-size:16px;
+} 
+#articleTags a:hover{
+	color:#333;
+}
+
+form{  
+	backface-visibility: hidden;  
+}  
+.form .input{  
+	position: relative;  
+	float: left;  
+	margin: 10px;  
+}  
+.form input,.form textarea{  
+	border: 1px solid #eee;  
+	padding: 1.2em .5em;  
+	outline: none;  
+}  
+
+textarea + label,input + label,.inputdefault {   
+	position: absolute;  
+	left:10px;  
+	top:50%;  
+	transform:translateY(-50%);  
+	color:#aaa;  
+	transition:all .2s ease;  
+}  
+
+.field{
+	position: relative;  
+    float: left;  
+    margin: 10px; 
+}
+.foucs {  
+	color: #52A5FB!important;  
+	font-size: 0.75em!important;  
+	top: 1%!important;  
+	transform: none;  
+}  
+
+.blur-foucs {
+	color: #aaa;  
+}
+
+.not-empty + label {  
+	color:#aaa;  
+}  
+.ui.form .field > label {
+    color: #aaa;
+    display: block;
+    font-size: 1.2em; 
+    margin: 0 0 0.3em;
+}
+.ui.form .field > input,.ui.form .field > textarea{
+    padding: 1em 0.5em!important;
+    border-radius: 0em!important;
+    font-size:15px;
+    padding-bottom:5px!important;
+}
+.userEmailLabel{
+	margin-left:5px!important;
+}
+.contentField{
+	float:none!important;
+}
+
+.ui.form input[type="text"]:focus,
+.ui.form input[type="email"]:focus,
+.ui.form input[type="date"]:focus,
+.ui.form input[type="password"]:focus,
+.ui.form input[type="number"]:focus,
+.ui.form input[type="tel"]:focus,
+.ui.form textarea:focus {
+	color: rgba(0, 0, 0, 0.85);
+	border-color: rgba(0, 0, 0, 0.2);
+	border-bottom-left-radius: 0;
+	border-top-left-radius: 0;
+	-webkit-appearance: none;
+	-webkit-box-shadow: 0em 0em 0em 0em rgba(0, 0, 0, 0) inset;
+	box-shadow: 0em 0em 0em 0em rgba(0, 0, 0, 0) inset;
+}
+#publicComment{
+	font-size:1.2em!important;
+	background-image: none!important;
+	background-color: #1BA7D5;
+}
+#publicComment:hover{
+	background-color: #008CBA;
+}
+#publicComment:active {
+	background-color: #006D9B;
+}
+#post-header h3{
+	line-height: 1.5;
+	margin-top:2px!important;
+}
+textarea + label,.areadefault{
+	top:20px;
+}
+@media screen and (-webkit-min-device-pixel-ratio:0){ 
+	input + label, .inputdefault {
+		top:50%;
+	} 
+	textarea + label,.areadefault{
+		top:20px;
+	}
+	.foucs {  
+		color: #52A5FB!important;  
+		font-size: 0.75em!important;  
+		top: 1%!important;  
+		transform: none;  
+	}  
+} 
+
+#aboutArticle{
+	margin-bottom: 10px;
+}
+
+#aboutArticle i{
+	font-size: 1.5em;
+}
+
+#aboutArticle a,#aboutArticle span{
+	font-size: 14px;
+}
+
+.content_zoom{
+	background-image: url("/doit/common/images/zoom.png");
+    background-position: center center;
+    background-repeat: no-repeat;
+    cursor: pointer;
+    height: 30px;
+    left: 0;
+    position: absolute;
+    top: 0;
+    width: 30px;
+}
+
+
+
+
+
+
+

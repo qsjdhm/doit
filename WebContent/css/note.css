@@ -1,0 +1,23 @@
+@CHARSET "UTF-8"; 
+
+.ui.large.vertical.menu{
+	width: 100%;
+}
+.ui.large.menu .item{
+	font-size: 1.425rem;
+}
+.note_classify .ui.label{
+	font-size: 1.1125rem;
+}
+.col-md-3{
+	padding-left: 0px;
+}
+#articleItems .ui.segment{
+	padding-top: 0px;
+}
+#codeType{
+	background-color: #FFFFFF;
+    border-bottom: 2px solid #E2E2E9;
+    border-radius: 3px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
+}
