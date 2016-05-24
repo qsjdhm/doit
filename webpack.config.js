@@ -11,7 +11,7 @@ module.exports = {
 	entry: path.resolve(__dirname, './WebContent/nadmin/src/js/index.jsx'),
 	output: {
 		path: path.resolve(__dirname, './WebContent/nadmin/dist'),
-        publicPath: "../",
+        publicPath: "",
         hash: true,
 		filename: 'js/[name].entry.js'
 	},
