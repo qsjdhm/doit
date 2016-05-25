@@ -46,7 +46,7 @@ Network Trash Folder
 Temporary Items
 .apdisk
 
-/node_modules/
-/nadmin/dist/
+/.classpath
 /WebContent/node_modules/
-/WebContent/nadmin/dist/
+/WebContent/_admin/
+!/WebContent/_admin/src/
