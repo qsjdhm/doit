@@ -49,7 +49,7 @@ module.exports = {
                 loader: 'url-loader?limit=10&name=img/[hash:8].[name].[ext]'
             }
 
-		]
+		] 
 	},
     plugins: [
         new ExtractTextPlugin("css/[name].css", {allChunks: true}),
