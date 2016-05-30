@@ -5,7 +5,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-export default class IndexPage extends React.Component {
+export default class AddLinkPage extends React.Component {
     constructor(props) {
         super(props);
 
@@ -13,7 +13,7 @@ export default class IndexPage extends React.Component {
 
     render() {
         return (
-			<span>index page</span>
+			<span>AddLinkPage</span>
         );
     }
 };
