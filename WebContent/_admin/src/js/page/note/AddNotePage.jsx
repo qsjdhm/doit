@@ -8,7 +8,6 @@ import ReactDOM from 'react-dom';
 export default class AddNotePage extends React.Component {
     constructor(props) {
         super(props);
-
     }
 
     render() {
