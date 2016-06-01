@@ -5,16 +5,65 @@
 
 
 
-import { Menu, Breadcrumb, Icon } from 'antd';
+import { Menu, Breadcrumb, Icon, Row, Col } from 'antd';
 import React from 'react';
 import ReactDOM from 'react-dom';
 
 import { Link } from 'react-router';
 
+import SearchComponent     from '../components/search/js/SearchComponent';
+
 export default class MainPage extends React.Component {
     constructor(props) {
         super(props);
+        console.info(props);
+
+        this.state = {
+            searchData : []  // 搜索框需要的数据
+        };
+
+        this.selected = this.selected.bind(this);
     }
+
+    componentWillMount() {
+        this._dealSearchData();
+    }
+
+    // 组织搜索框需要的数据
+    _dealSearchData() {
+        this.state.searchData = [
+            {"id":"#/home/addArticle",    "name":"新增文章"},
+            {"id":"#/home/editArticle",   "name":"编辑文章"},
+            {"id":"#/home/delArticle",    "name":"删除文章"},
+            {"id":"#/home/addNote",       "name":"新增笔记"},
+            {"id":"#/home/editNote",      "name":"编辑笔记"},
+            {"id":"#/home/delNote",       "name":"删除笔记"},
+            {"id":"#/home/addBook",       "name":"新增图书"},
+            {"id":"#/home/editBook",      "name":"编辑图书"},
+            {"id":"#/home/delBook",       "name":"删除图书"},
+            {"id":"#/home/editComment",   "name":"编辑评论"},
+            {"id":"#/home/delComment",    "name":"删除评论"},
+            {"id":"#/home/addLink",       "name":"新增外链"},
+            {"id":"#/home/editLink",      "name":"编辑外链"},
+            {"id":"#/home/delLink",       "name":"删除外链"},
+            {"id":"#/home/addSort",       "name":"新增分类"},
+            {"id":"#/home/editSort",      "name":"编辑分类"},
+            {"id":"#/home/delSort",       "name":"删除分类"},
+            {"id":"#/home/articleRecom",  "name":"文章推荐量"},
+            {"id":"#/home/noteRecom",     "name":"笔记推荐量"},
+            {"id":"#/home/bookRecom",     "name":"图书推荐量"},
+            {"id":"#/home/addUser",       "name":"新增用户"},
+            {"id":"#/home/editUser",      "name":"编辑用户"},
+            {"id":"#/home/delUser",       "name":"删除用户"}
+        ];
+    }
+
+    selected(v) {
+        window.location.href = v;
+        console.info(v);
+    }
+
+
 
     render() {
         return (
@@ -67,7 +116,19 @@ export default class MainPage extends React.Component {
 			        </Menu>
 		        </aside>
 		        <div className="ant-layout-main">
-			        <div className="ant-layout-header"></div>
+			        <div className="ant-layout-header">
+                        <Row>
+                            <Col span={4}>
+                                <SearchComponent
+                                    selected={this.selected}
+                                    data={this.state.searchData}
+                                    placeholder="快速菜单入口"
+                                    style={{ width: 230 }}
+                                />
+                            </Col>
+                            <Col span={12} offset={8}>.col-8</Col>
+                        </Row>
+                    </div>
 			        <div className="ant-layout-container">
 				        <div className="ant-layout-content">
 					        <div>
