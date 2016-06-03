@@ -4,17 +4,28 @@
 
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { Link } from 'react-router';
 
 import { Row, Col } from 'antd';
 
 import MenuComponent       from '../../components/menu/js/MenuComponent';
 import SearchComponent     from '../../components/search/js/SearchComponent';
+import ToolBarComponent    from '../../components/toolbar/js/ToolBarComponent';
 import BreadcrumbComponent from '../../components/breadcrumb/js/BreadcrumbComponent';
 
 
 export default class DelArticlePage extends React.Component {
     constructor(props) {
         super(props);
+    }
+
+    componentWillMount() {
+        const id = this.props.params.id;
+        console.info(id);
+    }
+
+    componentWillReceiveProps (data) {
+        console.info(data.params.id);
     }
 
     render() {
@@ -30,17 +41,21 @@ export default class DelArticlePage extends React.Component {
                                     style={{ width: 230 }}
                                 />
                             </Col>
-                            <Col span={12} offset={8}>.col-8</Col>
+                            <Col span={12} offset={8}>
+                                <ToolBarComponent />
+                            </Col>
                         </Row>
                     </div>
                     <div className="ant-layout-container">
                         <div className="ant-layout-content">
                             <BreadcrumbComponent data={this.props.routes} />
                             <span>DelArticlePage</span>
+                            <a href="#/home/delArticle/2">删除文章2</a>
+                            <a href="#/home/delArticle/3">删除文章3</a>
                         </div>
                     </div>
                     <div className="ant-layout-footer">
-                        Ant Design 版权所有 © 2015 由蚂蚁金服体验技术部支持
+                        52DOIT 版权所有 © 2016 由不拽注定被甩~技术支持
                     </div>
                 </div>
             </div>
