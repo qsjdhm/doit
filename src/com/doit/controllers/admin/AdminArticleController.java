@@ -10,6 +10,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
 import org.springframework.stereotype.Controller;
@@ -191,6 +192,30 @@ public class AdminArticleController {
 	
 	
 	/****************供AJAX请求的ACTION******************/
+	
+	@RequestMapping(value = "/getArticleSort")
+	public void getArticleSort(HttpServletRequest request, HttpServletResponse response) throws Exception{
+		
+		List <TSort> sorts = sortService.getSortByAriticleNotNote();
+		JSONArray sortJsonArray = new JSONArray();
+		for(int i=0; i<sorts.size(); i++){
+			JSONObject sortJson = new JSONObject();
+			TSort sort = sorts.get(i);
+			sortJson.put("Sort_ID", sort.getSort_ID());
+			sortJson.put("Sort_Name", sort.getSort_Name());
+			sortJsonArray.add(sortJson);
+		}
+		
+		// 3.返回添加状态信息
+		JSONObject jsonObject = new JSONObject();
+		jsonObject.put("success", "1");
+		jsonObject.put("msg", "获取分类成功");
+		jsonObject.put("data", sortJsonArray);
+		
+		response.setCharacterEncoding("UTF-8");
+		response.getWriter().print(jsonObject); 
+	}
+	
 	
 	@RequestMapping(value = "/addArticle")
 	public void addArticle(HttpServletRequest request, HttpServletResponse response) throws Exception{
