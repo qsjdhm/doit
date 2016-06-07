@@ -10,6 +10,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
 import org.springframework.stereotype.Controller;
@@ -274,5 +275,56 @@ public class AdminSortController {
 		response.setCharacterEncoding("UTF-8");
 		response.getWriter().print(jsonObject); 
 	}
+	
+	@RequestMapping(value = "/byTypeGetSort")
+	public void byTypeGetSort(HttpServletRequest request, HttpServletResponse response) throws Exception{
+		
+		List <TSort> sorts = null;
+		String type = request.getParameter("type");
+		if(type.equals("article")){
+			sorts = sortService.getSortByAriticleNotNote();
+		} else if(type.equals("note")){
+			sorts = sortService.getSort(8, 1, 10000);
+		} else if(type.equals("tag")){
+			sorts = sortService.getSort(4, 0, 1000);
+		} else if(type.equals("book")){
+			sorts = sortService.getSort(3, 1, 10000);
+		}
+		
+		JSONArray sortJsonArray = new JSONArray();
+		for(int i=0; i<sorts.size(); i++){
+			JSONObject sortJson = new JSONObject();
+			TSort sort = sorts.get(i);
+			sortJson.put("Sort_ID", sort.getSort_ID());
+			sortJson.put("Sort_Name", sort.getSort_Name());
+			sortJsonArray.add(sortJson);
+		}
+		
+		// 3.返回添加状态信息
+		JSONObject jsonObject = new JSONObject();
+		jsonObject.put("success", "1");
+		jsonObject.put("msg", "获取分类成功");
+		jsonObject.put("data", sortJsonArray);
+		
+		response.setCharacterEncoding("UTF-8");
+		response.getWriter().print(jsonObject); 
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 }

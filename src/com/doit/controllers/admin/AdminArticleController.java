@@ -193,29 +193,36 @@ public class AdminArticleController {
 	
 	/****************供AJAX请求的ACTION******************/
 	
-	@RequestMapping(value = "/getArticleSort")
-	public void getArticleSort(HttpServletRequest request, HttpServletResponse response) throws Exception{
+	@RequestMapping(value = "/getArticleList")
+	public void getArticleList(HttpServletRequest request, HttpServletResponse response) throws Exception{
 		
-		List <TSort> sorts = sortService.getSortByAriticleNotNote();
-		JSONArray sortJsonArray = new JSONArray();
-		for(int i=0; i<sorts.size(); i++){
-			JSONObject sortJson = new JSONObject();
-			TSort sort = sorts.get(i);
-			sortJson.put("Sort_ID", sort.getSort_ID());
-			sortJson.put("Sort_Name", sort.getSort_Name());
-			sortJsonArray.add(sortJson);
+		int sort = Integer.parseInt(request.getParameter("sort"));
+		int page = Integer.parseInt(request.getParameter("page"));
+		List <TArticle> articles = articleService.getArticle(sort, page, 6);
+		
+		JSONArray articleJsonArray = new JSONArray();
+		for(int i=0; i<articles.size(); i++){
+			JSONObject articleJson = new JSONObject();
+			TArticle article = articles.get(i);
+			articleJson.put("Article_ID", article.getArticle_ID());
+			articleJson.put("Article_Title", article.getArticle_Title());
+			articleJson.put("Sort_Name", article.getSort_Name());
+			articleJson.put("Recommend_Num", article.getRecommend_Num());
+			articleJson.put("Read_Num", article.getRead_Num());
+			articleJson.put("Article_Date", article.getArticle_Date());
+			
+			articleJsonArray.add(articleJson);
 		}
 		
 		// 3.返回添加状态信息
 		JSONObject jsonObject = new JSONObject();
 		jsonObject.put("success", "1");
-		jsonObject.put("msg", "获取分类成功");
-		jsonObject.put("data", sortJsonArray);
+		jsonObject.put("msg", "获取文章列表成功");
+		jsonObject.put("data", articleJsonArray);
 		
 		response.setCharacterEncoding("UTF-8");
 		response.getWriter().print(jsonObject); 
 	}
-	
 	
 	@RequestMapping(value = "/addArticle")
 	public void addArticle(HttpServletRequest request, HttpServletResponse response) throws Exception{
