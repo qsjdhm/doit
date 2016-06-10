@@ -3,8 +3,9 @@
  */
 
 import React from 'react';
-import { Table  } from 'antd';
+import { Table } from 'antd';
 import 'antd/dist/antd.css';
+import '../css/table.less';
 
 
 export default class TableComponent extends React.Component {
@@ -24,8 +25,16 @@ export default class TableComponent extends React.Component {
 
     render() {
         return (
-            <div style={{width: 500, margin: '100px auto'}}>
-                <Table columns={this.props.tableColumns} dataSource={this.props.tableData} />
+            <div className="table-package">
+                <Table
+	                size="middle"
+	                columns={this.props.tableColumns}
+	                dataSource={this.props.tableData}
+	                expandedRowRender={record => <p>{record.description}</p>}
+	                scroll={{ y: 300, x: 1098 }}
+	                pagination={false}
+	                className="table"
+                />
             </div>
         );
     }

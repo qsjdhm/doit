@@ -13,51 +13,176 @@ import SearchComponent     from '../../components/search/js/SearchComponent';
 import ToolBarComponent    from '../../components/toolbar/js/ToolBarComponent';
 import BreadcrumbComponent from '../../components/breadcrumb/js/BreadcrumbComponent';
 import SelectComponent     from '../../components/select/js/SelectComponent';
+import TableComponent      from '../../components/table/js/TableComponent';
+import PaginationComponent from '../../components/pagination/js/PaginationComponent';
 
 export default class EditArticlePage extends React.Component {
     constructor(props) {
         super(props);
 	    this.state = {
-		    sortData : []
+		    sort : 0,
+		    page : 1,
+		    size : 10,
+
+		    sortDOM : null,
+			paginationDOM : null,
+		    tableDOM : null
 	    };
 
 	    this.selected = this.selected.bind(this);
+	    this.pageed = this.pageed.bind(this);
+	    this.byTypeGetSort = this.byTypeGetSort.bind(this);
+	    this.getArticleCount = this.getArticleCount.bind(this);
+	    this.getArticleList = this.getArticleList.bind(this);
+	    this.dealTableData = this.dealTableData.bind(this);
     }
 
-	selected(val){
-		console.info(val);
+	selected(sort){
+		// 根据分类id获取文章列表
+		this.getArticleCount(sort);
 	}
+
+	pageed(page){
+		// 根据当前分类加载第一页文章数据
+		this.getArticleList(this.state.sort, page);
+	}
+
+	// 首先得到文章的分类
+	byTypeGetSort() {
+		const self = this;
+		jQuery.ajax({
+			type : "POST",
+			url : "/doit/sortAction/byTypeGetSort",
+			data : {
+				"type" : "article"
+			},
+			dataType:"json",
+			contentType: "application/x-www-form-urlencoded; charset=utf-8",
+			success : function(cbData) {
+				if(cbData.success === "1"){
+					let sortArray = [];
+					for(let i=0, len=cbData.data.length; i<len; i++){
+						const sortObj = {
+							"id" : ""+cbData.data[i].Sort_ID,
+							"name" : cbData.data[i].Sort_Name
+						};
+						sortArray.push(sortObj);
+					}
+
+					// 设置sortDOM--因为ajax之后select的默认数据不会自动设置
+					self.setState({
+						sort : sortArray[0].id,
+						sortDOM : <SelectComponent
+									defaultValue={sortArray[0].id}
+									data={sortArray}
+									selected={self.selected} />
+					});
+
+					// 根据第一个分类id获取文章列表
+					self.getArticleCount(sortArray[0].id);
+				}
+			},error :function(){
+				alert("请求文章分类连接出错！");
+			}
+		});
+	}
+
+	// 根据分类id获取文章列表
+	getArticleCount(sort) {
+		const self = this;
+		jQuery.ajax({
+			type : "POST",
+			url : "/doit/articleAction/getArticleCount",
+			data : {
+				"sort" : sort
+			},
+			dataType:"json",
+			contentType: "application/x-www-form-urlencoded; charset=utf-8",
+			success : function(cbData) {
+				if(cbData.success === "1"){
+					console.info(cbData);
+
+					// paginationDOM--因为ajax之后select的默认数据不会自动设置
+					self.setState({
+						sort : sort,
+						paginationDOM : <PaginationComponent
+											count={cbData.data}
+											pageSize={self.state.size}
+											pageed={self.pageed}/>
+					});
+
+					// 根据当前分类加载第一页文章数据
+					self.getArticleList(self.state.sort, self.state.page);
+				}
+			},error :function(){
+				alert("请求文章个数连接出错！");
+			}
+		});
+	}
+
+	// 根据当前分类加载第一页文章数据
+	getArticleList(sort, page) {
+		const self = this;
+		jQuery.ajax({
+			type : "POST",
+			url : "/doit/articleAction/getArticleList",
+			data : {
+				"sort" : sort,
+				"page" : page,
+				"size" : self.state.size
+			},
+			dataType:"json",
+			contentType: "application/x-www-form-urlencoded; charset=utf-8",
+			success : function(cbData) {
+				if(cbData.success === "1"){
+					console.info(cbData);
+					// 组织表格数据
+					self.dealTableData(cbData);
+				}
+			},error :function(){
+				alert("请求文章列表连接出错！");
+			}
+		});
+	}
+
+	// 组织表格数据
+	dealTableData(cbData) {
+
+		console.info(document.getElementById("articlePage").offsetWidth);
+
+		const columns = [
+			{ title: 'ID', width: 118, dataIndex: 'Article_ID', key: 'Article_ID' },
+			{ title: '名称', width: 400, dataIndex: 'Article_Title', key: 'Article_Title' },
+			{ title: '分类', width: 100, dataIndex: 'Sort_Name', key: 'Sort_Name' },
+			{ title: '推荐量', width: 100, dataIndex: 'Recommend_Num', key: 'Recommend_Num' },
+			{ title: '点击量', width: 100, dataIndex: 'Read_Num', key: 'Read_Num' },
+			{ title: '时间', width: 210, dataIndex: 'Article_Date', key: 'Article_Date' },
+			{ title: '操作', width: 70, dataIndex: '', key: 'x', render: () => <a href="#">删除</a> },
+		];
+
+		let data = [];
+
+		for(var i=0, len=cbData.data.length; i<len; i++){
+			let obj = cbData.data[i];
+			obj.key = cbData.data[i].Article_ID;
+			obj.description = cbData.data[i].Article_Content;
+			data.push(obj);
+		}
+
+		this.setState({
+			tableDOM : <TableComponent
+				tableColumns={columns}
+				tableData={data} />
+		});
+	}
+
 
 
 	componentWillMount() {
-		const self = this;
-        jQuery.ajax({
-            type : "POST",
-            url : "/doit/articleAction/getArticleSort", 
-            data : {},
-            dataType:"json",
-            success : function(cbData) {
-                console.info(cbData);
-
-	            if(cbData.success === "1"){
-		            let sortArray = [];
-		            for(let i=0, len=cbData.data.length; i<len; i++){
-			            const sortObj = {
-				            "id" : ""+cbData.data[i].Sort_ID,
-			                "name" : cbData.data[i].Sort_Name
-			            };
-			            sortArray.push(sortObj);
-		            }
-
-		            self.setState({
-			            sortData : sortArray
-		            });
-	            }
-            },error :function(){
-                alert("网络连接出错！");   
-            } 
-        });
+		// 获取文章的分类列表
+		this.byTypeGetSort();
 	}
+
 
     render() {
         return (
@@ -68,7 +193,7 @@ export default class EditArticlePage extends React.Component {
                         <Row>
                             <Col span={4}>
                                 <SearchComponent
-                                    placeholder="快速菜单入口1"
+                                    placeholder="快速菜单入口"
                                     style={{ width: 230 }}
                                 />
                             </Col>
@@ -80,8 +205,12 @@ export default class EditArticlePage extends React.Component {
                     <div className="ant-layout-container">
                         <div className="ant-layout-content">
                             <BreadcrumbComponent data={this.props.routes} />
-                            <span>EditArticlePage</span>
-	                        <SelectComponent data={this.state.sortData} selected={this.selected} />
+	                        <div id="articlePage" className="page">
+		                        {this.state.sortDOM}
+		                        {this.state.tableDOM}
+		                        {this.state.paginationDOM}
+	                        </div>
+
                         </div>
                     </div>
                     <div className="ant-layout-footer">

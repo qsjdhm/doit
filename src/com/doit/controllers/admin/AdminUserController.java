@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import sun.misc.BASE64Encoder;
+import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
 import org.springframework.stereotype.Controller;
@@ -181,6 +182,51 @@ public class AdminUserController {
 	
 	/****************供AJAX请求的ACTION******************/
 	
+	@RequestMapping(value = "/getUserCount")
+	public void getUserCount(HttpServletRequest request, HttpServletResponse response) throws Exception{
+		
+		int count = userService.getUserLength();
+		
+		JSONObject jsonObject = new JSONObject();
+		jsonObject.put("success", "1");
+		jsonObject.put("msg", "获取用户个数成功");
+		jsonObject.put("data", count);
+		
+		response.setContentType("text/html;charset=utf-8");
+        response.setHeader("Cache-Control", "no-cache"); 
+		response.setCharacterEncoding("UTF-8");
+		response.getWriter().print(jsonObject); 
+	}
+	
+	@RequestMapping(value = "/getUserList")
+	public void getUserList(HttpServletRequest request, HttpServletResponse response) throws Exception{
+		
+		int page = Integer.parseInt(request.getParameter("page"));
+		List <TUser> users = userService.getUser(page, 6);
+		
+		JSONArray userJsonArray = new JSONArray();
+		for(int i=0; i<users.size(); i++){
+			JSONObject userJson = new JSONObject();
+			TUser user = users.get(i);
+			userJson.put("User_ID", user.getUser_ID());
+			userJson.put("User_Account", user.getUser_Account());
+			userJson.put("User_Email", user.getUser_Email());
+			
+			userJsonArray.add(userJson);
+		}
+		
+		// 3.返回添加状态信息
+		JSONObject jsonObject = new JSONObject();
+		jsonObject.put("success", "1");
+		jsonObject.put("msg", "获取用户列表成功");
+		jsonObject.put("data", userJsonArray);
+		
+		response.setContentType("text/html;charset=utf-8");
+        response.setHeader("Cache-Control", "no-cache"); 
+		response.setCharacterEncoding("UTF-8");
+		response.getWriter().print(jsonObject); 
+	}
+	
 	@RequestMapping(value = "/addUser")
 	public void addUser(HttpServletRequest request, HttpServletResponse response) throws Exception{
 		
@@ -204,6 +250,8 @@ public class AdminUserController {
 		jsonObject.put("success", "1");
 		jsonObject.put("msg", "添加用户成功");
 		
+		response.setContentType("text/html;charset=utf-8");
+        response.setHeader("Cache-Control", "no-cache"); 
 		response.setCharacterEncoding("UTF-8");
 		response.getWriter().print(jsonObject); 
 	}
@@ -225,6 +273,8 @@ public class AdminUserController {
 		jsonObject.put("success", "1");
 		jsonObject.put("msg", "删除用户成功");
 		
+		response.setContentType("text/html;charset=utf-8");
+        response.setHeader("Cache-Control", "no-cache"); 
 		response.setCharacterEncoding("UTF-8");
 		response.getWriter().print(jsonObject); 
 	}
@@ -247,6 +297,8 @@ public class AdminUserController {
 		jsonObject.put("name", account);
 		jsonObject.put("email", email);
 		
+		response.setContentType("text/html;charset=utf-8");
+        response.setHeader("Cache-Control", "no-cache"); 
 		response.setCharacterEncoding("UTF-8");
 		response.getWriter().print(jsonObject); 
 	}
@@ -282,6 +334,8 @@ public class AdminUserController {
 		jsonObject.put("success", "1");
 		jsonObject.put("msg", "修改用户成功");
 		
+		response.setContentType("text/html;charset=utf-8");
+        response.setHeader("Cache-Control", "no-cache"); 
 		response.setCharacterEncoding("UTF-8");
 		response.getWriter().print(jsonObject); 
 	}

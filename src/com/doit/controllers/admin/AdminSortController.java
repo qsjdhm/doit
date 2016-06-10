@@ -188,6 +188,53 @@ public class AdminSortController {
 	
 	/****************供AJAX请求的ACTION******************/
 	
+	@RequestMapping(value = "/getSortCount")
+	public void getSortCount(HttpServletRequest request, HttpServletResponse response) throws Exception{
+		
+		int fSort = Integer.parseInt(request.getParameter("fSort"));
+		int count = sortService.getSortLength(fSort);
+		
+		JSONObject jsonObject = new JSONObject();
+		jsonObject.put("success", "1");
+		jsonObject.put("msg", "获取分类个数成功");
+		jsonObject.put("data", count);
+		
+		response.setContentType("text/html;charset=utf-8");
+        response.setHeader("Cache-Control", "no-cache"); 
+		response.setCharacterEncoding("UTF-8");
+		response.getWriter().print(jsonObject); 
+	}
+	
+	@RequestMapping(value = "/getSortList")
+	public void getSortList(HttpServletRequest request, HttpServletResponse response) throws Exception{
+		
+		int fSort = Integer.parseInt(request.getParameter("fSort"));
+		int page = Integer.parseInt(request.getParameter("page"));
+		List <TSort> sorts = sortService.getSort(fSort, page, 6);
+		
+		JSONArray sortJsonArray = new JSONArray();
+		for(int i=0; i<sorts.size(); i++){
+			JSONObject sortJson = new JSONObject();
+			TSort sort = sorts.get(i);
+			sortJson.put("Sort_ID", sort.getSort_ID());
+			sortJson.put("Sort_Name", sort.getSort_Name());
+			sortJson.put("F_Sort", sort.getF_Sort());
+			
+			sortJsonArray.add(sortJson);
+		}
+		
+		// 3.返回添加状态信息
+		JSONObject jsonObject = new JSONObject();
+		jsonObject.put("success", "1");
+		jsonObject.put("msg", "获取分类列表成功");
+		jsonObject.put("data", sortJsonArray);
+		
+		response.setContentType("text/html;charset=utf-8");
+        response.setHeader("Cache-Control", "no-cache"); 
+		response.setCharacterEncoding("UTF-8");
+		response.getWriter().print(jsonObject); 
+	}
+	
 	@RequestMapping(value = "/addSort")
 	public void addSort(HttpServletRequest request, HttpServletResponse response) throws Exception{
 		
@@ -205,6 +252,8 @@ public class AdminSortController {
 		jsonObject.put("success", "1");
 		jsonObject.put("msg", "添加分类成功");
 		
+		response.setContentType("text/html;charset=utf-8");
+        response.setHeader("Cache-Control", "no-cache"); 
 		response.setCharacterEncoding("UTF-8");
 		response.getWriter().print(jsonObject); 
 	}
@@ -226,6 +275,8 @@ public class AdminSortController {
 		jsonObject.put("success", "1");
 		jsonObject.put("msg", "删除分类成功");
 		
+		response.setContentType("text/html;charset=utf-8");
+        response.setHeader("Cache-Control", "no-cache"); 
 		response.setCharacterEncoding("UTF-8");
 		response.getWriter().print(jsonObject); 
 	}
@@ -246,6 +297,8 @@ public class AdminSortController {
 		jsonObject.put("id", selectId);
 		jsonObject.put("name", name);
 		
+		response.setContentType("text/html;charset=utf-8");
+        response.setHeader("Cache-Control", "no-cache"); 
 		response.setCharacterEncoding("UTF-8");
 		response.getWriter().print(jsonObject); 
 	}
@@ -272,6 +325,8 @@ public class AdminSortController {
 		jsonObject.put("success", "1");
 		jsonObject.put("msg", "修改分类成功");
 		
+		response.setContentType("text/html;charset=utf-8");
+        response.setHeader("Cache-Control", "no-cache"); 
 		response.setCharacterEncoding("UTF-8");
 		response.getWriter().print(jsonObject); 
 	}
@@ -300,12 +355,16 @@ public class AdminSortController {
 			sortJsonArray.add(sortJson);
 		}
 		
+		System.out.println(sortJsonArray);
+		
 		// 3.返回添加状态信息
 		JSONObject jsonObject = new JSONObject();
 		jsonObject.put("success", "1");
 		jsonObject.put("msg", "获取分类成功");
 		jsonObject.put("data", sortJsonArray);
 		
+		response.setContentType("text/html;charset=utf-8");
+        response.setHeader("Cache-Control", "no-cache"); 
 		response.setCharacterEncoding("UTF-8");
 		response.getWriter().print(jsonObject); 
 	}

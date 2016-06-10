@@ -10,6 +10,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
 import org.springframework.stereotype.Controller;
@@ -194,6 +195,55 @@ public class AdminNoteController {
 	
 	/****************供AJAX请求的ACTION******************/
 	
+	@RequestMapping(value = "/getNoteCount")
+	public void getNoteCount(HttpServletRequest request, HttpServletResponse response) throws Exception{
+		
+		int sort = Integer.parseInt(request.getParameter("sort"));
+		int count = articleService.getArticleSubSortLength(sort);
+		JSONObject jsonObject = new JSONObject();
+		jsonObject.put("success", "1");
+		jsonObject.put("msg", "获取笔记个数成功");
+		jsonObject.put("data", count);
+		
+		response.setContentType("text/html;charset=utf-8");
+        response.setHeader("Cache-Control", "no-cache"); 
+		response.setCharacterEncoding("UTF-8");
+		response.getWriter().print(jsonObject); 
+	}
+	
+	@RequestMapping(value = "/getNoteList")
+	public void getArticleList(HttpServletRequest request, HttpServletResponse response) throws Exception{
+		
+		int sort = Integer.parseInt(request.getParameter("sort"));
+		int page = Integer.parseInt(request.getParameter("page"));
+		List <TArticle> notes = articleService.getArticleSubSort(sort, page, 6);
+		
+		JSONArray noteJsonArray = new JSONArray();
+		for(int i=0; i<notes.size(); i++){
+			JSONObject noteJson = new JSONObject();
+			TArticle article = notes.get(i);
+			noteJson.put("Article_ID", article.getArticle_ID());
+			noteJson.put("Article_Title", article.getArticle_Title());
+			noteJson.put("Sort_Name", article.getSort_Name());
+			noteJson.put("Recommend_Num", article.getRecommend_Num());
+			noteJson.put("Read_Num", article.getRead_Num());
+			noteJson.put("Article_Date", article.getArticle_Date());
+			
+			noteJsonArray.add(noteJson);
+		}
+		
+		// 3.返回添加状态信息
+		JSONObject jsonObject = new JSONObject();
+		jsonObject.put("success", "1");
+		jsonObject.put("msg", "获取笔记列表成功");
+		jsonObject.put("data", noteJsonArray);
+		
+		response.setContentType("text/html;charset=utf-8");
+        response.setHeader("Cache-Control", "no-cache"); 
+		response.setCharacterEncoding("UTF-8");
+		response.getWriter().print(jsonObject); 
+	}
+	
 	@RequestMapping(value = "/addNote")
 	public void addArticle(HttpServletRequest request, HttpServletResponse response) throws Exception{
 		
@@ -266,6 +316,8 @@ public class AdminNoteController {
 		jsonObject.put("success", "1");
 		jsonObject.put("msg", "添加笔记成功");
 		
+		response.setContentType("text/html;charset=utf-8");
+        response.setHeader("Cache-Control", "no-cache"); 
 		response.setCharacterEncoding("UTF-8");
 		response.getWriter().print(jsonObject); 
 	}
@@ -287,6 +339,8 @@ public class AdminNoteController {
 		jsonObject.put("success", "1");
 		jsonObject.put("msg", "删除笔记成功");
 		
+		response.setContentType("text/html;charset=utf-8");
+        response.setHeader("Cache-Control", "no-cache"); 
 		response.setCharacterEncoding("UTF-8");
 		response.getWriter().print(jsonObject); 
 	}
@@ -309,6 +363,8 @@ public class AdminNoteController {
 		jsonObject.put("title", title);
 		jsonObject.put("content", content);
 		
+		response.setContentType("text/html;charset=utf-8");
+        response.setHeader("Cache-Control", "no-cache"); 
 		response.setCharacterEncoding("UTF-8");
 		response.getWriter().print(jsonObject); 
 	}
@@ -370,6 +426,8 @@ public class AdminNoteController {
 		jsonObject.put("success", "1");
 		jsonObject.put("msg", "修改笔记成功");
 		
+		response.setContentType("text/html;charset=utf-8");
+        response.setHeader("Cache-Control", "no-cache"); 
 		response.setCharacterEncoding("UTF-8");
 		response.getWriter().print(jsonObject); 
 	}

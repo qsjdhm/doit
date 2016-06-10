@@ -26,6 +26,8 @@ import com.doit.service.ILinkService;
 import com.doit.service.ISortService;
 import com.doit.util.GenerateHtml;
 import com.doit.util.HtmlRegexp;
+import com.doit.util.OperateImage;
+import com.doit.util.OperateString;
 import com.doit.vo.TArticle;
 import com.doit.vo.TBook;
 import com.doit.vo.TLink;
@@ -193,19 +195,48 @@ public class AdminArticleController {
 	
 	/****************供AJAX请求的ACTION******************/
 	
+	@RequestMapping(value = "/getArticleCount")
+	public void getArticleCount(HttpServletRequest request, HttpServletResponse response) throws Exception{
+		
+		int sort = Integer.parseInt(request.getParameter("sort"));
+		int count = articleService.getArticleLength(sort);
+		JSONObject jsonObject = new JSONObject();
+		jsonObject.put("success", "1");
+		jsonObject.put("msg", "获取文章个数成功");
+		jsonObject.put("data", count);
+		
+		response.setContentType("text/html;charset=utf-8");
+        response.setHeader("Cache-Control", "no-cache"); 
+		response.setCharacterEncoding("UTF-8");
+		response.getWriter().print(jsonObject); 
+	}
+	
 	@RequestMapping(value = "/getArticleList")
 	public void getArticleList(HttpServletRequest request, HttpServletResponse response) throws Exception{
 		
 		int sort = Integer.parseInt(request.getParameter("sort"));
 		int page = Integer.parseInt(request.getParameter("page"));
-		List <TArticle> articles = articleService.getArticle(sort, page, 6);
+		int size = Integer.parseInt(request.getParameter("size"));
+		List <TArticle> articles = articleService.getArticle(sort, page, size);
 		
 		JSONArray articleJsonArray = new JSONArray();
 		for(int i=0; i<articles.size(); i++){
 			JSONObject articleJson = new JSONObject();
 			TArticle article = articles.get(i);
+			
+			String contentHtml = article.getArticle_Content();
+			// 过滤图片
+			OperateImage operateImage = new OperateImage();
+			OperateString operateString = new OperateString();
+			contentHtml = operateImage.filterImage(contentHtml);
+			// 过滤html所有标签
+			contentHtml = operateString.filterHtmlTag(contentHtml);
+			// 截取字符串
+			contentHtml = operateString.interceptCharacters(contentHtml, 0, 150);
+			
 			articleJson.put("Article_ID", article.getArticle_ID());
 			articleJson.put("Article_Title", article.getArticle_Title());
+			articleJson.put("Article_Content", contentHtml);
 			articleJson.put("Sort_Name", article.getSort_Name());
 			articleJson.put("Recommend_Num", article.getRecommend_Num());
 			articleJson.put("Read_Num", article.getRead_Num());
@@ -220,6 +251,8 @@ public class AdminArticleController {
 		jsonObject.put("msg", "获取文章列表成功");
 		jsonObject.put("data", articleJsonArray);
 		
+		response.setContentType("text/html;charset=utf-8");
+        response.setHeader("Cache-Control", "no-cache"); 
 		response.setCharacterEncoding("UTF-8");
 		response.getWriter().print(jsonObject); 
 	}
@@ -301,6 +334,8 @@ public class AdminArticleController {
 		jsonObject.put("success", "1");
 		jsonObject.put("msg", "添加文章成功");
 		
+		response.setContentType("text/html;charset=utf-8");
+        response.setHeader("Cache-Control", "no-cache"); 
 		response.setCharacterEncoding("UTF-8");
 		response.getWriter().print(jsonObject); 
 	}
@@ -322,6 +357,8 @@ public class AdminArticleController {
 		jsonObject.put("success", "1");
 		jsonObject.put("msg", "删除文章成功");
 		
+		response.setContentType("text/html;charset=utf-8");
+        response.setHeader("Cache-Control", "no-cache"); 
 		response.setCharacterEncoding("UTF-8");
 		response.getWriter().print(jsonObject); 
 	}
@@ -344,6 +381,8 @@ public class AdminArticleController {
 		jsonObject.put("title", title);
 		jsonObject.put("content", content);
 		
+		response.setContentType("text/html;charset=utf-8");
+        response.setHeader("Cache-Control", "no-cache"); 
 		response.setCharacterEncoding("UTF-8");
 		response.getWriter().print(jsonObject); 
 	}
@@ -409,6 +448,8 @@ public class AdminArticleController {
 		jsonObject.put("success", "1");
 		jsonObject.put("msg", "修改文章成功");
 		
+		response.setContentType("text/html;charset=utf-8");
+        response.setHeader("Cache-Control", "no-cache"); 
 		response.setCharacterEncoding("UTF-8");
 		response.getWriter().print(jsonObject); 
 	}

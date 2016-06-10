@@ -10,6 +10,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
 import org.springframework.stereotype.Controller;
@@ -151,6 +152,52 @@ public class AdminCommentController {
 	
 	/****************供AJAX请求的ACTION******************/
 	
+	@RequestMapping(value = "/getCommentCount")
+	public void getCommentCount(HttpServletRequest request, HttpServletResponse response) throws Exception{
+		
+		int count = commentService.getCommentLength();
+		
+		JSONObject jsonObject = new JSONObject();
+		jsonObject.put("success", "1");
+		jsonObject.put("msg", "获取评论个数成功");
+		jsonObject.put("data", count);
+		
+		response.setContentType("text/html;charset=utf-8");
+        response.setHeader("Cache-Control", "no-cache"); 
+		response.setCharacterEncoding("UTF-8");
+		response.getWriter().print(jsonObject); 
+	}
+	
+	@RequestMapping(value = "/getCommentList")
+	public void getCommentList(HttpServletRequest request, HttpServletResponse response) throws Exception{
+		
+		int page = Integer.parseInt(request.getParameter("page"));
+		List <TComment> comments = commentService.getComment(page, 6);
+		
+		JSONArray commentJsonArray = new JSONArray();
+		for(int i=0; i<comments.size(); i++){
+			JSONObject commentJson = new JSONObject();
+			TComment comment = comments.get(i);
+			commentJson.put("Comment_ID", comment.getComment_ID());
+			commentJson.put("Comment_Person_Name", comment.getComment_Person_Name());
+			commentJson.put("Comment_Content", comment.getComment_Content());
+			commentJson.put("Comment_ArticleTitle", comment.getComment_ArticleTitle());
+			
+			commentJsonArray.add(commentJson);
+		}
+		
+		// 3.返回添加状态信息
+		JSONObject jsonObject = new JSONObject();
+		jsonObject.put("success", "1");
+		jsonObject.put("msg", "获取评论列表成功");
+		jsonObject.put("data", commentJsonArray);
+		
+		response.setContentType("text/html;charset=utf-8");
+        response.setHeader("Cache-Control", "no-cache"); 
+		response.setCharacterEncoding("UTF-8");
+		response.getWriter().print(jsonObject); 
+	}
+	
 	@RequestMapping(value = "/addComment")
 	public void addComment(HttpServletRequest request, HttpServletResponse response) throws Exception{
 		
@@ -201,6 +248,8 @@ public class AdminCommentController {
 		jsonObject.put("nowCommentTime", nowCommentTime);
 		jsonObject.put("msg", "添加评论成功");
 		
+		response.setContentType("text/html;charset=utf-8");
+        response.setHeader("Cache-Control", "no-cache"); 
 		response.setCharacterEncoding("UTF-8");
 		response.getWriter().print(jsonObject); 
 	}
@@ -221,6 +270,8 @@ public class AdminCommentController {
 		jsonObject.put("success", "1");
 		jsonObject.put("msg", "删除评论成功");
 		
+		response.setContentType("text/html;charset=utf-8");
+        response.setHeader("Cache-Control", "no-cache"); 
 		response.setCharacterEncoding("UTF-8");
 		response.getWriter().print(jsonObject); 
 	}
@@ -243,6 +294,8 @@ public class AdminCommentController {
 		jsonObject.put("userName", userName);
 		jsonObject.put("content", content);
 		
+		response.setContentType("text/html;charset=utf-8");
+        response.setHeader("Cache-Control", "no-cache"); 
 		response.setCharacterEncoding("UTF-8");
 		response.getWriter().print(jsonObject); 
 	}
@@ -285,6 +338,8 @@ public class AdminCommentController {
 		jsonObject.put("success", "1");
 		jsonObject.put("msg", "修改评论成功");
 		
+		response.setContentType("text/html;charset=utf-8");
+        response.setHeader("Cache-Control", "no-cache"); 
 		response.setCharacterEncoding("UTF-8");
 		response.getWriter().print(jsonObject); 
 	}

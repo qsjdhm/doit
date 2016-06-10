@@ -203,6 +203,8 @@ public class AdminRecommendController {
 		jsonObject.put("readNum", readNum);
 		jsonObject.put("recommendNum", recommendNum);
 		
+		response.setContentType("text/html;charset=utf-8");
+        response.setHeader("Cache-Control", "no-cache"); 
 		response.setCharacterEncoding("UTF-8");
 		response.getWriter().print(jsonObject); 
 	}
@@ -226,6 +228,8 @@ public class AdminRecommendController {
 		jsonObject.put("downNum", downNum);
 		jsonObject.put("recommendNum", recommendNum);
 		
+		response.setContentType("text/html;charset=utf-8");
+        response.setHeader("Cache-Control", "no-cache"); 
 		response.setCharacterEncoding("UTF-8");
 		response.getWriter().print(jsonObject); 
 	}
@@ -279,6 +283,8 @@ public class AdminRecommendController {
 		jsonObject.put("success", "1");
 		jsonObject.put("msg", "推荐文章成功");
 		
+		response.setContentType("text/html;charset=utf-8");
+        response.setHeader("Cache-Control", "no-cache"); 
 		response.setCharacterEncoding("UTF-8");
 		response.getWriter().print(jsonObject); 
 	}
@@ -331,6 +337,8 @@ public class AdminRecommendController {
 		jsonObject.put("success", "1");
 		jsonObject.put("msg", "推荐笔记成功");
 		
+		response.setContentType("text/html;charset=utf-8");
+        response.setHeader("Cache-Control", "no-cache"); 
 		response.setCharacterEncoding("UTF-8");
 		response.getWriter().print(jsonObject); 
 	}
@@ -376,6 +384,8 @@ public class AdminRecommendController {
 		jsonObject.put("success", "1");
 		jsonObject.put("msg", "推荐图书成功");
 		
+		response.setContentType("text/html;charset=utf-8");
+        response.setHeader("Cache-Control", "no-cache"); 
 		response.setCharacterEncoding("UTF-8");
 		response.getWriter().print(jsonObject); 
 	}

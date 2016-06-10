@@ -10,6 +10,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
 import org.springframework.stereotype.Controller;
@@ -190,6 +191,53 @@ public class AdminBookController {
 	
 	
 	/****************供AJAX请求的ACTION******************/
+
+	@RequestMapping(value = "/getBookCount")
+	public void getBookCount(HttpServletRequest request, HttpServletResponse response) throws Exception{
+		
+		int sort = Integer.parseInt(request.getParameter("sort"));
+		int count = bookService.getBookLength(sort);
+		JSONObject jsonObject = new JSONObject();
+		jsonObject.put("success", "1");
+		jsonObject.put("msg", "获取图书个数成功");
+		jsonObject.put("data", count);
+		
+		response.setContentType("text/html;charset=utf-8");
+        response.setHeader("Cache-Control", "no-cache"); 
+		response.setCharacterEncoding("UTF-8");
+		response.getWriter().print(jsonObject); 
+	}
+	
+	@RequestMapping(value = "/getBookList")
+	public void getBookList(HttpServletRequest request, HttpServletResponse response) throws Exception{
+		
+		int sort = Integer.parseInt(request.getParameter("sort"));
+		int page = Integer.parseInt(request.getParameter("page"));
+		List <TBook> books = bookService.getBook(sort, page, 6);
+		
+		JSONArray bookJsonArray = new JSONArray();
+		for(int i=0; i<books.size(); i++){
+			JSONObject bookJson = new JSONObject();
+			TBook book = books.get(i);
+			bookJson.put("Book_ID", book.getBook_ID());
+			bookJson.put("Book_Name", book.getBook_Name());
+			bookJson.put("Recommend_Num", book.getRecommend_Num());
+			bookJson.put("Download_Num", book.getDownload_Num());
+			
+			bookJsonArray.add(bookJson);
+		}
+		
+		// 3.返回添加状态信息
+		JSONObject jsonObject = new JSONObject();
+		jsonObject.put("success", "1");
+		jsonObject.put("msg", "获取图书列表成功");
+		jsonObject.put("data", bookJsonArray);
+		
+		response.setContentType("text/html;charset=utf-8");
+        response.setHeader("Cache-Control", "no-cache"); 
+		response.setCharacterEncoding("UTF-8");
+		response.getWriter().print(jsonObject); 
+	}
 	
 	@RequestMapping(value = "/addBook")
 	public void addBook(HttpServletRequest request, HttpServletResponse response) throws Exception{
@@ -220,6 +268,8 @@ public class AdminBookController {
 		jsonObject.put("success", "1");
 		jsonObject.put("msg", "添加图书成功");
 		
+		response.setContentType("text/html;charset=utf-8");
+        response.setHeader("Cache-Control", "no-cache"); 
 		response.setCharacterEncoding("UTF-8");
 		response.getWriter().print(jsonObject); 
 	}
@@ -241,6 +291,8 @@ public class AdminBookController {
 		jsonObject.put("success", "1");
 		jsonObject.put("msg", "删除图书成功");
 		
+		response.setContentType("text/html;charset=utf-8");
+        response.setHeader("Cache-Control", "no-cache"); 
 		response.setCharacterEncoding("UTF-8");
 		response.getWriter().print(jsonObject); 
 	}
@@ -265,6 +317,8 @@ public class AdminBookController {
 		jsonObject.put("height", height);
 		jsonObject.put("link", link);
 		
+		response.setContentType("text/html;charset=utf-8");
+        response.setHeader("Cache-Control", "no-cache"); 
 		response.setCharacterEncoding("UTF-8");
 		response.getWriter().print(jsonObject); 
 	}
@@ -308,6 +362,8 @@ public class AdminBookController {
 		jsonObject.put("success", "1");
 		jsonObject.put("msg", "修改图书成功");
 		
+		response.setContentType("text/html;charset=utf-8");
+        response.setHeader("Cache-Control", "no-cache"); 
 		response.setCharacterEncoding("UTF-8");
 		response.getWriter().print(jsonObject); 
 	}

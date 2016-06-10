@@ -10,6 +10,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
 import org.springframework.stereotype.Controller;
@@ -172,6 +173,51 @@ public class AdminLinkController {
 	
 	/****************供AJAX请求的ACTION******************/
 	
+	@RequestMapping(value = "/getLinkCount")
+	public void getLinkCount(HttpServletRequest request, HttpServletResponse response) throws Exception{
+		
+		int count = linkService.getLinkLength();
+		
+		JSONObject jsonObject = new JSONObject();
+		jsonObject.put("success", "1");
+		jsonObject.put("msg", "获取超链个数成功");
+		jsonObject.put("data", count);
+		
+		response.setContentType("text/html;charset=utf-8");
+        response.setHeader("Cache-Control", "no-cache"); 
+		response.setCharacterEncoding("UTF-8");
+		response.getWriter().print(jsonObject); 
+	}
+	
+	@RequestMapping(value = "/getLinkList")
+	public void getLinkList(HttpServletRequest request, HttpServletResponse response) throws Exception{
+		
+		int page = Integer.parseInt(request.getParameter("page"));
+		List <TLink> links = linkService.getLink(page, 6);
+		
+		JSONArray linkJsonArray = new JSONArray();
+		for(int i=0; i<links.size(); i++){
+			JSONObject linkJson = new JSONObject();
+			TLink link = links.get(i);
+			linkJson.put("Link_ID", link.getLink_ID());
+			linkJson.put("Link_Name", link.getLink_Name());
+			linkJson.put("Link_Url", link.getLink_Url());
+			
+			linkJsonArray.add(linkJson);
+		}
+		
+		// 3.返回添加状态信息
+		JSONObject jsonObject = new JSONObject();
+		jsonObject.put("success", "1");
+		jsonObject.put("msg", "获取外链列表成功");
+		jsonObject.put("data", linkJsonArray);
+		
+		response.setContentType("text/html;charset=utf-8");
+        response.setHeader("Cache-Control", "no-cache"); 
+		response.setCharacterEncoding("UTF-8");
+		response.getWriter().print(jsonObject); 
+	}
+	
 	@RequestMapping(value = "/addLink")
 	public void addLink(HttpServletRequest request, HttpServletResponse response) throws Exception{
 		
@@ -189,6 +235,8 @@ public class AdminLinkController {
 		jsonObject.put("success", "1");
 		jsonObject.put("msg", "添加链接成功");
 		
+		response.setContentType("text/html;charset=utf-8");
+        response.setHeader("Cache-Control", "no-cache"); 
 		response.setCharacterEncoding("UTF-8");
 		response.getWriter().print(jsonObject); 
 	}
@@ -210,6 +258,8 @@ public class AdminLinkController {
 		jsonObject.put("success", "1");
 		jsonObject.put("msg", "删除链接成功");
 		
+		response.setContentType("text/html;charset=utf-8");
+        response.setHeader("Cache-Control", "no-cache"); 
 		response.setCharacterEncoding("UTF-8");
 		response.getWriter().print(jsonObject); 
 	}
@@ -232,6 +282,8 @@ public class AdminLinkController {
 		jsonObject.put("name", name);
 		jsonObject.put("url", url);
 		
+		response.setContentType("text/html;charset=utf-8");
+        response.setHeader("Cache-Control", "no-cache"); 
 		response.setCharacterEncoding("UTF-8");
 		response.getWriter().print(jsonObject); 
 	}
@@ -255,6 +307,8 @@ public class AdminLinkController {
 		jsonObject.put("success", "1");
 		jsonObject.put("msg", "修改链接成功");
 		
+		response.setContentType("text/html;charset=utf-8");
+        response.setHeader("Cache-Control", "no-cache"); 
 		response.setCharacterEncoding("UTF-8");
 		response.getWriter().print(jsonObject); 
 	}
