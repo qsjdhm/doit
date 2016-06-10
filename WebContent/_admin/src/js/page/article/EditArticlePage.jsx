@@ -151,13 +151,13 @@ export default class EditArticlePage extends React.Component {
 		console.info(document.getElementById("articlePage").offsetWidth);
 
 		const columns = [
-			{ title: 'ID', width: 118, dataIndex: 'Article_ID', key: 'Article_ID' },
-			{ title: '名称', width: 400, dataIndex: 'Article_Title', key: 'Article_Title' },
+			{ title: 'ID', width: 80, dataIndex: 'Article_ID', key: 'Article_ID' },
+			{ title: '名称', width: 370, dataIndex: 'Article_Title', key: 'Article_Title' },
 			{ title: '分类', width: 100, dataIndex: 'Sort_Name', key: 'Sort_Name' },
 			{ title: '推荐量', width: 100, dataIndex: 'Recommend_Num', key: 'Recommend_Num' },
 			{ title: '点击量', width: 100, dataIndex: 'Read_Num', key: 'Read_Num' },
 			{ title: '时间', width: 210, dataIndex: 'Article_Date', key: 'Article_Date' },
-			{ title: '操作', width: 70, dataIndex: '', key: 'x', render: () => <a href="#">删除</a> },
+			{ title: '操作', width: 70, dataIndex: '', key: 'x', render: () => <a href="#">修改</a> },
 		];
 
 		let data = [];

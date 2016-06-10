@@ -2,20 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="eed6c68e-dd0a-4918-bae7-5586d41ab812" name="默认的" comment="">
-      <change type="DELETED" beforePath="$PROJECT_DIR$/WebContent/_admin/src/js/components/table/css/hello.css" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/WebContent/_admin/src/js/components/table/img/foot.png" afterPath="" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/WebContent/_admin/src/js/components/select/js/SelectComponent.jsx" afterPath="$PROJECT_DIR$/WebContent/_admin/src/js/components/select/js/SelectComponent.jsx" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/WebContent/_admin/src/js/components/table/css/table.less" afterPath="$PROJECT_DIR$/WebContent/_admin/src/js/components/table/css/table.less" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/WebContent/_admin/src/js/components/table/js/TableComponent.jsx" afterPath="$PROJECT_DIR$/WebContent/_admin/src/js/components/table/js/TableComponent.jsx" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/WebContent/_admin/src/js/page/article/EditArticlePage.jsx" afterPath="$PROJECT_DIR$/WebContent/_admin/src/js/page/article/EditArticlePage.jsx" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/doit/controllers/admin/AdminArticleController.java" afterPath="$PROJECT_DIR$/src/com/doit/controllers/admin/AdminArticleController.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/doit/controllers/admin/AdminBookController.java" afterPath="$PROJECT_DIR$/src/com/doit/controllers/admin/AdminBookController.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/doit/controllers/admin/AdminCommentController.java" afterPath="$PROJECT_DIR$/src/com/doit/controllers/admin/AdminCommentController.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/doit/controllers/admin/AdminLinkController.java" afterPath="$PROJECT_DIR$/src/com/doit/controllers/admin/AdminLinkController.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/doit/controllers/admin/AdminNoteController.java" afterPath="$PROJECT_DIR$/src/com/doit/controllers/admin/AdminNoteController.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/doit/controllers/admin/AdminRecommendController.java" afterPath="$PROJECT_DIR$/src/com/doit/controllers/admin/AdminRecommendController.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/doit/controllers/admin/AdminSortController.java" afterPath="$PROJECT_DIR$/src/com/doit/controllers/admin/AdminSortController.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/doit/controllers/admin/AdminUserController.java" afterPath="$PROJECT_DIR$/src/com/doit/controllers/admin/AdminUserController.java" />
     </list>
     <ignored path="doit.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -36,11 +26,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="EditArticlePage.jsx" pinned="false" current-in-tab="false">
+      <file leaf-file-name="EditArticlePage.jsx" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/WebContent/_admin/src/js/page/article/EditArticlePage.jsx">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="160" column="10" selection-start-line="160" selection-start-column="10" selection-end-line="160" selection-end-column="10" />
+            <state vertical-scroll-proportion="0.4848485">
+              <caret line="159" column="98" selection-start-line="159" selection-start-column="98" selection-end-line="159" selection-end-column="98" />
               <folding>
                 <element signature="n#!!doc" expanded="true" />
               </folding>
@@ -48,11 +38,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="TableComponent.jsx" pinned="false" current-in-tab="true">
+      <file leaf-file-name="TableComponent.jsx" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/WebContent/_admin/src/js/components/table/js/TableComponent.jsx">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="1.1717172">
-              <caret line="36" column="18" selection-start-line="36" selection-start-column="18" selection-end-line="36" selection-end-column="18" />
+            <state vertical-scroll-proportion="0.0">
+              <caret line="25" column="14" selection-start-line="25" selection-start-column="14" selection-end-line="25" selection-end-column="14" />
               <folding>
                 <element signature="n#!!doc" expanded="true" />
               </folding>
@@ -73,8 +63,8 @@
       <file leaf-file-name="table.less" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/WebContent/_admin/src/js/components/table/css/table.less">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="2" column="1" selection-start-line="2" selection-start-column="1" selection-end-line="2" selection-end-column="1" />
+            <state vertical-scroll-proportion="-0.78688526">
+              <caret line="2" column="0" selection-start-line="2" selection-start-column="0" selection-end-line="2" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -153,6 +143,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -670,7 +661,6 @@
         </subPane>
       </pane>
       <pane id="Scratches" />
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -756,17 +746,17 @@
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="版本控制" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
-      <window_info id="调试" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
-      <window_info id="运行" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="调试" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="运行" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
@@ -789,6 +779,52 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/WebContent/_admin/src/js/page/article/EditArticlePage.jsx">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="160" column="10" selection-start-line="160" selection-start-column="10" selection-end-line="160" selection-end-column="10" />
+          <folding>
+            <element signature="n#!!doc" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/WebContent/_admin/src/js/components/table/js/TableComponent.jsx">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <element signature="n#!!doc" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/WebContent/_admin/src/js/components/pagination/js/PaginationComponent.jsx">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="22" column="47" selection-start-line="22" selection-start-column="16" selection-end-line="22" selection-end-column="47" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/WebContent/_admin/src/js/components/table/css/table.less">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="2" column="1" selection-start-line="2" selection-start-column="1" selection-end-line="2" selection-end-column="1" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/WebContent/_admin/src/js/components/search/js/SearchComponent.jsx">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="71" column="43" selection-start-line="71" selection-start-column="43" selection-end-line="71" selection-end-column="43" />
+          <folding>
+            <element signature="n#!!doc" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/WebContent/_admin/src/js/page/article/EditArticlePage.jsx">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -1013,7 +1049,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-3.147541">
           <caret line="8" column="0" selection-start-line="6" selection-start-column="8" selection-end-line="8" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1021,7 +1056,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-1.1803279">
           <caret line="3" column="1" selection-start-line="3" selection-start-column="1" selection-end-line="3" selection-end-column="1" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1052,26 +1086,26 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/WebContent/_admin/src/js/components/table/css/table.less">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="2" column="1" selection-start-line="2" selection-start-column="1" selection-end-line="2" selection-end-column="1" />
+        <state vertical-scroll-proportion="-0.78688526">
+          <caret line="2" column="0" selection-start-line="2" selection-start-column="0" selection-end-line="2" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/WebContent/_admin/src/js/page/article/EditArticlePage.jsx">
+    <entry file="file://$PROJECT_DIR$/WebContent/_admin/src/js/components/table/js/TableComponent.jsx">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="160" column="10" selection-start-line="160" selection-start-column="10" selection-end-line="160" selection-end-column="10" />
+          <caret line="25" column="14" selection-start-line="25" selection-start-column="14" selection-end-line="25" selection-end-column="14" />
           <folding>
             <element signature="n#!!doc" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/WebContent/_admin/src/js/components/table/js/TableComponent.jsx">
+    <entry file="file://$PROJECT_DIR$/WebContent/_admin/src/js/page/article/EditArticlePage.jsx">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="1.1717172">
-          <caret line="36" column="18" selection-start-line="36" selection-start-column="18" selection-end-line="36" selection-end-column="18" />
+        <state vertical-scroll-proportion="0.4848485">
+          <caret line="159" column="98" selection-start-line="159" selection-start-column="98" selection-end-line="159" selection-end-column="98" />
           <folding>
             <element signature="n#!!doc" expanded="true" />
           </folding>

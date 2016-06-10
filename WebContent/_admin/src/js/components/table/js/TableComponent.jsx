@@ -31,7 +31,7 @@ export default class TableComponent extends React.Component {
 	                columns={this.props.tableColumns}
 	                dataSource={this.props.tableData}
 	                expandedRowRender={record => <p>{record.description}</p>}
-	                scroll={{ y: 300, x: 1098 }}
+	                scroll={{ y: 350, x: 1068 }}
 	                pagination={false}
 	                className="table"
                 />
