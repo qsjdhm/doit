@@ -30,8 +30,8 @@ export default class TableComponent extends React.Component {
 	                size="middle"
 	                columns={this.props.tableColumns}
 	                dataSource={this.props.tableData}
-	                expandedRowRender={record => <p>{record.description}</p>}
-	                scroll={{ y: 350, x: 1068 }}
+	                expandedRowRender={this.props.expandedRowRender}
+	                scroll={this.props.scroll}
 	                pagination={false}
 	                className="table"
                 />

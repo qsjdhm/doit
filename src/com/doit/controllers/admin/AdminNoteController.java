@@ -26,6 +26,8 @@ import com.doit.service.ILinkService;
 import com.doit.service.ISortService;
 import com.doit.util.GenerateHtml;
 import com.doit.util.HtmlRegexp;
+import com.doit.util.OperateImage;
+import com.doit.util.OperateString;
 import com.doit.vo.TArticle;
 import com.doit.vo.TBook;
 import com.doit.vo.TLink;
@@ -222,8 +224,22 @@ public class AdminNoteController {
 		for(int i=0; i<notes.size(); i++){
 			JSONObject noteJson = new JSONObject();
 			TArticle article = notes.get(i);
+			
+			String contentHtml = article.getArticle_Content();
+			String content = "";
+			// 过滤图片
+			OperateImage operateImage = new OperateImage();
+			OperateString operateString = new OperateString();
+			contentHtml = operateImage.filterImage(contentHtml);
+			// 过滤html所有标签
+			contentHtml = operateString.filterHtmlTag(contentHtml);
+			// 截取字符串
+			contentHtml = operateString.interceptCharacters(contentHtml, 0, 150);
+			content = contentHtml.replaceAll("&nbsp;", "");  
+			
 			noteJson.put("Article_ID", article.getArticle_ID());
 			noteJson.put("Article_Title", article.getArticle_Title());
+			noteJson.put("Article_Content", content);
 			noteJson.put("Sort_Name", article.getSort_Name());
 			noteJson.put("Recommend_Num", article.getRecommend_Num());
 			noteJson.put("Read_Num", article.getRead_Num());

@@ -225,6 +225,7 @@ public class AdminArticleController {
 			TArticle article = articles.get(i);
 			
 			String contentHtml = article.getArticle_Content();
+			String content = "";
 			// 过滤图片
 			OperateImage operateImage = new OperateImage();
 			OperateString operateString = new OperateString();
@@ -233,10 +234,11 @@ public class AdminArticleController {
 			contentHtml = operateString.filterHtmlTag(contentHtml);
 			// 截取字符串
 			contentHtml = operateString.interceptCharacters(contentHtml, 0, 150);
-			
+			content = contentHtml.replaceAll("&nbsp;", "");  
+
 			articleJson.put("Article_ID", article.getArticle_ID());
 			articleJson.put("Article_Title", article.getArticle_Title());
-			articleJson.put("Article_Content", contentHtml);
+			articleJson.put("Article_Content", content);
 			articleJson.put("Sort_Name", article.getSort_Name());
 			articleJson.put("Recommend_Num", article.getRecommend_Num());
 			articleJson.put("Read_Num", article.getRead_Num());

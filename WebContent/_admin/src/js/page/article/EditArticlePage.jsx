@@ -35,7 +35,13 @@ export default class EditArticlePage extends React.Component {
 	    this.getArticleCount = this.getArticleCount.bind(this);
 	    this.getArticleList = this.getArticleList.bind(this);
 	    this.dealTableData = this.dealTableData.bind(this);
+	    this.openEditModel = this.openEditModel.bind(this);
     }
+
+	componentWillMount() {
+		// 获取文章的分类列表
+		this.byTypeGetSort();
+	}
 
 	selected(sort){
 		// 根据分类id获取文章列表
@@ -61,10 +67,10 @@ export default class EditArticlePage extends React.Component {
 			success : function(cbData) {
 				if(cbData.success === "1"){
 					let sortArray = [];
-					for(let i=0, len=cbData.data.length; i<len; i++){
+					for(let item of cbData.data){
 						const sortObj = {
-							"id" : ""+cbData.data[i].Sort_ID,
-							"name" : cbData.data[i].Sort_Name
+							"id" : item.Sort_ID,
+							"name" : item.Sort_Name
 						};
 						sortArray.push(sortObj);
 					}
@@ -100,8 +106,6 @@ export default class EditArticlePage extends React.Component {
 			contentType: "application/x-www-form-urlencoded; charset=utf-8",
 			success : function(cbData) {
 				if(cbData.success === "1"){
-					console.info(cbData);
-
 					// paginationDOM--因为ajax之后select的默认数据不会自动设置
 					self.setState({
 						sort : sort,
@@ -147,40 +151,39 @@ export default class EditArticlePage extends React.Component {
 
 	// 组织表格数据
 	dealTableData(cbData) {
-
 		console.info(document.getElementById("articlePage").offsetWidth);
 
-		const columns = [
+		const tableColumns = [
 			{ title: 'ID', width: 80, dataIndex: 'Article_ID', key: 'Article_ID' },
 			{ title: '名称', width: 370, dataIndex: 'Article_Title', key: 'Article_Title' },
 			{ title: '分类', width: 100, dataIndex: 'Sort_Name', key: 'Sort_Name' },
 			{ title: '推荐量', width: 100, dataIndex: 'Recommend_Num', key: 'Recommend_Num' },
 			{ title: '点击量', width: 100, dataIndex: 'Read_Num', key: 'Read_Num' },
 			{ title: '时间', width: 210, dataIndex: 'Article_Date', key: 'Article_Date' },
-			{ title: '操作', width: 70, dataIndex: '', key: 'x', render: () => <a href="#">修改</a> },
+			{ title: '操作', width: 70, dataIndex: '', key: 'x', render: () => <a href='javascript:void(0)' onClick={this.openEditModel}>修改</a> },
 		];
 
-		let data = [];
-
-		for(var i=0, len=cbData.data.length; i<len; i++){
-			let obj = cbData.data[i];
-			obj.key = cbData.data[i].Article_ID;
-			obj.description = cbData.data[i].Article_Content;
-			data.push(obj);
+		let tableData = [];
+		for(let item of cbData.data){
+			item.key = item.Article_ID;
+			tableData.push(item);
 		}
+
+		// 表格的配置
+		const expandedRowRender = record => <p>{record.Article_Content}</p>;
+		const scroll = { y: 350, x: 1068 };
 
 		this.setState({
 			tableDOM : <TableComponent
-				tableColumns={columns}
-				tableData={data} />
+						tableColumns={tableColumns}
+						tableData={tableData}
+						expandedRowRender={expandedRowRender}
+						scroll={scroll}/>
 		});
 	}
 
-
-
-	componentWillMount() {
-		// 获取文章的分类列表
-		this.byTypeGetSort();
+	openEditModel(v){
+		console.info(v);
 	}
 
 
@@ -210,7 +213,6 @@ export default class EditArticlePage extends React.Component {
 		                        {this.state.tableDOM}
 		                        {this.state.paginationDOM}
 	                        </div>
-
                         </div>
                     </div>
                     <div className="ant-layout-footer">
