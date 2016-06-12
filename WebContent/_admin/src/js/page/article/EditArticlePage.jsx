@@ -151,17 +151,36 @@ export default class EditArticlePage extends React.Component {
 
 	// 组织表格数据
 	dealTableData(cbData) {
-		console.info(document.getElementById("articlePage").offsetWidth);
+        const totalWidth = document.getElementById("article_page").offsetWidth - 25;
+        const idWidth        = totalWidth * 0.0749;
+        const titleWidth     = totalWidth * 0.3465;
+        const sortWidth      = totalWidth * 0.0937;
+        const recomWidth     = totalWidth * 0.0937;
+        const readWidth      = totalWidth * 0.0937;
+        const dateWidth      = totalWidth * 0.1966;
+        const operationWidth = totalWidth * 0.0656;
 
-		const tableColumns = [
-			{ title: 'ID', width: 80, dataIndex: 'Article_ID', key: 'Article_ID' },
-			{ title: '名称', width: 370, dataIndex: 'Article_Title', key: 'Article_Title' },
-			{ title: '分类', width: 100, dataIndex: 'Sort_Name', key: 'Sort_Name' },
-			{ title: '推荐量', width: 100, dataIndex: 'Recommend_Num', key: 'Recommend_Num' },
-			{ title: '点击量', width: 100, dataIndex: 'Read_Num', key: 'Read_Num' },
-			{ title: '时间', width: 210, dataIndex: 'Article_Date', key: 'Article_Date' },
-			{ title: '操作', width: 70, dataIndex: '', key: 'x', render: () => <a href='javascript:void(0)' onClick={this.openEditModel}>修改</a> },
+        const self = this;
+		let tableColumns = [
+			{ title: 'ID', width: idWidth, dataIndex: 'Article_ID', key: 'Article_ID' },
+			{ title: '名称', width: titleWidth, dataIndex: 'Article_Title', key: 'Article_Title' },
+			{ title: '分类', width: sortWidth, dataIndex: 'Sort_Name', key: 'Sort_Name' },
+			{ title: '推荐量', width: recomWidth, dataIndex: 'Recommend_Num', key: 'Recommend_Num' },
+			{ title: '点击量', width: readWidth, dataIndex: 'Read_Num', key: 'Read_Num' },
+			{ title: '时间', width: dateWidth, dataIndex: 'Article_Date', key: 'Article_Date' }
+            //, { title: '操作', width: operationWidth, dataIndex: '', key: 'operation', render: (index, item) => <a href='javascript:void(0)' onClick={self.openEditModel.bind(null, index, item)}>修改</a> },
 		];
+
+        // 设置表格操作列配置
+        tableColumns.push({
+            title: '操作',
+            width: operationWidth,
+            dataIndex: 'operation',
+            key: 'operation',
+            render(index, item) {
+                return <a href='javascript:void(0)' onClick={self.openEditModel.bind(null, index, item)}>修改</a>
+            }
+        });
 
 		let tableData = [];
 		for(let item of cbData.data){
@@ -171,7 +190,7 @@ export default class EditArticlePage extends React.Component {
 
 		// 表格的配置
 		const expandedRowRender = record => <p>{record.Article_Content}</p>;
-		const scroll = { y: 350, x: 1068 };
+		const scroll = { y: 350, x: totalWidth };
 
 		this.setState({
 			tableDOM : <TableComponent
@@ -182,8 +201,10 @@ export default class EditArticlePage extends React.Component {
 		});
 	}
 
-	openEditModel(v){
-		console.info(v);
+    // 弹出修改窗口
+	openEditModel(index, item){
+		console.info(index);
+        console.info(item);
 	}
 
 
@@ -208,7 +229,7 @@ export default class EditArticlePage extends React.Component {
                     <div className="ant-layout-container">
                         <div className="ant-layout-content">
                             <BreadcrumbComponent data={this.props.routes} />
-	                        <div id="articlePage" className="page">
+	                        <div id="article_page" className="page edit-article-page">
 		                        {this.state.sortDOM}
 		                        {this.state.tableDOM}
 		                        {this.state.paginationDOM}

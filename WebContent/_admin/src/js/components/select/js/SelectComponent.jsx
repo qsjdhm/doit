@@ -5,19 +5,12 @@
 import React from 'react';
 import { Select } from 'antd';
 import 'antd/dist/antd.css';
-
+import '../css/select.less';
 
 export default class SelectComponent extends React.Component {
     constructor(props) {
         super(props);
-        //this.state = {
-	     //   defaultValue : this.props.defaultValue
-        //};
-	    this.state = {
-		    data : this.props.data,
-		    value: "",
-		    focus: false
-	    };
+
         // 遇到方法中使用this的都需要在这里绑定
         this.handleChange = this.handleChange.bind(this);
     }
@@ -34,11 +27,12 @@ export default class SelectComponent extends React.Component {
         });
 
         return (
-            <div style={{width: 300}}>
+            <div className="select-package">
                 <Select
+                    size="large"
 	                defaultValue={this.props.defaultValue}
                     style={{ width: 200 }}
-                    placeholder="请选择分类"
+                    placeholder="请选择选项"
                     optionFilterProp="children"
                     notFoundContent="无法找到"
                     onChange={this.handleChange}>
