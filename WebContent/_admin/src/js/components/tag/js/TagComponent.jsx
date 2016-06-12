@@ -31,7 +31,7 @@ export default class TagComponent extends React.Component {
                 <Select
                     tags
                     size="large"
-                    style={{ width: 820 }}
+                    style={{ width: 796 }}
                     placeholder="请输入或选择标签"
                     optionFilterProp="children"
                     notFoundContent="无法找到"

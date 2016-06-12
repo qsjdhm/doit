@@ -6,7 +6,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import jQuery from 'jquery';
 
-import { Row, Col, Input } from 'antd';
+import { Input, Button, Row, Col } from 'antd';
 
 import MenuComponent       from '../../components/menu/js/MenuComponent';
 import SearchComponent     from '../../components/search/js/SearchComponent';
@@ -60,7 +60,9 @@ export default class AddArticlePage extends React.Component {
     }
 
     tagSelected(tag){
-        console.info(tag);
+	    this.setState({
+		    tags: tag
+	    });
     }
 
     // 首先得到文章的分类
@@ -162,9 +164,10 @@ export default class AddArticlePage extends React.Component {
                             <BreadcrumbComponent data={this.props.routes} />
                             <div id="article_page" className="page add-article-page">
                                 {this.state.sortDOM}
-                                <Input size="large" onChange={this.textChange} placeholder="文章名称" style={{ width: 610 }} />
+                                <Input size="large" onChange={this.textChange} placeholder="文章名称" style={{ width: 470 }} />
                                 <UeditorComponent value={12346548}  id="content" width="820" height="400" />
                                 {this.state.tagDOM}
+	                            <Button type="primary" icon="upload" size="large">提交文章</Button>
                             </div>
                         </div>
                     </div>
