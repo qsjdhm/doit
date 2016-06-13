@@ -222,13 +222,16 @@ export default class EditArticlePage extends React.Component {
                                 />
                             </Col>
                             <Col span={12} offset={8}>
-                                <ToolBarComponent />
+                                <ToolBarComponent
+                                />
                             </Col>
                         </Row>
                     </div>
                     <div className="ant-layout-container">
                         <div className="ant-layout-content">
-                            <BreadcrumbComponent data={this.props.routes} />
+                            <BreadcrumbComponent
+                                data={this.props.routes}
+                            />
 	                        <div id="article_page" className="page edit-article-page">
 		                        {this.state.sortDOM}
 		                        {this.state.tableDOM}

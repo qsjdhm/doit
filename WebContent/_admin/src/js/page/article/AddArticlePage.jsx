@@ -6,7 +6,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import jQuery from 'jquery';
 
-import { Input, Button, Row, Col } from 'antd';
+import { Input, Button, notification, Row, Col } from 'antd';
 
 import MenuComponent       from '../../components/menu/js/MenuComponent';
 import SearchComponent     from '../../components/search/js/SearchComponent';
@@ -20,24 +20,29 @@ import '../../../css/article.less';
 
 
 export default class AddArticlePage extends React.Component {
+
     constructor(props) {
         super(props);
 
         this.state = {
-            sort : 0,
-            name : "",
-            tags : [],
+            allSort  : [],
+            sortId   : 0,
+            sortName : "",
+            title    : "",
+            content  : "",
+            tags     : [],
 
-            sortDOM : null,
-            tagDOM : null
+            sortDOM  : null,
+            tagDOM   : null
         };
 
-        this.selected = this.selected.bind(this);
-        this.textChange = this.textChange.bind(this);
-        this.tagSelected = this.tagSelected.bind(this);
-        this.byTypeGetSort = this.byTypeGetSort.bind(this);
+        this.sortSelected = this.sortSelected.bind(this);
+        this.titleChange  = this.titleChange.bind(this);
+        this.tagSelected  = this.tagSelected.bind(this);
+        this.submitClick  = this.submitClick.bind(this);
     }
 
+    // 渲染之前获取分类和标签数据
     componentWillMount() {
         // 获取文章的分类列表
         this.byTypeGetSort();
@@ -45,25 +50,83 @@ export default class AddArticlePage extends React.Component {
         this.getTags();
     }
 
+    // 设置state中和页面数据相关的值
+    settingState(allSort, sortId, sortName, title, content, tags) {
+        if(allSort === "no") {
+            allSort = this.state.allSort;
+        }
+        if(sortId === "no") {
+            sortId = this.state.sortId;
+        }
+        if(sortName === "no") {
+            sortName = this.state.sortName;
+        }
+        if(title === "no") {
+            title = this.state.title;
+        }
+        if(content === "no") {
+            content = this.state.content;
+        }
+        if(tags === "no") {
+            tags = this.state.tags;
+        }
 
-    selected(sort){
         this.setState({
-            sort : sort
+            allSort  : allSort,
+            sortId   : sortId,
+            sortName : sortName,
+            title    : title,
+            content  : content,
+            tags     : tags
         });
-        console.info(this.state);
     }
 
-    textChange(e){
-        this.setState({
-            name: e.target.value
-        });
+    /******************************事件响应方法--开始***********************************/
+
+    // 分类切换
+    sortSelected(sortId){
+        let nowSort = {
+            sortId   : sortId,
+            sortName : ""
+        };
+        const sorts = this.state.allSort;
+        for(let sort of sorts){
+            if(sort.id === sortId) {
+                nowSort.sortName = sort.name;
+                break;
+            }
+        }
+
+        this.settingState("no", nowSort.sortId, nowSort.sortName, "no", "no", "no");
     }
 
+    // 标题变化
+    titleChange(e){
+        const title = e.target.value;
+        console.info(title);
+        // 设置state中的文章标题数据
+        this.settingState("no", "no", "no", title, "no", "no");
+    }
+
+    // 标签切换
     tagSelected(tag){
-	    this.setState({
-		    tags: tag
-	    });
+        // 设置state中的文章标签数据
+        this.settingState("no", "no", "no", "no", "no", tag);
     }
+
+    // 提交按钮点击
+    submitClick() {
+        const content = UE.getEditor("content").getContent();
+        // 设置state中的文章内容数据
+        this.settingState("no", "no", "no", "no", content, "no");
+
+        // 新增文章
+        this.submitData();
+    }
+
+    /******************************事件响应方法--结束***********************************/
+
+
 
     // 首先得到文章的分类
     byTypeGetSort() {
@@ -87,13 +150,16 @@ export default class AddArticlePage extends React.Component {
                         sortArray.push(sortObj);
                     }
 
+                    // 设置state中的分类数据
+                    self.settingState(sortArray, sortArray[0].id, sortArray[0].name, "no", "no", "no");
+
                     // 设置sortDOM--因为ajax之后select的默认数据不会自动设置
                     self.setState({
-                        sort : sortArray[0].id,
                         sortDOM : <SelectComponent
-                            defaultValue={sortArray[0].id}
-                            data={sortArray}
-                            selected={self.selected} />
+                                    defaultValue={sortArray[0].id}
+                                    data={sortArray}
+                                    selected={self.sortSelected}
+                                  />
                     });
                 }
             },error :function(){
@@ -101,9 +167,6 @@ export default class AddArticlePage extends React.Component {
             }
         });
     }
-
-
-
 
     // 获取标签列表
     getTags() {
@@ -130,8 +193,9 @@ export default class AddArticlePage extends React.Component {
                     // 设置sortDOM--因为ajax之后select的默认数据不会自动设置
                     self.setState({
                         tagDOM : <TagComponent
-                            data={tagArray}
-                            selected={self.tagSelected} />
+                                    data={tagArray}
+                                    selected={self.tagSelected}
+                                 />
                     });
                 }
             },error :function(){
@@ -139,6 +203,53 @@ export default class AddArticlePage extends React.Component {
             }
         });
     }
+
+    // 新增文章
+    submitData() {
+        const self = this;
+        setTimeout(function() {
+            const sortId = self.state.sortId;
+            const sortName = encodeURI(encodeURI(self.state.sortName));
+            const title = encodeURI(encodeURI(self.state.title));
+            const content = encodeURI(encodeURI(self.state.content));
+            const tags = encodeURI(encodeURI(self.state.tags.join(",")));
+
+            jQuery.ajax({
+                type : "POST",
+                url : "/doit/articleAction/addArticle",
+                data : {
+                    "sortId"   : sortId,
+                    "sortName" : sortName,
+                    "title"    : title,
+                    "content"  : content,
+                    "tags"     : tags
+                },
+                dataType:"json",
+                contentType: "application/x-www-form-urlencoded; charset=utf-8",
+                success : function(cbData) {
+                    console.info(cbData);
+                    if(cbData.success === "1") {
+                        self.openTip("success", cbData.msg);
+                    } else {
+                        self.openTip("error", cbData.msg);
+                    }
+                },error :function(){
+                    alert("新增文章连接出错！");
+                }
+            });
+        }, 0);
+    }
+
+    // 打开提示弹框
+    openTip(type, msg) {
+        notification[type]({
+            message: "保存提示",
+            description: msg,
+            duration: 3
+        });
+    }
+
+
 
 
     render() {
@@ -161,13 +272,19 @@ export default class AddArticlePage extends React.Component {
                     </div>
                     <div className="ant-layout-container">
                         <div className="ant-layout-content">
-                            <BreadcrumbComponent data={this.props.routes} />
-                            <div id="article_page" className="page add-article-page">
+                            <BreadcrumbComponent
+                                data={this.props.routes}
+                            />
+                            <div className="page add-article-page">
                                 {this.state.sortDOM}
-                                <Input size="large" onChange={this.textChange} placeholder="文章名称" style={{ width: 470 }} />
-                                <UeditorComponent value={12346548}  id="content" width="820" height="400" />
+                                <Input onChange={this.titleChange} style={{ width: 470 }} size="large" placeholder="文章名称"/>
+                                <UeditorComponent
+                                    id="content"
+                                    width="820"
+                                    height="400"
+                                />
                                 {this.state.tagDOM}
-	                            <Button type="primary" icon="upload" size="large">提交文章</Button>
+	                            <Button onClick={this.submitClick} type="primary" icon="upload" size="large">提交文章</Button>
                             </div>
                         </div>
                     </div>
