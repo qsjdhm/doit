@@ -20,6 +20,14 @@ export default class TableComponent extends React.Component {
         this.onSelectChange = this.onSelectChange.bind(this);
     }
 
+
+	// 这个经常用于重新载入组件之后想重置一些数据时触发
+	componentWillReceiveProps () {
+		this.setState({
+			selectedRowKeys: []
+		});
+	}
+
     onSelectChange(value) {
         this.setState({
             selectedRowKeys : value

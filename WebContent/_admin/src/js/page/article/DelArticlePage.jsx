@@ -21,11 +21,12 @@ export default class DelArticlePage extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            sortId   : 0,
-            nowPage  : 1,
-            pageSize : 10,
-            selectedRowKeys : [],
-            loading : false,
+            sortId   : 0,              // 分类ID
+            nowPage  : 1,              // 当前页ID
+            pageSize : 10,             // 当前页个数
+	        loading  : false,          // 按钮是否在请求过程中
+            selectedRowKeys : [],      // 选中数据的ID数组
+	        hasSelected : false,       // 按钮是否可点击
 
             sortDOM : null,
             paginationDOM : null,
@@ -46,7 +47,7 @@ export default class DelArticlePage extends React.Component {
 
 
     // 设置state中和页面数据相关的值
-    settingState(sortId, nowPage, pageSize) {
+    settingState(sortId, nowPage, pageSize, loading, selectedRowKeys, hasSelected) {
         if(sortId === "no") {
             sortId = this.state.sortId;
         }
@@ -56,11 +57,23 @@ export default class DelArticlePage extends React.Component {
         if(pageSize === "no") {
             pageSize = this.state.pageSize;
         }
+	    if(loading === "no") {
+		    loading = this.state.loading;
+	    }
+	    if(selectedRowKeys === "no") {
+		    selectedRowKeys = this.state.selectedRowKeys;
+	    }
+	    if(hasSelected === "no") {
+		    hasSelected = this.state.hasSelected;
+	    }
 
         this.setState({
-            sortId    : sortId,
-            nowPage   : nowPage,
-            pageSize  : pageSize
+            sortId           : sortId,
+            nowPage          : nowPage,
+            pageSize         : pageSize,
+	        loading          : loading,
+	        selectedRowKeys  : selectedRowKeys,
+	        hasSelected      : hasSelected
         });
 
     }
@@ -70,14 +83,14 @@ export default class DelArticlePage extends React.Component {
 
     // 分类切换
     sortSelected(sortId){
-        this.settingState(sortId, "no", "no");
+        this.settingState(sortId, "no", "no", "no", "no", "no");
         // 根据分类id获取文章列表
         this.getArticleCount(sortId);
     }
 
     // 翻页按钮点击
     paginationClick(nowPage){
-        this.settingState("no", nowPage, "no");
+        this.settingState("no", nowPage, "no", "no", "no", false);
         // 根据当前分类加载第一页文章数据
         this.getArticleList(nowPage);
     }
@@ -88,27 +101,27 @@ export default class DelArticlePage extends React.Component {
         console.info(item);
     }
 
-    // 删除点击
-    deleteClick() {
-        const self = this;
-        this.setState({ loading: true });
-        // 模拟 ajax 请求，完成后清空
-        setTimeout(() => {
-            self.setState({
-                selectedRowKeys: [],
-                loading: false,
-            });
-        }, 1000);
-    }
-
     // 选中文章
     checkboxSelected(selectedRowKeys) {
-        this.setState({
-            selectedRowKeys: selectedRowKeys
-        });
+	    const hasSelected = selectedRowKeys.length > 0;
+	    this.settingState("no", "no", "no", "no", selectedRowKeys, hasSelected);
     }
 
-    /******************************事件响应方法--结束***********************************/
+	// 删除点击
+	deleteClick() {
+		const self = this;
+		this.settingState("no", "no", "no", true, "no", true);
+		// 模拟 ajax 请求，完成后清空
+		setTimeout(() => {
+			this.settingState("no", "no", "no", false, "no", false);
+
+			// 根据当前分类加载第一页文章数据
+			self.getArticleList(1);
+		}, 1000);
+	}
+
+
+	/******************************事件响应方法--结束***********************************/
 
 
     // 首先得到文章的分类
@@ -134,7 +147,7 @@ export default class DelArticlePage extends React.Component {
                     }
 
                     // 设置state中的分类数据
-                    self.settingState(sortArray[0].id, "no", "no");
+                    self.settingState(sortArray[0].id, "no", "no", "no", "no", "no");
 
                     // 设置sortDOM--因为ajax之后select的默认数据不会自动设置
                     self.setState({
@@ -168,7 +181,7 @@ export default class DelArticlePage extends React.Component {
                 if(cbData.success === "1"){
 
                     // 设置state中的分类数据
-                    self.settingState(sortId, "no", "no");
+                    self.settingState(sortId, "no", "no", "no", "no", "no");
 
                     // paginationDOM--因为ajax之后select的默认数据不会自动设置
                     self.setState({
@@ -214,7 +227,7 @@ export default class DelArticlePage extends React.Component {
 
     // 组织表格数据
     dealTableData(cbData) {
-        const totalWidth = document.getElementById("article_page").offsetWidth - 25;
+        const totalWidth = document.getElementById("article_page").offsetWidth - 40;
         const idWidth        = totalWidth * 0.0749;
         const titleWidth     = totalWidth * 0.3465;
         const sortWidth      = totalWidth * 0.0937;
@@ -266,7 +279,7 @@ export default class DelArticlePage extends React.Component {
     }
 
     render() {
-        const hasSelected = this.state.selectedRowKeys.length > 0;
+
         return (
             <div>
                 <MenuComponent openSubMenu={this.props.route.sort} selectedMenu={this.props.route.bpath} />
@@ -293,15 +306,16 @@ export default class DelArticlePage extends React.Component {
                             <div id="article_page" className="page del-article-page">
                                 {this.state.sortDOM}
                                 <div className="del-button">
-                                    <span>{hasSelected ? `选择了 ${this.state.selectedRowKeys.length} 篇文章` : ''}</span>
+                                    <span>{this.state.hasSelected ? `选择了 ${this.state.selectedRowKeys.length} 篇文章` : ''}</span>
                                     <Button type="primary"
                                             onClick={this.deleteClick}
-                                            disabled={!hasSelected}
-                                            loading={this.state.loading}>
+                                            disabled={!this.state.hasSelected}
+                                            loading={this.state.loading}
+                                            icon="delete"
+                                            size="large">
                                         删除文章
                                     </Button>
                                 </div>
-
                                 {this.state.tableDOM}
                                 {this.state.paginationDOM}
                             </div>

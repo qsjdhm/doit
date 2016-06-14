@@ -27,12 +27,13 @@ export default class AddArticlePage extends React.Component {
         super(props);
 
         this.state = {
-            allSort  : [],
-            sortId   : 0,
-            sortName : "",
-            title    : "",
-            content  : "",
-            tags     : [],
+            allSort  : [],              // 所有分类的数组
+            sortId   : 0,               // 分类ID
+            sortName : "",              // 分类Name
+            title    : "",              // 文章标题
+            content  : "",              // 文章内容
+            tags     : [],              // 文章标签
+	        loading  : false,           // 按钮是否在请求过程中
 
             sortDOM  : null,
             tagDOM   : null
@@ -53,7 +54,7 @@ export default class AddArticlePage extends React.Component {
     }
 
     // 设置state中和页面数据相关的值
-    settingState(allSort, sortId, sortName, title, content, tags) {
+    settingState(allSort, sortId, sortName, title, content, tags, loading) {
         if(allSort === "no") {
             allSort = this.state.allSort;
         }
@@ -72,6 +73,9 @@ export default class AddArticlePage extends React.Component {
         if(tags === "no") {
             tags = this.state.tags;
         }
+	    if(loading === "no") {
+		    loading = this.state.loading;
+	    }
 
         this.setState({
             allSort  : allSort,
@@ -79,7 +83,8 @@ export default class AddArticlePage extends React.Component {
             sortName : sortName,
             title    : title,
             content  : content,
-            tags     : tags
+            tags     : tags,
+	        loading  : loading
         });
     }
 
@@ -99,7 +104,7 @@ export default class AddArticlePage extends React.Component {
             }
         }
 
-        this.settingState("no", nowSort.sortId, nowSort.sortName, "no", "no", "no");
+        this.settingState("no", nowSort.sortId, nowSort.sortName, "no", "no", "no", "no");
     }
 
     // 标题变化
@@ -107,23 +112,28 @@ export default class AddArticlePage extends React.Component {
         const title = e.target.value;
         console.info(title);
         // 设置state中的文章标题数据
-        this.settingState("no", "no", "no", title, "no", "no");
+        this.settingState("no", "no", "no", title, "no", "no", "no");
     }
 
     // 标签切换
     tagSelected(tag){
         // 设置state中的文章标签数据
-        this.settingState("no", "no", "no", "no", "no", tag);
+        this.settingState("no", "no", "no", "no", "no", tag, "no");
     }
 
     // 提交按钮点击
     submitClick() {
         const content = UE.getEditor("content").getContent();
         // 设置state中的文章内容数据
-        this.settingState("no", "no", "no", "no", content, "no");
+        this.settingState("no", "no", "no", "no", content, "no", true);
 
         // 新增文章
-        this.submitData();
+        //this.submitData();
+
+
+	    setTimeout(() => {
+		    this.settingState("no", "no", "no", "no", content, "no", false);
+	    }, 2000);
     }
 
     /******************************事件响应方法--结束***********************************/
@@ -153,7 +163,7 @@ export default class AddArticlePage extends React.Component {
                     }
 
                     // 设置state中的分类数据
-                    self.settingState(sortArray, sortArray[0].id, sortArray[0].name, "no", "no", "no");
+                    self.settingState(sortArray, sortArray[0].id, sortArray[0].name, "no", "no", "no", "no");
 
                     // 设置sortDOM--因为ajax之后select的默认数据不会自动设置
                     self.setState({
@@ -251,9 +261,6 @@ export default class AddArticlePage extends React.Component {
         });
     }
 
-
-
-
     render() {
         return (
             <div>
@@ -286,7 +293,14 @@ export default class AddArticlePage extends React.Component {
                                     height="400"
                                 />
                                 {this.state.tagDOM}
-	                            <Button onClick={this.submitClick} type="primary" icon="upload" size="large">提交文章</Button>
+	                            <Button
+		                            onClick={this.submitClick}
+		                            loading={this.state.loading}
+		                            type="primary"
+		                            icon="upload"
+		                            size="large">
+		                            提交文章
+	                            </Button>
                             </div>
                         </div>
                     </div>

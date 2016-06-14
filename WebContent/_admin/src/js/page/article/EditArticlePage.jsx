@@ -20,9 +20,9 @@ export default class EditArticlePage extends React.Component {
     constructor(props) {
         super(props);
 	    this.state = {
-            sortId   : 0,
-            nowPage  : 1,
-            pageSize : 10,
+		    sortId   : 0,              // 分类ID
+		    nowPage  : 1,              // 当前页ID
+		    pageSize : 10,             // 当前页个数
 
 		    sortDOM : null,
 			paginationDOM : null,
