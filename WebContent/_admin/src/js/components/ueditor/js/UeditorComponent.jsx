@@ -33,7 +33,12 @@ export default class TUeditorComponent extends React.Component {
 
     render() {
         return (
-            <script id={this.props.id} name="content" type="text/plain"></script>
+            <div className="ueditor-package">
+
+
+                <script id={this.props.id} name="content" type="text/plain"></script>
+            </div>
+
         )
     }
 };

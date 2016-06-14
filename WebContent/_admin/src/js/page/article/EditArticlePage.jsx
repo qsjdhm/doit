@@ -20,22 +20,18 @@ export default class EditArticlePage extends React.Component {
     constructor(props) {
         super(props);
 	    this.state = {
-		    sort : 0,
-		    page : 1,
-		    size : 10,
+            sortId   : 0,
+            nowPage  : 1,
+            pageSize : 10,
 
 		    sortDOM : null,
 			paginationDOM : null,
 		    tableDOM : null
 	    };
 
-	    this.selected = this.selected.bind(this);
-	    this.pageed = this.pageed.bind(this);
-	    this.byTypeGetSort = this.byTypeGetSort.bind(this);
-	    this.getArticleCount = this.getArticleCount.bind(this);
-	    this.getArticleList = this.getArticleList.bind(this);
-	    this.dealTableData = this.dealTableData.bind(this);
-	    this.openEditModel = this.openEditModel.bind(this);
+	    this.sortSelected     = this.sortSelected.bind(this);
+	    this.paginationClick  = this.paginationClick.bind(this);
+	    this.operationClick   = this.operationClick.bind(this);
     }
 
 	componentWillMount() {
@@ -43,17 +39,54 @@ export default class EditArticlePage extends React.Component {
 		this.byTypeGetSort();
 	}
 
-	selected(sort){
+
+    // 设置state中和页面数据相关的值
+    settingState(sortId, nowPage, pageSize) {
+        if(sortId === "no") {
+            sortId = this.state.sortId;
+        }
+        if(nowPage === "no") {
+            nowPage = this.state.nowPage;
+        }
+        if(pageSize === "no") {
+            pageSize = this.state.pageSize;
+        }
+
+        this.setState({
+            sortId    : sortId,
+            nowPage   : nowPage,
+            pageSize  : pageSize
+        });
+
+    }
+
+    /******************************事件响应方法--开始***********************************/
+
+
+    // 分类切换
+    sortSelected(sortId){
+        this.settingState(sortId, "no", "no");
 		// 根据分类id获取文章列表
-		this.getArticleCount(sort);
+		this.getArticleCount(sortId);
 	}
 
-	pageed(page){
+    // 翻页按钮点击
+    paginationClick(nowPage){
+        this.settingState("no", nowPage, "no");
 		// 根据当前分类加载第一页文章数据
-		this.getArticleList(this.state.sort, page);
+		this.getArticleList(nowPage);
 	}
 
-	// 首先得到文章的分类
+    // 操作列点击
+    operationClick(index, item){
+        console.info(index);
+        console.info(item);
+    }
+
+    /******************************事件响应方法--结束***********************************/
+
+
+    // 首先得到文章的分类
 	byTypeGetSort() {
 		const self = this;
 		jQuery.ajax({
@@ -75,13 +108,15 @@ export default class EditArticlePage extends React.Component {
 						sortArray.push(sortObj);
 					}
 
+                    // 设置state中的分类数据
+                    self.settingState(sortArray[0].id, "no", "no");
+
 					// 设置sortDOM--因为ajax之后select的默认数据不会自动设置
 					self.setState({
-						sort : sortArray[0].id,
 						sortDOM : <SelectComponent
 									defaultValue={sortArray[0].id}
 									data={sortArray}
-									selected={self.selected} />
+									selected={self.sortSelected} />
 					});
 
 					// 根据第一个分类id获取文章列表
@@ -94,29 +129,32 @@ export default class EditArticlePage extends React.Component {
 	}
 
 	// 根据分类id获取文章列表
-	getArticleCount(sort) {
+	getArticleCount(sortId) {
 		const self = this;
 		jQuery.ajax({
 			type : "POST",
 			url : "/doit/articleAction/getArticleCount",
 			data : {
-				"sort" : sort
+				"sort" : sortId
 			},
 			dataType:"json",
 			contentType: "application/x-www-form-urlencoded; charset=utf-8",
 			success : function(cbData) {
 				if(cbData.success === "1"){
+
+                    // 设置state中的分类数据
+                    self.settingState(sortId, "no", "no");
+
 					// paginationDOM--因为ajax之后select的默认数据不会自动设置
 					self.setState({
-						sort : sort,
 						paginationDOM : <PaginationComponent
 											count={cbData.data}
-											pageSize={self.state.size}
-											pageed={self.pageed}/>
+											pageSize={self.state.pageSize}
+											pageed={self.paginationClick}/>
 					});
 
 					// 根据当前分类加载第一页文章数据
-					self.getArticleList(self.state.sort, self.state.page);
+					self.getArticleList(1);
 				}
 			},error :function(){
 				alert("请求文章个数连接出错！");
@@ -125,15 +163,15 @@ export default class EditArticlePage extends React.Component {
 	}
 
 	// 根据当前分类加载第一页文章数据
-	getArticleList(sort, page) {
+	getArticleList(nowPage) {
 		const self = this;
 		jQuery.ajax({
 			type : "POST",
 			url : "/doit/articleAction/getArticleList",
 			data : {
-				"sort" : sort,
-				"page" : page,
-				"size" : self.state.size
+				"sort" : self.state.sortId,
+				"page" : nowPage,
+				"size" : self.state.pageSize
 			},
 			dataType:"json",
 			contentType: "application/x-www-form-urlencoded; charset=utf-8",
@@ -178,7 +216,7 @@ export default class EditArticlePage extends React.Component {
             dataIndex: 'operation',
             key: 'operation',
             render(index, item) {
-                return <a href='javascript:void(0)' onClick={self.openEditModel.bind(null, index, item)}>修改</a>
+                return <a href='javascript:void(0)' onClick={self.operationClick.bind(null, index, item)}>修改</a>
             }
         });
 
@@ -197,16 +235,11 @@ export default class EditArticlePage extends React.Component {
 						tableColumns={tableColumns}
 						tableData={tableData}
 						expandedRowRender={expandedRowRender}
+                        selectedRowKeys={false}
+                        checkboxSelected={false}
 						scroll={scroll}/>
 		});
 	}
-
-    // 弹出修改窗口
-	openEditModel(index, item){
-		console.info(index);
-        console.info(item);
-	}
-
 
     render() {
         return (

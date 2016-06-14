@@ -6,6 +6,8 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import jQuery from 'jquery';
 
+
+
 import { Input, Button, notification, Row, Col } from 'antd';
 
 import MenuComponent       from '../../components/menu/js/MenuComponent';
@@ -277,7 +279,7 @@ export default class AddArticlePage extends React.Component {
                             />
                             <div className="page add-article-page">
                                 {this.state.sortDOM}
-                                <Input onChange={this.titleChange} style={{ width: 470 }} size="large" placeholder="文章名称"/>
+                                <Input onChange={this.titleChange} style={{ width: 470 }} size="large" placeholder="文章名称1"/>
                                 <UeditorComponent
                                     id="content"
                                     width="820"
