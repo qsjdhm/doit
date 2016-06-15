@@ -23,9 +23,17 @@ export default class TableComponent extends React.Component {
 
 	// 这个经常用于重新载入组件之后想重置一些数据时触发
 	componentWillReceiveProps () {
-		this.setState({
-			selectedRowKeys: []
-		});
+		console.info(this.state.selectedRowKeys);
+		if(this.state.selectedRowKeys) {
+			this.setState({
+				selectedRowKeys: []
+			});
+		} else {
+			this.setState({
+				selectedRowKeys: false
+			});
+		}
+
 	}
 
     onSelectChange(value) {
