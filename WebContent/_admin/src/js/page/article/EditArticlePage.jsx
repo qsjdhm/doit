@@ -6,7 +6,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import jQuery from 'jquery';
 
-import { Row, Col } from 'antd';
+import { message, Row, Col } from 'antd';
 
 import MenuComponent       from '../../components/menu/js/MenuComponent';
 import SearchComponent     from '../../components/search/js/SearchComponent';
@@ -123,7 +123,7 @@ export default class EditArticlePage extends React.Component {
 					self.getArticleCount(sortArray[0].id);
 				}
 			},error :function(){
-				alert("请求文章分类连接出错！");
+                message.error("请求文章分类连接出错！");
 			}
 		});
 	}
@@ -157,7 +157,7 @@ export default class EditArticlePage extends React.Component {
 					self.getArticleList(1);
 				}
 			},error :function(){
-				alert("请求文章个数连接出错！");
+                message.error("请求文章个数连接出错！");
 			}
 		});
 	}
@@ -182,7 +182,7 @@ export default class EditArticlePage extends React.Component {
 					self.dealTableData(cbData);
 				}
 			},error :function(){
-				alert("请求文章列表连接出错！");
+                message.error("请求文章列表连接出错！");
 			}
 		});
 	}

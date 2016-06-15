@@ -6,7 +6,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import jQuery from 'jquery';
 
-import { Button, Row, Col } from 'antd';
+import { Popconfirm, Button, message, Row, Col } from 'antd';
 
 import MenuComponent       from '../../components/menu/js/MenuComponent';
 import SearchComponent     from '../../components/search/js/SearchComponent';
@@ -99,6 +99,8 @@ export default class DelArticlePage extends React.Component {
     operationClick(index, item){
         console.info(index);
         console.info(item);
+        // 删除文章
+        this.delArticleList(item.Article_ID.toString());
     }
 
     // 选中文章
@@ -109,15 +111,10 @@ export default class DelArticlePage extends React.Component {
 
 	// 删除点击
 	deleteClick() {
-		const self = this;
 		this.settingState("no", "no", "no", true, "no", true);
-		// 模拟 ajax 请求，完成后清空
-		setTimeout(() => {
-			this.settingState("no", "no", "no", false, "no", false);
-
-			// 根据当前分类加载第一页文章数据
-			self.getArticleList(1);
-		}, 1000);
+        const selectStr = this.state.selectedRowKeys.join(";");
+        // 删除文章
+        this.delArticleList(selectStr);
 	}
 
 
@@ -161,7 +158,7 @@ export default class DelArticlePage extends React.Component {
                     self.getArticleCount(sortArray[0].id);
                 }
             },error :function(){
-                alert("请求文章分类连接出错！");
+                message.error("请求文章分类连接出错！");
             }
         });
     }
@@ -195,7 +192,7 @@ export default class DelArticlePage extends React.Component {
                     self.getArticleList(1);
                 }
             },error :function(){
-                alert("请求文章个数连接出错！");
+                message.error("请求文章个数连接出错！");
             }
         });
     }
@@ -220,7 +217,7 @@ export default class DelArticlePage extends React.Component {
                     self.dealTableData(cbData);
                 }
             },error :function(){
-                alert("请求文章列表连接出错！");
+                message.error("请求文章列表连接出错！");
             }
         });
     }
@@ -254,7 +251,15 @@ export default class DelArticlePage extends React.Component {
             dataIndex: 'operation',
             key: 'operation',
             render(index, item) {
-                return <a href='javascript:void(0)' onClick={self.operationClick.bind(null, index, item)}>删除</a>
+                return (
+                    <Popconfirm
+                        title="确定要删除当前文章吗？"
+                        placement="topRight"
+                        onConfirm={self.operationClick.bind(null, index, item)}>
+
+                        <a href='javascript:void(0)'>删除</a>
+                    </Popconfirm>
+                );
             }
         });
 
@@ -277,6 +282,32 @@ export default class DelArticlePage extends React.Component {
                 scroll={scroll}/>
         });
     }
+
+    // 删除文章
+    delArticleList(selectStr) {
+        const self = this;
+        jQuery.ajax({
+            type : "POST",
+            url : "/doit/articleAction/delArticle",
+            data : {
+                "selectId" : selectStr
+            },
+            dataType:"json",
+            contentType: "application/x-www-form-urlencoded; charset=utf-8",
+            success : function(cbData) {
+                if(cbData.success === "1"){
+                    console.info(cbData);
+                    self.settingState("no", "no", "no", false, "no", false);
+                    // 根据分类id获取文章列表
+                    self.getArticleCount(self.state.sortId);
+                }
+            },error :function(){
+                message.error("删除文章列表连接出错！");
+            }
+        });
+    }
+
+
 
     render() {
 
@@ -307,14 +338,15 @@ export default class DelArticlePage extends React.Component {
                                 {this.state.sortDOM}
                                 <div className="del-button">
                                     <span>{this.state.hasSelected ? `选择了 ${this.state.selectedRowKeys.length} 篇文章` : ''}</span>
-                                    <Button type="primary"
-                                            onClick={this.deleteClick}
-                                            disabled={!this.state.hasSelected}
-                                            loading={this.state.loading}
-                                            icon="delete"
-                                            size="large">
-                                        删除文章
-                                    </Button>
+                                    <Popconfirm title="确定要删除选中的文章吗？" placement="topRight" onConfirm={this.deleteClick}>
+                                        <Button type="primary"
+                                                disabled={!this.state.hasSelected}
+                                                loading={this.state.loading}
+                                                icon="delete"
+                                                size="large">
+                                            删除文章
+                                        </Button>
+                                    </Popconfirm>
                                 </div>
                                 {this.state.tableDOM}
                                 {this.state.paginationDOM}

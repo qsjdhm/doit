@@ -8,7 +8,7 @@ import jQuery from 'jquery';
 
 
 
-import { Input, Button, notification, Row, Col } from 'antd';
+import { Input, Button, notification, message, Row, Col } from 'antd';
 
 import MenuComponent       from '../../components/menu/js/MenuComponent';
 import SearchComponent     from '../../components/search/js/SearchComponent';
@@ -128,12 +128,7 @@ export default class AddArticlePage extends React.Component {
         this.settingState("no", "no", "no", "no", content, "no", true);
 
         // 新增文章
-        //this.submitData();
-
-
-	    setTimeout(() => {
-		    this.settingState("no", "no", "no", "no", content, "no", false);
-	    }, 2000);
+        this.submitData();
     }
 
     /******************************事件响应方法--结束***********************************/
@@ -175,7 +170,7 @@ export default class AddArticlePage extends React.Component {
                     });
                 }
             },error :function(){
-                alert("请求文章分类连接出错！");
+                message.error("请求文章分类连接出错！");
             }
         });
     }
@@ -211,7 +206,7 @@ export default class AddArticlePage extends React.Component {
                     });
                 }
             },error :function(){
-                alert("请求文章分类连接出错！");
+                message.error("请求文章标签连接出错！");
             }
         });
     }
@@ -240,13 +235,14 @@ export default class AddArticlePage extends React.Component {
                 contentType: "application/x-www-form-urlencoded; charset=utf-8",
                 success : function(cbData) {
                     console.info(cbData);
+                    self.settingState("no", "no", "no", "no", content, "no", false);
                     if(cbData.success === "1") {
                         self.openTip("success", cbData.msg);
                     } else {
                         self.openTip("error", cbData.msg);
                     }
                 },error :function(){
-                    alert("新增文章连接出错！");
+                    message.error("新增文章连接出错！");
                 }
             });
         }, 0);
@@ -297,7 +293,7 @@ export default class AddArticlePage extends React.Component {
 		                            onClick={this.submitClick}
 		                            loading={this.state.loading}
 		                            type="primary"
-		                            icon="upload"
+		                            icon="cloud-upload-o"
 		                            size="large">
 		                            提交文章
 	                            </Button>
