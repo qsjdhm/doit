@@ -236,6 +236,7 @@ export default class EditArticlePage extends React.Component {
 						tableData={tableData}
 						expandedRowRender={expandedRowRender}
                         selectedRowKeys={false}
+						rowSelection={null}
                         checkboxSelected={false}
 						scroll={scroll}/>
 		});

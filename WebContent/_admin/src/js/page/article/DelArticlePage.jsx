@@ -16,6 +16,7 @@ import SelectComponent     from '../../components/select/js/SelectComponent';
 import TableComponent      from '../../components/table/js/TableComponent';
 import PaginationComponent from '../../components/pagination/js/PaginationComponent';
 
+import '../../../css/article.less';
 
 export default class DelArticlePage extends React.Component {
     constructor(props) {

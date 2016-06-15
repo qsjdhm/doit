@@ -282,7 +282,7 @@ export default class AddArticlePage extends React.Component {
                             />
                             <div className="page add-article-page">
                                 {this.state.sortDOM}
-                                <Input onChange={this.titleChange} style={{ width: 470 }} size="large" placeholder="文章名称1"/>
+                                <Input onChange={this.titleChange} style={{ width: 470 }} size="large" placeholder="文章名称"/>
                                 <UeditorComponent
                                     id="content"
                                     width="820"

@@ -218,7 +218,7 @@ public class AdminNoteController {
 		
 		int sort = Integer.parseInt(request.getParameter("sort"));
 		int page = Integer.parseInt(request.getParameter("page"));
-		List <TArticle> notes = articleService.getArticleSubSort(sort, page, 6);
+		List <TArticle> notes = articleService.getArticleSubSort(sort, page, 10);
 		
 		JSONArray noteJsonArray = new JSONArray();
 		for(int i=0; i<notes.size(); i++){
