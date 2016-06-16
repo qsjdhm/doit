@@ -225,7 +225,7 @@ export default class DelNotePage extends React.Component {
 
 	// 组织表格数据
 	dealTableData(cbData) {
-		const totalWidth = document.getElementById("note_page").offsetWidth - 40;
+		const totalWidth = document.getElementById("note_page").offsetWidth - 25;
 		const idWidth        = totalWidth * 0.0749;
 		const titleWidth     = totalWidth * 0.3465;
 		const sortWidth      = totalWidth * 0.1737;

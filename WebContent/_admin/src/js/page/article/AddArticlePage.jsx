@@ -235,6 +235,7 @@ export default class AddArticlePage extends React.Component {
                 contentType: "application/x-www-form-urlencoded; charset=utf-8",
                 success : function(cbData) {
                     console.info(cbData);
+                    // 因为富文本无法实时获取，所以在这里保存到state中
                     self.settingState("no", "no", "no", "no", content, "no", false);
                     if(cbData.success === "1") {
                         self.openTip("success", cbData.msg);

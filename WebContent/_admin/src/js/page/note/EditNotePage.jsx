@@ -35,7 +35,7 @@ export default class EditNotePage extends React.Component {
 	}
 
 	componentWillMount() {
-		// 获取文章的分类列表
+		// 获取笔记的分类列表
 		this.byTypeGetSort();
 	}
 
@@ -66,15 +66,15 @@ export default class EditNotePage extends React.Component {
 	// 分类切换
 	sortSelected(sortId){
 		this.settingState(sortId, "no", "no");
-		// 根据分类id获取文章列表
-		this.getArticleCount(sortId);
+		// 根据分类id获取笔记列表
+		this.getNoteCount(sortId);
 	}
 
 	// 翻页按钮点击
 	paginationClick(nowPage){
 		this.settingState("no", nowPage, "no");
-		// 根据当前分类加载第一页文章数据
-		this.getArticleList(nowPage);
+		// 根据当前分类加载第一页笔记数据
+		this.getNoteList(nowPage);
 	}
 
 	// 操作列点击
@@ -86,7 +86,7 @@ export default class EditNotePage extends React.Component {
 	/******************************事件响应方法--结束***********************************/
 
 
-	// 首先得到文章的分类
+	// 首先得到笔记的分类
 	byTypeGetSort() {
 		const self = this;
 		jQuery.ajax({
@@ -119,8 +119,8 @@ export default class EditNotePage extends React.Component {
 							selected={self.sortSelected} />
 					});
 
-					// 根据第一个分类id获取文章列表
-					self.getArticleCount(sortArray[0].id);
+					// 根据第一个分类id获取笔记列表
+					self.getNoteCount(sortArray[0].id);
 				}
 			},error :function(){
 				message.error("请求笔记分类连接出错！");
@@ -128,8 +128,8 @@ export default class EditNotePage extends React.Component {
 		});
 	}
 
-	// 根据分类id获取文章列表
-	getArticleCount(sortId) {
+	// 根据分类id获取笔记列表
+	getNoteCount(sortId) {
 		const self = this;
 		jQuery.ajax({
 			type : "POST",
@@ -153,8 +153,8 @@ export default class EditNotePage extends React.Component {
 							pageed={self.paginationClick}/>
 					});
 
-					// 根据当前分类加载第一页文章数据
-					self.getArticleList(1);
+					// 根据当前分类加载第一页笔记数据
+					self.getNoteList(1);
 				}
 			},error :function(){
 				message.error("请求笔记个数连接出错！");
@@ -162,8 +162,8 @@ export default class EditNotePage extends React.Component {
 		});
 	}
 
-	// 根据当前分类加载第一页文章数据
-	getArticleList(nowPage) {
+	// 根据当前分类加载第一页笔记数据
+	getNoteList(nowPage) {
 		const self = this;
 		jQuery.ajax({
 			type : "POST",

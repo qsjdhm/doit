@@ -29,9 +29,9 @@ export default class AddNotePage extends React.Component {
 			allSort  : [],              // 所有分类的数组
 			sortId   : 0,               // 分类ID
 			sortName : "",              // 分类Name
-			title    : "",              // 文章标题
-			content  : "",              // 文章内容
-			tags     : [],              // 文章标签
+			title    : "",              // 笔记标题
+			content  : "",              // 笔记内容
+			tags     : [],              // 笔记标签
 			loading  : false,           // 按钮是否在请求过程中
 
 			sortDOM  : null,
@@ -46,7 +46,7 @@ export default class AddNotePage extends React.Component {
 
 	// 渲染之前获取分类和标签数据
 	componentWillMount() {
-		// 获取文章的分类列表
+		// 获取笔记的分类列表
 		this.byTypeGetSort();
 		// 获取标签列表
 		this.getTags();
@@ -110,23 +110,23 @@ export default class AddNotePage extends React.Component {
 	titleChange(e){
 		const title = e.target.value;
 		console.info(title);
-		// 设置state中的文章标题数据
+		// 设置state中的笔记标题数据
 		this.settingState("no", "no", "no", title, "no", "no", "no");
 	}
 
 	// 标签切换
 	tagSelected(tag){
-		// 设置state中的文章标签数据
+		// 设置state中的笔记标签数据
 		this.settingState("no", "no", "no", "no", "no", tag, "no");
 	}
 
 	// 提交按钮点击
 	submitClick() {
 		const content = UE.getEditor("content").getContent();
-		// 设置state中的文章内容数据
+		// 设置state中的笔记内容数据
 		this.settingState("no", "no", "no", "no", content, "no", true);
 
-		// 新增文章
+		// 新增笔记
 		this.submitData();
 	}
 
@@ -134,7 +134,7 @@ export default class AddNotePage extends React.Component {
 
 
 
-	// 首先得到文章的分类
+	// 首先得到笔记的分类
 	byTypeGetSort() {
 		const self = this;
 		jQuery.ajax({
@@ -210,7 +210,7 @@ export default class AddNotePage extends React.Component {
 		});
 	}
 
-	// 新增文章
+	// 新增笔记
 	submitData() {
 		const self = this;
 		setTimeout(function() {

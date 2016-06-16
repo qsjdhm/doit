@@ -172,7 +172,7 @@ public class AdminCommentController {
 	public void getCommentList(HttpServletRequest request, HttpServletResponse response) throws Exception{
 		
 		int page = Integer.parseInt(request.getParameter("page"));
-		List <TComment> comments = commentService.getComment(page, 6);
+		List <TComment> comments = commentService.getComment(page, 10);
 		
 		JSONArray commentJsonArray = new JSONArray();
 		for(int i=0; i<comments.size(); i++){
