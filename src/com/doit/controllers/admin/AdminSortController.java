@@ -210,7 +210,7 @@ public class AdminSortController {
 		
 		int fSort = Integer.parseInt(request.getParameter("fSort"));
 		int page = Integer.parseInt(request.getParameter("page"));
-		List <TSort> sorts = sortService.getSort(fSort, page, 6);
+		List <TSort> sorts = sortService.getSort(fSort, page, 10);
 		
 		JSONArray sortJsonArray = new JSONArray();
 		for(int i=0; i<sorts.size(); i++){

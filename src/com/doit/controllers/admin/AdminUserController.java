@@ -202,7 +202,7 @@ public class AdminUserController {
 	public void getUserList(HttpServletRequest request, HttpServletResponse response) throws Exception{
 		
 		int page = Integer.parseInt(request.getParameter("page"));
-		List <TUser> users = userService.getUser(page, 6);
+		List <TUser> users = userService.getUser(page, 10);
 		
 		JSONArray userJsonArray = new JSONArray();
 		for(int i=0; i<users.size(); i++){

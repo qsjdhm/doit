@@ -46,7 +46,7 @@ export default class AddBookPage extends React.Component {
 
     // 渲染之前获取分类和标签数据
     componentWillMount() {
-        // 获取文章的分类列表
+        // 获取图书的分类列表
         this.byTypeGetSort();
     }
 
@@ -114,36 +114,36 @@ export default class AddBookPage extends React.Component {
     // 标题变化
     titleChange(e) {
         const title = e.target.value;
-        // 设置state中的文章标签数据
+        // 设置state中的图书标签数据
         this.settingState("no", "no", "no", title, "no", "no", "no", "no");
     }
 
     // 高度变化
     heightChange(e) {
         const height = e.target.value;
-        // 设置state中的文章标签数据
+        // 设置state中的图书标签数据
         this.settingState("no", "no", "no", "no", height, "no", "no", "no");
     }
 
     // 下载路径变化
     pathChange(e) {
         const path = e.target.value;
-        // 设置state中的文章标签数据
+        // 设置state中的图书标签数据
         this.settingState("no", "no", "no", "no", "no", "no", path, "no");
     }
 
     // 提交按钮点击
     submitClick() {
-        // 设置state中的文章内容数据
+        // 设置state中的图书内容数据
         this.settingState("no", "no", "no", "no", "no", "no", "no", true);
-        // 新增文章
+        // 新增图书
         this.submitData();
     }
 
     /******************************事件响应方法--结束***********************************/
 
 
-    // 首先得到文章的分类
+    // 首先得到图书的分类
     byTypeGetSort() {
         const self = this;
         jQuery.ajax({
@@ -178,7 +178,7 @@ export default class AddBookPage extends React.Component {
                     });
                 }
             },error :function(){
-                message.error("请求文章分类连接出错！");
+                message.error("请求图书分类连接出错！");
             }
         });
     }

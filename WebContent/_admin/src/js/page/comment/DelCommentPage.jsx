@@ -101,7 +101,7 @@ export default class DelCommentPage extends React.Component {
         this.settingState("no", "no", true, "no", true);
         const selectStr = this.state.selectedRowKeys.join(";");
         // 删除评论
-        this.delBookList(selectStr);
+        this.delCommentList(selectStr);
     }
 
 
