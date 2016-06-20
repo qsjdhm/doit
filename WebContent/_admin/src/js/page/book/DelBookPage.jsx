@@ -295,8 +295,8 @@ export default class DelBookPage extends React.Component {
             contentType: "application/x-www-form-urlencoded; charset=utf-8",
             success : function(cbData) {
                 if(cbData.success === "1"){
-                    console.info(cbData);
                     self.settingState("no", "no", "no", false, "no", false);
+                    message.success(cbData.msg+"！", 3);
                     // 根据分类id获取图书列表
                     self.getBookCount(self.state.sortId);
                 }

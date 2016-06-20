@@ -26,7 +26,7 @@ export default class EditUserPage extends React.Component {
 
 			visible   : false,          // 弹出框是否显示
 			mId       : "",             // 弹出框中的用户ID
-			mName     : "qqq",             // 弹出框中的用户名称
+			mName     : "",             // 弹出框中的用户名称
 			mPassword : "",             // 弹出框中的用户密码
 			mEmail    : "",             // 弹出框中的用户邮箱
 
@@ -299,9 +299,9 @@ export default class EditUserPage extends React.Component {
 				if(cbData.success === "1") {
 					// 重新获取当前页数据
 					self.getUserList(self.state.nowPage);
-					self.openTip("success", cbData.msg);
+                    message.success(cbData.msg+"！", 3);
 				} else {
-					self.openTip("error", cbData.msg);
+                    message.error(cbData.msg+"！", 3);
 				}
 			},error :function(){
 				message.error("更新用户信息连接出错！");
@@ -341,7 +341,7 @@ export default class EditUserPage extends React.Component {
 								{this.state.paginationDOM}
 							</div>
 
-							<Modal title="修改用户"
+							<Modal title="修改用户信息"
 							       visible={this.state.visible}
 							       onOk={this.handleOk}
 							       onCancel={this.handleCancel}>

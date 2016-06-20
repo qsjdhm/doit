@@ -224,24 +224,15 @@ export default class AddBookPage extends React.Component {
                     console.info(cbData);
                     self.settingState("no", "no", "no", "no", "no", "no", "no", false);
                     if(cbData.success === "1") {
-                        self.openTip("success", cbData.msg);
+                        message.success(cbData.msg+"！", 3);
                     } else {
-                        self.openTip("error", cbData.msg);
+                        message.error(cbData.msg+"！", 3);
                     }
                 },error :function(){
                     message.error("新增图书连接出错！");
                 }
             });
         }, 0);
-    }
-
-    // 打开提示弹框
-    openTip(type, msg) {
-        notification[type]({
-            message: "保存提示",
-            description: msg,
-            duration: 3
-        });
     }
 
     render() {

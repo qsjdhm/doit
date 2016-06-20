@@ -8,7 +8,7 @@ import jQuery from 'jquery';
 
 
 
-import { Input, Button, notification, message, Row, Col } from 'antd';
+import { Input, Button, message, Row, Col } from 'antd';
 
 import MenuComponent       from '../../components/menu/js/MenuComponent';
 import SearchComponent     from '../../components/search/js/SearchComponent';
@@ -238,24 +238,15 @@ export default class AddArticlePage extends React.Component {
                     // 因为富文本无法实时获取，所以在这里保存到state中
                     self.settingState("no", "no", "no", "no", content, "no", false);
                     if(cbData.success === "1") {
-                        self.openTip("success", cbData.msg);
+                        message.success(cbData.msg+"！", 3);
                     } else {
-                        self.openTip("error", cbData.msg);
+                        message.error(cbData.msg+"！", 3);
                     }
                 },error :function(){
                     message.error("新增文章连接出错！");
                 }
             });
         }, 0);
-    }
-
-    // 打开提示弹框
-    openTip(type, msg) {
-        notification[type]({
-            message: "保存提示",
-            description: msg,
-            duration: 3
-        });
     }
 
     render() {

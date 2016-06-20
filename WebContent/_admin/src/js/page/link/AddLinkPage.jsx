@@ -8,7 +8,7 @@ import jQuery from 'jquery';
 
 
 
-import { Form, Input, Button, Icon, notification, message, Row, Col } from 'antd';
+import { Form, Input, Button, Icon, message, Row, Col } from 'antd';
 
 import MenuComponent       from '../../components/menu/js/MenuComponent';
 import SearchComponent     from '../../components/search/js/SearchComponent';
@@ -107,9 +107,9 @@ export default class AddLinkPage extends React.Component {
 					console.info(cbData);
 					self.settingState("no", "no", false);
 					if(cbData.success === "1") {
-						self.openTip("success", cbData.msg);
+                        message.success(cbData.msg+"！", 3);
 					} else {
-						self.openTip("error", cbData.msg);
+                        message.error(cbData.msg+"！", 3);
 					}
 				},error :function(){
 					message.error("新增链接连接出错！");
@@ -118,14 +118,6 @@ export default class AddLinkPage extends React.Component {
 		}, 0);
 	}
 
-	// 打开提示弹框
-	openTip(type, msg) {
-		notification[type]({
-			message: "保存提示",
-			description: msg,
-			duration: 3
-		});
-	}
 
 	render() {
 		const FormItem = Form.Item;

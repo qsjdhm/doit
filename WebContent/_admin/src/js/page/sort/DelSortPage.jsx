@@ -277,8 +277,8 @@ export default class DelSortPage extends React.Component {
 			contentType: "application/x-www-form-urlencoded; charset=utf-8",
 			success : function(cbData) {
 				if(cbData.success === "1"){
-					console.info(cbData);
 					self.settingState("no", "no", "no", false, "no", false);
+                    message.success(cbData.msg+"！", 3);
 					// 根据分类id获取分类列表
 					self.getSortCount(self.state.sortId);
 				}
