@@ -6,7 +6,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import jQuery from 'jquery';
 
-import { message, Row, Col } from 'antd';
+import { Modal, Form, Input, message, Row, Col } from 'antd';
 
 import MenuComponent       from '../../components/menu/js/MenuComponent';
 import SearchComponent     from '../../components/search/js/SearchComponent';
@@ -20,9 +20,14 @@ export default class NoteRecomPage extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            sortId   : 0,              // 分类ID
-            nowPage  : 1,              // 当前页ID
-            pageSize : 10,             // 当前页个数
+            sortId   : 0,                // 分类ID
+            nowPage  : 1,                // 当前页ID
+            pageSize : 10,               // 当前页个数
+
+            visible    : false,          // 弹出框是否显示
+            mId        : "",             // 弹出框中的笔记ID
+            mRecomNum  : "",             // 弹出框中的推荐量
+            mReadNum   : "",             // 弹出框中的阅读量
 
             sortDOM : null,
             paginationDOM : null,
@@ -32,6 +37,11 @@ export default class NoteRecomPage extends React.Component {
         this.sortSelected     = this.sortSelected.bind(this);
         this.paginationClick  = this.paginationClick.bind(this);
         this.operationClick   = this.operationClick.bind(this);
+
+        this.handleOk         = this.handleOk.bind(this);
+        this.handleCancel     = this.handleCancel.bind(this);
+        this.mRecomChange     = this.mRecomChange.bind(this);
+        this.mReadChange      = this.mReadChange.bind(this);
     }
 
     componentWillMount() {
@@ -41,7 +51,7 @@ export default class NoteRecomPage extends React.Component {
 
 
     // 设置state中和页面数据相关的值
-    settingState(sortId, nowPage, pageSize) {
+    settingState(sortId, nowPage, pageSize, visible, mId, mRecomNum, mReadNum) {
         if(sortId === "no") {
             sortId = this.state.sortId;
         }
@@ -52,10 +62,28 @@ export default class NoteRecomPage extends React.Component {
             pageSize = this.state.pageSize;
         }
 
+        if(visible === "no") {
+            visible = this.state.visible;
+        }
+        if(mId === "no") {
+            mId = this.state.mId;
+        }
+        if(mRecomNum === "no") {
+            mRecomNum = this.state.mRecomNum;
+        }
+        if(mReadNum === "no") {
+            mReadNum = this.state.mReadNum;
+        }
+
         this.setState({
             sortId    : sortId,
             nowPage   : nowPage,
-            pageSize  : pageSize
+            pageSize  : pageSize,
+
+            visible   : visible,
+            mId       : mId,
+            mRecomNum : mRecomNum,
+            mReadNum  : mReadNum
         });
 
     }
@@ -65,23 +93,44 @@ export default class NoteRecomPage extends React.Component {
 
     // 分类切换
     sortSelected(sortId){
-        this.settingState(sortId, "no", "no");
+        this.settingState(sortId, "no", "no", "no", "no", "no", "no");
         // 根据分类id获取笔记列表
         this.getNoteCount(sortId);
     }
 
     // 翻页按钮点击
     paginationClick(nowPage){
-        this.settingState("no", nowPage, "no");
+        this.settingState("no", nowPage, "no", "no", "no", "no", "no");
         // 根据当前分类加载第一页笔记数据
         this.getNoteList(nowPage);
     }
 
     // 操作列点击
     operationClick(index, item){
-        console.info(index);
-        console.info(item);
+        this.settingState("no", "no", "no", true, item.Article_ID, item.Recommend_Num, item.Read_Num);
     }
+
+    // 弹出框确认点击
+    handleOk(index, item){
+        // 更新笔记信息
+        this.updateNote();
+    }
+
+    // 弹出框取消点击
+    handleCancel(index, item){
+        this.settingState("no", "no", "no", false, "", "", "");
+    }
+
+    mRecomChange(e) {
+        const recomNum = e.target.value;
+        this.settingState("no", "no", "no", "no", "no", recomNum, "no");
+    }
+
+    mReadChange(e) {
+        const readNum = e.target.value;
+        this.settingState("no", "no", "no", "no", "no", "no", readNum);
+    }
+
 
     /******************************事件响应方法--结束***********************************/
 
@@ -109,7 +158,7 @@ export default class NoteRecomPage extends React.Component {
                     }
 
                     // 设置state中的分类数据
-                    self.settingState(sortArray[0].id, "no", "no");
+                    self.settingState(sortArray[0].id, "no", "no", "no", "no", "no", "no");
 
                     // 设置sortDOM--因为ajax之后select的默认数据不会自动设置
                     self.setState({
@@ -143,7 +192,7 @@ export default class NoteRecomPage extends React.Component {
                 if(cbData.success === "1"){
 
                     // 设置state中的分类数据
-                    self.settingState(sortId, "no", "no");
+                    self.settingState(sortId, "no", "no", "no", "no", "no", "no");
 
                     // paginationDOM--因为ajax之后select的默认数据不会自动设置
                     self.setState({
@@ -242,7 +291,37 @@ export default class NoteRecomPage extends React.Component {
         });
     }
 
+    // 更新笔记信息
+    updateNote() {
+        const self = this;
+        jQuery.ajax({
+            type : "POST",
+            url : "/doit/recommendAction/recommendNote",
+            data : {
+                "id" : this.state.mId,
+                "recommendNum" : this.state.mRecomNum,
+                "readNum" : this.state.mReadNum
+            },
+            dataType:"json",
+            contentType: "application/x-www-form-urlencoded; charset=utf-8",
+            success : function(cbData) {
+                self.settingState("no", "no", "no", false, "", "", "", "");
+                if(cbData.success === "1") {
+                    // 重新获取当前页数据
+                    self.getNoteList(self.state.nowPage);
+                    message.success(cbData.msg+"！", 3);
+                } else {
+                    message.error(cbData.msg+"！", 3);
+                }
+            },error :function(){
+                message.error("更新笔记信息连接出错！");
+            }
+        });
+
+    }
+
     render() {
+        const FormItem = Form.Item;
         return (
             <div>
                 <MenuComponent openSubMenu={this.props.route.sort} selectedMenu={this.props.route.bpath} />
@@ -271,6 +350,22 @@ export default class NoteRecomPage extends React.Component {
                                 {this.state.tableDOM}
                                 {this.state.paginationDOM}
                             </div>
+
+                            <Modal title="修改笔记推荐信息"
+                                   visible={this.state.visible}
+                                   onOk={this.handleOk}
+                                   onCancel={this.handleCancel}>
+                                <Form horizontal>
+                                    <FormItem
+                                        label="笔记推荐量 : ">
+                                        <Input value={this.state.mRecomNum} onChange={this.mRecomChange} placeholder="" size="large"/>
+                                    </FormItem>
+                                    <FormItem
+                                        label="笔记阅读量 : ">
+                                        <Input value={this.state.mReadNum} onChange={this.mReadChange} placeholder="" size="large"/>
+                                    </FormItem>
+                                </Form>
+                            </Modal>
                         </div>
                     </div>
                     <div className="ant-layout-footer">

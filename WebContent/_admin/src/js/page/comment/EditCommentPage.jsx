@@ -6,7 +6,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import jQuery from 'jquery';
 
-import { message, Row, Col } from 'antd';
+import { Modal, Form, Input, message, Row, Col } from 'antd';
 
 import MenuComponent       from '../../components/menu/js/MenuComponent';
 import SearchComponent     from '../../components/search/js/SearchComponent';
@@ -20,9 +20,13 @@ export default class EditCommentPage extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            nowPage  : 1,              // 当前页ID
-            pageSize : 10,             // 当前页个数
-            loading  : false,          // 按钮是否在请求过程中
+            nowPage       : 1,              // 当前页ID
+            pageSize      : 10,             // 当前页个数
+
+            visible       : false,          // 弹出框是否显示
+            mId           : "",             // 弹出框中的评论ID
+            mCommContent  : "",             // 弹出框中的评论内容
+            mCommUser     : "",             // 弹出框中的评论人
 
             paginationDOM : null,
             tableDOM : null
@@ -30,6 +34,11 @@ export default class EditCommentPage extends React.Component {
 
         this.paginationClick  = this.paginationClick.bind(this);
         this.operationClick   = this.operationClick.bind(this);
+
+        this.handleOk         = this.handleOk.bind(this);
+        this.handleCancel     = this.handleCancel.bind(this);
+        this.mContentChange   = this.mContentChange.bind(this);
+        this.mUserChange      = this.mUserChange.bind(this);
     }
 
     componentWillMount() {
@@ -39,29 +48,36 @@ export default class EditCommentPage extends React.Component {
 
 
     // 设置state中和页面数据相关的值
-    settingState(nowPage, pageSize, loading, selectedRowKeys, hasSelected) {
+    settingState(nowPage, pageSize, visible, mId, mCommContent, mCommUser) {
         if(nowPage === "no") {
             nowPage = this.state.nowPage;
         }
         if(pageSize === "no") {
             pageSize = this.state.pageSize;
         }
-        if(loading === "no") {
-            loading = this.state.loading;
+
+        if(visible === "no") {
+            visible = this.state.visible;
         }
-        if(selectedRowKeys === "no") {
-            selectedRowKeys = this.state.selectedRowKeys;
+        if(mId === "no") {
+            mId = this.state.mId;
         }
-        if(hasSelected === "no") {
-            hasSelected = this.state.hasSelected;
+        if(mCommContent === "no") {
+            mCommContent = this.state.mCommContent;
+        }
+        if(mCommUser === "no") {
+            mCommUser = this.state.mCommUser;
         }
 
+
         this.setState({
-            nowPage          : nowPage,
-            pageSize         : pageSize,
-            loading          : loading,
-            selectedRowKeys  : selectedRowKeys,
-            hasSelected      : hasSelected
+            nowPage      : nowPage,
+            pageSize     : pageSize,
+
+            visible      : visible,
+            mId          : mId,
+            mCommContent : mCommContent,
+            mCommUser    : mCommUser
         });
 
     }
@@ -70,15 +86,35 @@ export default class EditCommentPage extends React.Component {
 
     // 翻页按钮点击
     paginationClick(nowPage){
-        this.settingState(nowPage, "no", "no", "no", false);
+        this.settingState(nowPage, "no");
         // 根据当前分类加载第一页评论数据
         this.getCommentList(nowPage);
     }
 
     // 操作列点击
     operationClick(index, item){
-        console.info(index);
-        console.info(item);
+        this.settingState("no", "no", true, item.Comment_ID, item.Comment_Content, item.Comment_Person_Name);
+    }
+
+    // 弹出框确认点击
+    handleOk(index, item){
+        // 更新文章信息
+        this.updateComment();
+    }
+
+    // 弹出框取消点击
+    handleCancel(index, item){
+        this.settingState("no", "no", false, "", "", "");
+    }
+
+    mContentChange(e) {
+        const content = e.target.value;
+        this.settingState("no", "no", "no", "no", content, "no");
+    }
+
+    mUserChange(e) {
+        const user = e.target.value;
+        this.settingState("no", "no", "no", "no", "no", user);
     }
 
 
@@ -186,10 +222,38 @@ export default class EditCommentPage extends React.Component {
         });
     }
 
+    // 更新评论信息
+    updateComment() {
+        const self = this;
+        jQuery.ajax({
+            type : "POST",
+            url : "/doit/commentAction/updateComment",
+            data : {
+                "id" : this.state.mId,
+                "userName" : encodeURI(encodeURI(this.state.mCommUser)),
+                "content" : encodeURI(encodeURI(this.state.mCommContent))
+            },
+            dataType:"json",
+            contentType: "application/x-www-form-urlencoded; charset=utf-8",
+            success : function(cbData) {
+                self.settingState("no", "no", false, "", "", "", "");
+                if(cbData.success === "1") {
+                    // 重新获取当前页数据
+                    self.getCommentList(self.state.nowPage);
+                    message.success(cbData.msg+"！", 3);
+                } else {
+                    message.error(cbData.msg+"！", 3);
+                }
+            },error :function(){
+                message.error("更新文章信息连接出错！");
+            }
+        });
+
+    }
 
 
     render() {
-
+        const FormItem = Form.Item;
         return (
             <div>
                 <MenuComponent openSubMenu={this.props.route.sort} selectedMenu={this.props.route.bpath} />
@@ -217,6 +281,22 @@ export default class EditCommentPage extends React.Component {
                                 {this.state.tableDOM}
                                 {this.state.paginationDOM}
                             </div>
+
+                            <Modal title="修改评论详细信息"
+                                   visible={this.state.visible}
+                                   onOk={this.handleOk}
+                                   onCancel={this.handleCancel}>
+                                <Form horizontal>
+                                    <FormItem
+                                        label="评论人 : ">
+                                        <Input value={this.state.mCommUser} onChange={this.mUserChange} placeholder="" size="large"/>
+                                    </FormItem>
+                                    <FormItem
+                                        label="评论内容 : ">
+                                        <Input value={this.state.mCommContent} onChange={this.mContentChange} type="textarea" rows="3" placeholder="" size="large"/>
+                                    </FormItem>
+                                </Form>
+                            </Modal>
                         </div>
                     </div>
                     <div className="ant-layout-footer">

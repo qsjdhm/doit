@@ -112,7 +112,7 @@ export default class ArticleRecomPage extends React.Component {
 
     // 弹出框确认点击
     handleOk(index, item){
-        // 更新用户信息
+        // 更新文章信息
         this.updateArticle();
     }
 

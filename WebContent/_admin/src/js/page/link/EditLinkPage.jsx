@@ -6,7 +6,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import jQuery from 'jquery';
 
-import { message, Row, Col } from 'antd';
+import { Modal, Form, Input, message, Row, Col } from 'antd';
 
 import MenuComponent       from '../../components/menu/js/MenuComponent';
 import SearchComponent     from '../../components/search/js/SearchComponent';
@@ -20,9 +20,13 @@ export default class EditLinkPage extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			nowPage  : 1,              // 当前页ID
-			pageSize : 10,             // 当前页个数
-			loading  : false,          // 按钮是否在请求过程中
+			nowPage    : 1,              // 当前页ID
+			pageSize   : 10,             // 当前页个数
+
+            visible    : false,          // 弹出框是否显示
+            mId        : "",             // 弹出框中的外链ID
+            mLinkName  : "",             // 弹出框中的外链名称
+            mLinkURL   : "",             // 弹出框中的外链URL
 
 			paginationDOM : null,
 			tableDOM : null
@@ -30,6 +34,11 @@ export default class EditLinkPage extends React.Component {
 
 		this.paginationClick  = this.paginationClick.bind(this);
 		this.operationClick   = this.operationClick.bind(this);
+
+        this.handleOk         = this.handleOk.bind(this);
+        this.handleCancel     = this.handleCancel.bind(this);
+        this.mNameChange      = this.mNameChange.bind(this);
+        this.mURLChange       = this.mURLChange.bind(this);
 	}
 
 	componentWillMount() {
@@ -39,29 +48,35 @@ export default class EditLinkPage extends React.Component {
 
 
 	// 设置state中和页面数据相关的值
-	settingState(nowPage, pageSize, loading, selectedRowKeys, hasSelected) {
+	settingState(nowPage, pageSize, visible, mId, mLinkName, mLinkURL) {
 		if(nowPage === "no") {
 			nowPage = this.state.nowPage;
 		}
 		if(pageSize === "no") {
 			pageSize = this.state.pageSize;
 		}
-		if(loading === "no") {
-			loading = this.state.loading;
-		}
-		if(selectedRowKeys === "no") {
-			selectedRowKeys = this.state.selectedRowKeys;
-		}
-		if(hasSelected === "no") {
-			hasSelected = this.state.hasSelected;
-		}
+
+        if(visible === "no") {
+            visible = this.state.visible;
+        }
+        if(mId === "no") {
+            mId = this.state.mId;
+        }
+        if(mLinkName === "no") {
+            mLinkName = this.state.mLinkName;
+        }
+        if(mLinkURL === "no") {
+            mLinkURL = this.state.mLinkURL;
+        }
 
 		this.setState({
-			nowPage          : nowPage,
-			pageSize         : pageSize,
-			loading          : loading,
-			selectedRowKeys  : selectedRowKeys,
-			hasSelected      : hasSelected
+			nowPage   : nowPage,
+			pageSize  : pageSize,
+
+            visible   : visible,
+            mId       : mId,
+            mLinkName : mLinkName,
+            mLinkURL  : mLinkURL
 		});
 
 	}
@@ -70,16 +85,36 @@ export default class EditLinkPage extends React.Component {
 
 	// 翻页按钮点击
 	paginationClick(nowPage){
-		this.settingState(nowPage, "no", "no", "no", false);
+		this.settingState(nowPage, "no");
 		// 根据当前分类加载第一页链接数据
 		this.getLinkList(nowPage);
 	}
 
-	// 操作列点击
-	operationClick(index, item){
-		console.info(index);
-		console.info(item);
-	}
+    // 操作列点击
+    operationClick(index, item){
+        this.settingState("no", "no", true, item.Link_ID, item.Link_Name, item.Link_Url);
+    }
+
+    // 弹出框确认点击
+    handleOk(index, item){
+        // 更新外链信息
+        this.updateLink();
+    }
+
+    // 弹出框取消点击
+    handleCancel(index, item){
+        this.settingState("no", "no", false, "", "", "");
+    }
+
+    mNameChange(e) {
+        const linkName = e.target.value;
+        this.settingState("no", "no", "no", "no", linkName, "no");
+    }
+
+    mURLChange(e) {
+        const linkURL = e.target.value;
+        this.settingState("no", "no", "no", "no", "no", linkURL);
+    }
 
 
 	/******************************事件响应方法--结束***********************************/
@@ -184,10 +219,38 @@ export default class EditLinkPage extends React.Component {
 		});
 	}
 
+    // 更新外链信息
+    updateLink() {
+        const self = this;
+        jQuery.ajax({
+            type : "POST",
+            url : "/doit/linkAction/updateLink",
+            data : {
+                "id" : this.state.mId,
+                "name" : encodeURI(encodeURI(this.state.mLinkName)),
+                "url" : encodeURI(encodeURI(this.state.mLinkURL))
+            },
+            dataType:"json",
+            contentType: "application/x-www-form-urlencoded; charset=utf-8",
+            success : function(cbData) {
+                self.settingState("no", "no", false, "", "", "", "");
+                if(cbData.success === "1") {
+                    // 重新获取当前页数据
+                    self.getLinkList(self.state.nowPage);
+                    message.success(cbData.msg+"！", 3);
+                } else {
+                    message.error(cbData.msg+"！", 3);
+                }
+            },error :function(){
+                message.error("更新外链信息连接出错！");
+            }
+        });
+
+    }
 
 
 	render() {
-
+        const FormItem = Form.Item;
 		return (
 			<div>
 				<MenuComponent openSubMenu={this.props.route.sort} selectedMenu={this.props.route.bpath} />
@@ -215,6 +278,22 @@ export default class EditLinkPage extends React.Component {
 								{this.state.tableDOM}
 								{this.state.paginationDOM}
 							</div>
+
+                            <Modal title="修改外链详细信息"
+                                   visible={this.state.visible}
+                                   onOk={this.handleOk}
+                                   onCancel={this.handleCancel}>
+                                <Form horizontal>
+                                    <FormItem
+                                        label="外链名称 : ">
+                                        <Input value={this.state.mLinkName} onChange={this.mNameChange} placeholder="" size="large"/>
+                                    </FormItem>
+                                    <FormItem
+                                        label="外链URL : ">
+                                        <Input value={this.state.mLinkURL} onChange={this.mURLChange} placeholder="" size="large"/>
+                                    </FormItem>
+                                </Form>
+                            </Modal>
 						</div>
 					</div>
 					<div className="ant-layout-footer">

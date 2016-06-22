@@ -22,7 +22,6 @@ export default class EditUserPage extends React.Component {
 		this.state = {
 			nowPage   : 1,              // 当前页ID
 			pageSize  : 10,             // 当前页个数
-			loading   : false,          // 按钮是否在请求过程中
 
 			visible   : false,          // 弹出框是否显示
 			mId       : "",             // 弹出框中的用户ID
@@ -53,9 +52,6 @@ export default class EditUserPage extends React.Component {
 	// 设置state中和页面数据相关的值
 	settingState(nowPage,
 	             pageSize,
-	             loading,
-	             selectedRowKeys,
-	             hasSelected,
 	             visible,
 	             mId,
 				 mName,
@@ -66,15 +62,6 @@ export default class EditUserPage extends React.Component {
 		}
 		if(pageSize === "no") {
 			pageSize = this.state.pageSize;
-		}
-		if(loading === "no") {
-			loading = this.state.loading;
-		}
-		if(selectedRowKeys === "no") {
-			selectedRowKeys = this.state.selectedRowKeys;
-		}
-		if(hasSelected === "no") {
-			hasSelected = this.state.hasSelected;
 		}
 
 		if(visible === "no") {
@@ -96,9 +83,6 @@ export default class EditUserPage extends React.Component {
 		this.setState({
 			nowPage          : nowPage,
 			pageSize         : pageSize,
-			loading          : loading,
-			selectedRowKeys  : selectedRowKeys,
-			hasSelected      : hasSelected,
 
 			visible          : visible,
 			mId              : mId,
@@ -112,14 +96,14 @@ export default class EditUserPage extends React.Component {
 
 	// 翻页按钮点击
 	paginationClick(nowPage){
-		this.settingState(nowPage, "no", "no", "no", false, "no", "no", "no", "no", "no");
+		this.settingState(nowPage, "no", "no", "no", "no", "no", "no");
 		// 根据当前分类加载第一页用户数据
 		this.getUserList(nowPage);
 	}
 
 	// 操作列点击
 	operationClick(index, item){
-		this.settingState("no", "no", "no", "no", "no", true, "no", "no", "no", "no");
+		this.settingState("no", "no", true, "no", "no", "no", "no");
 		// 根据ID获取用户全部信息
 		this.getUser(item.User_ID);
 	}
@@ -132,22 +116,22 @@ export default class EditUserPage extends React.Component {
 
 	// 弹出框取消点击
 	handleCancel(index, item){
-		this.settingState("no", "no", "no", "no", false, "", "", "", "");
+		this.settingState("no", "no", false, "", "", "", "");
 	}
 
 	mNameChange(e) {
 		const name = e.target.value;
-		this.settingState("no", "no", "no", "no", "no", "no", "no", name, "no", "no");
+		this.settingState("no", "no", "no", "no", name, "no", "no");
 	}
 
 	mPasswordChange(e) {
 		const password = e.target.value;
-		this.settingState("no", "no", "no", "no", "no", "no", "no", "no", password, "no");
+		this.settingState("no", "no", "no", "no", "no", password, "no");
 	}
 
 	mEmailChange(e) {
 		const email = e.target.value;
-		this.settingState("no", "no", "no", "no", "no", "no", "no", "no", "no", email);
+		this.settingState("no", "no", "no", "no", "no", "no", email);
 	}
 
 
@@ -256,7 +240,7 @@ export default class EditUserPage extends React.Component {
 	// 根据ID获取用户全部信息
 	getUser(id) {
 		// 保存用户id
-		this.settingState("no", "no", "no", "no", "no", true, id, "no", "no", "no");
+		this.settingState("no", "no", true, id, "no", "no", "no");
 		const self = this;
 		jQuery.ajax({
 			type : "POST",
@@ -268,7 +252,7 @@ export default class EditUserPage extends React.Component {
 			contentType: "application/x-www-form-urlencoded; charset=utf-8",
 			success : function(cbData) {
 				if(cbData.success === "1"){
-					self.settingState("no", "no", "no", "no", "no", "no", id, cbData.name, "no", cbData.email);
+					self.settingState("no", "no", "no", id, cbData.name, "no", cbData.email);
 				}
 			},error :function(){
 				message.error("请求用户信息连接出错！");
@@ -295,7 +279,7 @@ export default class EditUserPage extends React.Component {
 			dataType:"json",
 			contentType: "application/x-www-form-urlencoded; charset=utf-8",
 			success : function(cbData) {
-				self.settingState("no", "no", "no", "no", false, "", "", "", "");
+				self.settingState("no", "no", false, "", "", "", "");
 				if(cbData.success === "1") {
 					// 重新获取当前页数据
 					self.getUserList(self.state.nowPage);
