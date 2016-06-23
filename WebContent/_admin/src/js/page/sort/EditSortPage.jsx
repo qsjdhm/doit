@@ -33,7 +33,7 @@ export default class EditSortPage extends React.Component {
 			paginationDOM : null,
 			tableDOM : null,
 
-            //mSortDOM : null
+            mSortDOM : null
 		};
 
 		this.sortSelected     = this.sortSelected.bind(this);
@@ -109,8 +109,13 @@ export default class EditSortPage extends React.Component {
 
 	// 操作列点击
 	operationClick(index, item){
-        // 初始化父分类下拉框的数据
-        this.initMFSortSelectData(item);
+		const self = this;
+		setTimeout(function(){
+			self.settingState("no", "no", "no", true, item.Sort_ID, item.Sort_Name, item.F_Sort);
+			// 初始化父分类下拉框的数据
+			self.initMFSortSelectData(item);
+		},0);
+
 	}
 
     // 弹出框确认点击
@@ -281,7 +286,6 @@ export default class EditSortPage extends React.Component {
 
     // 初始化父分类下拉框的数据
     initMFSortSelectData(item) {
-        //const self = this;
         const sortArray = [
             {
                 "id" : "3",
@@ -297,20 +301,16 @@ export default class EditSortPage extends React.Component {
             }
         ];
 
-        console.info(item);
-        this.settingState("no", "no", "no", true, item.Sort_ID, item.Sort_Name, item.F_Sort);
-        console.info(this.state);
-        console.info(this.state.mFSortId);
         // 设置sortDOM--因为ajax之后select的默认数据不会自动设置
+		const self = this;
 
-        //this.setState({
-        //    mSortDOM : <SelectComponent
-        //        defaultValue={""+this.state.mFSortId}
-        //        data={sortArray}
-        //        selected={this.mSortSelected}
-        //    />
-        //});
-
+		self.setState({
+			mSortDOM : <SelectComponent
+				defaultValue={""+this.state.mFSortId}
+				data={sortArray}
+				selected={this.mSortSelected}
+				/>
+		});
     }
 
 
@@ -319,20 +319,6 @@ export default class EditSortPage extends React.Component {
 
 	render() {
         const FormItem = Form.Item;
-        const sortArray = [
-            {
-                "id" : "3",
-                "name" : "图书分类"
-            },
-            {
-                "id" : "8",
-                "name" : "笔记分类"
-            },
-            {
-                "id" : "4",
-                "name" : "标签分类"
-            }
-        ];
 		return (
 			<div>
 				<MenuComponent openSubMenu={this.props.route.sort} selectedMenu={this.props.route.bpath} />
@@ -369,11 +355,7 @@ export default class EditSortPage extends React.Component {
                                 <Form horizontal>
                                     <FormItem
                                         label="所属分类 : ">
-                                        <SelectComponent
-                                            defaultValue={""+this.state.mFSortId}
-                                            data={sortArray}
-                                            selected={this.mSortSelected}
-                                        />
+										{this.state.mSortDOM}
                                     </FormItem>
                                     <FormItem
                                         label="分类名称 : ">

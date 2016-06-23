@@ -289,6 +289,7 @@ public class AdminSortController {
 		// 1.根据链接id获取分类内容
 		TSort sort = sortService.getSortByID(selectId);
 		String name = sort.getSort_Name();
+		int fSort = sort.getF_Sort();
 		
 		// 3.返回添加状态信息
 		JSONObject jsonObject = new JSONObject();
@@ -296,6 +297,7 @@ public class AdminSortController {
 		jsonObject.put("msg", "获取分类成功");
 		jsonObject.put("id", selectId);
 		jsonObject.put("name", name);
+		jsonObject.put("fId", fSort);
 		
 		response.setContentType("text/html;charset=utf-8");
         response.setHeader("Cache-Control", "no-cache"); 
