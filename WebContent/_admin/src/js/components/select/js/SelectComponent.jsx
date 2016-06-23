@@ -10,9 +10,22 @@ import '../css/select.less';
 export default class SelectComponent extends React.Component {
     constructor(props) {
         super(props);
+        this.state = {
+            defaultValue : props.defaultValue,
+            dom:null
+        };
 
         // 遇到方法中使用this的都需要在这里绑定
         this.handleChange = this.handleChange.bind(this);
+    }
+
+    componentWillReceiveProps (nextProps) {
+        this.setState({
+            defaultValue : nextProps.defaultValue
+        });
+        console.info("aaaaaaaaaaaaaaaa");
+        console.info(nextProps.defaultValue);
+        console.info(this.state.defaultValue);
     }
 
     handleChange(value) {
@@ -30,7 +43,7 @@ export default class SelectComponent extends React.Component {
             <div className="select-package">
                 <Select
                     size="large"
-	                defaultValue={this.props.defaultValue}
+	                defaultValue={this.state.defaultValue}
                     style={{ width: 200 }}
                     placeholder="请选择选项"
                     optionFilterProp="children"

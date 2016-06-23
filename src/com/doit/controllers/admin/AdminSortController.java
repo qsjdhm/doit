@@ -307,17 +307,18 @@ public class AdminSortController {
 	public void updateSort(HttpServletRequest request, HttpServletResponse response) throws Exception{
 		
 		int id = Integer.parseInt(request.getParameter("id"));
+		int fId = Integer.parseInt(request.getParameter("fId"));
 		String name = URLDecoder.decode(URLDecoder.decode(request.getParameter("name"), "utf-8"), "utf-8");
 		
 		// 首先取回需要修改的分类的数据
 		TSort priSort = sortService.getSortByID(id);
-		int fSort = priSort.getF_Sort();
+		//int fSort = priSort.getF_Sort();
 		
 		// 1.修改分类数据
 		TSort sort = new TSort();
 		sort.setSort_ID(id);
 		sort.setSort_Name(name);
-		sort.setF_Sort(fSort);
+		sort.setF_Sort(fId);
 		sortService.update(sort);
 		
 		// 2.返回添加状态信息
