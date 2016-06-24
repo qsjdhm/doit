@@ -126,6 +126,9 @@ export default class EditSortPage extends React.Component {
 
     // 弹出框取消点击
     handleCancel(index, item){
+        this.setState({
+            mSortDOM:false
+        });
         this.settingState("no", "no", "no", false, "", "", "");
     }
 
@@ -313,6 +316,33 @@ export default class EditSortPage extends React.Component {
 		});
     }
 
+    // 更新分类信息
+    updateSort() {
+        const self = this;
+        jQuery.ajax({
+            type : "POST",
+            url : "/doit/sortAction/updateSort",
+            data : {
+                "id" : this.state.mId,
+                "fId" : encodeURI(encodeURI(this.state.mFSortId)),
+                "name" : encodeURI(encodeURI(this.state.mSortName))
+            },
+            dataType:"json",
+            contentType: "application/x-www-form-urlencoded; charset=utf-8",
+            success : function(cbData) {
+                self.settingState("no", "no", "no", false, "no", "no", "no");
+                if(cbData.success === "1") {
+                    // 重新获取当前页数据
+                    self.getSortList(self.state.nowPage);
+                    message.success(cbData.msg+"！", 3);
+                } else {
+                    message.error(cbData.msg+"！", 3);
+                }
+            },error :function(){
+                message.error("更新分类信息连接出错！");
+            }
+        });
+    }
 
 
 
@@ -348,7 +378,7 @@ export default class EditSortPage extends React.Component {
 								{this.state.paginationDOM}
 							</div>
 
-                            <Modal title="修改外链详细信息"
+                            <Modal title="修改分类详细信息"
                                    visible={this.state.visible}
                                    onOk={this.handleOk}
                                    onCancel={this.handleCancel}>
