@@ -306,17 +306,24 @@ public class AdminBookController {
 		
 		// 1.根据笔记id获取图书内容
 		TBook book = bookService.getBookByID(selectId);
+		
+		int sortId = book.getSort_ID();
+		String sortName = book.getSort_Name();
 		String name = book.getBook_Name();
 		int height = book.getBook_Height();
+		String cover = book.getBook_Cover();
 		String link = book.getBook_Link();
 		
 		// 3.返回添加状态信息
 		JSONObject jsonObject = new JSONObject();
 		jsonObject.put("success", "1");
 		jsonObject.put("msg", "获取图书成功");
+		jsonObject.put("sortId", sortId);
+		jsonObject.put("sortName", sortName);
 		jsonObject.put("id", selectId);
 		jsonObject.put("name", name);
 		jsonObject.put("height", height);
+		jsonObject.put("cover", cover);
 		jsonObject.put("link", link);
 		
 		response.setContentType("text/html;charset=utf-8");

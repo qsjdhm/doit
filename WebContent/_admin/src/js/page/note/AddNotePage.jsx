@@ -199,6 +199,7 @@ export default class AddNotePage extends React.Component {
 					// 设置sortDOM--因为ajax之后select的默认数据不会自动设置
 					self.setState({
 						tagDOM : <TagComponent
+							width={820}
 							data={tagArray}
 							selected={self.tagSelected}
 						/>

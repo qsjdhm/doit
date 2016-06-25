@@ -370,14 +370,20 @@ public class AdminNoteController {
 		TArticle article = articleService.getArticleByID(selectId);
 		String title = article.getArticle_Title();
 		String content = article.getArticle_Content();
+		int sortId = article.getSort_ID();
+		String sortName = article.getSort_Name();
+		String tag = article.getArticle_Tag();
 		
 		// 3.返回添加状态信息
 		JSONObject jsonObject = new JSONObject();
 		jsonObject.put("success", "1");
 		jsonObject.put("msg", "获取笔记成功");
+		jsonObject.put("sortId", sortId);
+		jsonObject.put("sortName", sortName);
 		jsonObject.put("id", selectId);
 		jsonObject.put("title", title);
 		jsonObject.put("content", content);
+		jsonObject.put("tag", tag);
 		
 		response.setContentType("text/html;charset=utf-8");
         response.setHeader("Cache-Control", "no-cache"); 
@@ -393,7 +399,7 @@ public class AdminNoteController {
 		String date = "";
 		String cover = "";
 		String content = request.getParameter("content");
-		String tags = "";
+		String tags = URLDecoder.decode(URLDecoder.decode(request.getParameter("tags"), "utf-8"), "utf-8");
 		int sortId = Integer.parseInt(request.getParameter("sortId"));
 		String sortName = URLDecoder.decode(URLDecoder.decode(request.getParameter("sortName"), "utf-8"), "utf-8");
 		// 普通文章的父SortId是根据子SortId来的
@@ -404,7 +410,6 @@ public class AdminNoteController {
 		// 首先取回需要修改的这篇文章的数据
 		TArticle priNote = articleService.getArticleByID(id);
 		date = priNote.getArticle_Date();
-		tags = priNote.getArticle_Tag();
 		recommendNum = priNote.getRecommend_Num();
 		readNum = priNote.getRead_Num();
 		

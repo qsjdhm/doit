@@ -203,7 +203,7 @@ export default class DelLinkPage extends React.Component {
 		}
 
 		// 表格的配置
-		const scroll = { y: 350, x: totalWidth };
+		const scroll = { y: 400, x: totalWidth };
 
 		this.setState({
 			tableDOM : <TableComponent

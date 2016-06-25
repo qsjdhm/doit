@@ -115,11 +115,13 @@ export default class EditSortPage extends React.Component {
 			// 初始化父分类下拉框的数据
 			self.initMFSortSelectData(item);
 		},0);
-
 	}
 
     // 弹出框确认点击
     handleOk(index, item){
+		this.setState({
+			mSortDOM : false
+		});
         // 更新分类信息
         this.updateSort();
     }
@@ -127,7 +129,7 @@ export default class EditSortPage extends React.Component {
     // 弹出框取消点击
     handleCancel(index, item){
         this.setState({
-            mSortDOM:false
+            mSortDOM : false
         });
         this.settingState("no", "no", "no", false, "", "", "");
     }
@@ -272,7 +274,7 @@ export default class EditSortPage extends React.Component {
 
 		// 表格的配置
 		const expandedRowRender = record => <p>{record.Sort_Name}</p>;
-		const scroll = { y: 350, x: totalWidth };
+		const scroll = { y: 370, x: totalWidth };
 
 		this.setState({
 			tableDOM : <TableComponent

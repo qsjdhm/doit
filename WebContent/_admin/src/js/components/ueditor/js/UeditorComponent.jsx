@@ -21,12 +21,12 @@ export default class TUeditorComponent extends React.Component {
             autoClearinitialContent: true,  // focus时自动清空初始化时的内容
             autoHeightEnabled: false
         });
-        editor.render("content");
+        editor.render(this.props.id);
 
         var self = this;
         editor.ready( function( ueditor ) {
-            var value = self.props.value?self.props.value:'<p></p>';
-            editor.setContent("test");
+            var value = self.props.value ? self.props.value : '';
+            editor.setContent(value);
         });
     }
 
@@ -34,11 +34,8 @@ export default class TUeditorComponent extends React.Component {
     render() {
         return (
             <div className="ueditor-package">
-
-
                 <script id={this.props.id} name="content" type="text/plain"></script>
             </div>
-
         )
     }
 };

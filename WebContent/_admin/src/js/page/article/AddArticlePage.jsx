@@ -200,6 +200,7 @@ export default class AddArticlePage extends React.Component {
                     // 设置sortDOM--因为ajax之后select的默认数据不会自动设置
                     self.setState({
                         tagDOM : <TagComponent
+									width={820}
                                     data={tagArray}
                                     selected={self.tagSelected}
                                  />
@@ -279,6 +280,7 @@ export default class AddArticlePage extends React.Component {
                                     id="content"
                                     width="820"
                                     height="400"
+                                    value=""
                                 />
                                 {this.state.tagDOM}
 	                            <Button

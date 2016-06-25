@@ -8,7 +8,7 @@ import jQuery from 'jquery';
 
 
 
-import { Form, Upload, Input, Button, Icon, notification, message, Row, Col } from 'antd';
+import { Form, Upload, Input, Button, Icon, message, Row, Col } from 'antd';
 
 import MenuComponent       from '../../components/menu/js/MenuComponent';
 import SearchComponent     from '../../components/search/js/SearchComponent';

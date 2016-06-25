@@ -27,11 +27,12 @@ export default class TagComponent extends React.Component {
         });
 
         return (
-            <div className="tag-package">
+            <div className="tag-package" style={{ width: this.props.width }}>
                 <Select
                     tags
                     size="large"
-                    style={{ width: 796 }}
+                    style={{ width: this.props.width - 23 }}
+					defaultValue={this.props.defaultValue}
                     placeholder="请输入或选择标签"
                     optionFilterProp="children"
                     notFoundContent="无法找到"
