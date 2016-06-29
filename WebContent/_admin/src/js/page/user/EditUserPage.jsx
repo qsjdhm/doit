@@ -223,7 +223,7 @@ export default class EditUserPage extends React.Component {
 		}
 
 		const expandedRowRender = record => <p>{record.User_Account}</p>;
-		const scroll = { y: 400, x: totalWidth };
+		const scroll = { y: 380, x: totalWidth };
 
 		this.setState({
 			tableDOM : <TableComponent

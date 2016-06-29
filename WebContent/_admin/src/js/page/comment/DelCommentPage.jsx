@@ -205,7 +205,7 @@ export default class DelCommentPage extends React.Component {
         }
 
         // 表格的配置
-        const scroll = { y: 400, x: totalWidth };
+        const scroll = { y: 380, x: totalWidth };
 
         this.setState({
             tableDOM : <TableComponent

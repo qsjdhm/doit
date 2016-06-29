@@ -394,7 +394,7 @@ export default class EditArticlePage extends React.Component {
 
 		// 表格的配置
 		const expandedRowRender = record => <p>{record.Article_Content}</p>;
-		const scroll = { y: 370, x: totalWidth };
+		const scroll = { y: 350, x: totalWidth };
 
 		this.setState({
 			tableDOM : <TableComponent

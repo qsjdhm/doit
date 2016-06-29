@@ -49,7 +49,7 @@ Temporary Items
 
 /WebContent/node_modules/
 /WebContent/_admin/css/
-/WebContent/_admin/js
-/WebContent/_admin/img
+/WebContent/_admin/js/
+/WebContent/_admin/img/
 /WebContent/_admin/index.html
 /WebContent/WEB-INF/applicationContext.xml

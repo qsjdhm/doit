@@ -205,7 +205,7 @@ export default class EditLinkPage extends React.Component {
 		}
 
 		const expandedRowRender = record => <p>{record.Link_Name}</p>;
-		const scroll = { y: 400, x: totalWidth };
+		const scroll = { y: 380, x: totalWidth };
 
 		this.setState({
 			tableDOM : <TableComponent

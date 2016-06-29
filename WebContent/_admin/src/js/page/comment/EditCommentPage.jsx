@@ -208,7 +208,7 @@ export default class EditCommentPage extends React.Component {
         }
 
         const expandedRowRender = record => <p>{record.Comment_Content}</p>;
-        const scroll = { y: 400, x: totalWidth };
+        const scroll = { y: 380, x: totalWidth };
 
         this.setState({
             tableDOM : <TableComponent
