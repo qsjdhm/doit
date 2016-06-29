@@ -11,11 +11,12 @@ import MenuComponent       from '../components/menu/js/MenuComponent';
 import SearchComponent     from '../components/search/js/SearchComponent';
 import ToolBarComponent    from '../components/toolbar/js/ToolBarComponent';
 import BreadcrumbComponent from '../components/breadcrumb/js/BreadcrumbComponent';
+import CardComponent       from '../components/card/js/CardComponent';
+
 
 export default class HomePage extends React.Component {
     constructor(props) {
         super(props);
-        console.info(props);
     }
 
     render() {
@@ -39,7 +40,10 @@ export default class HomePage extends React.Component {
                     <div className="ant-layout-container">
                         <div className="ant-layout-content">
                             <BreadcrumbComponent data={this.props.routes} />
-                            <span>HomePage</span>
+                            <div className="page home-page">
+                                <CardComponent
+                                />
+                            </div>
                         </div>
                     </div>
                     <div className="ant-layout-footer">
