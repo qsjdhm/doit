@@ -1,6 +1,9 @@
+var webpack = require('webpack');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
 var path = require('path');
+var nodeModulesPath = path.resolve(__dirname, 'node_modules');
+var ueditorPath = path.resolve(__dirname, './_admin/ueditor1.6.1');
 module.exports = {
     //entry: {
     //    page1: path.resolve(__dirname, './src/js/index.jsx'),
@@ -8,7 +11,11 @@ module.exports = {
     //    page2: path.resolve(__dirname, './src/js/hello.jsx')
     //},
 
-	entry: path.resolve(__dirname, './_admin/src/js/index.jsx'),
+	//entry: path.resolve(__dirname, './_admin/src/js/index.jsx'),
+    entry: {
+        main: path.resolve(__dirname, './_admin/src/js/index.jsx'),
+        common: ['react','jquery','antd']
+    },
 	output: {
 		path: path.resolve(__dirname, './_admin'),
         publicPath: "",
@@ -23,11 +30,13 @@ module.exports = {
 			{
 				test: /\.js$/,
 				loader: 'babel-loader',
-				query: {presets: ['es2015','react']}
+                //exclude: [nodeModulesPath, ueditorPath]
+                exclude: /node_modules/,
+				//,query: {presets: ['es2015','react']}
 			},
 			{
 				test: /\.jsx?$/,
-				//exclude: /(node_modules|bower_components)/,
+				exclude: /node_modules/,
 				loader: 'babel',
 				query: {presets: ['es2015','react']}
 			},
@@ -63,7 +72,13 @@ module.exports = {
                 removeComments:true,    //移除HTML中的注释
                 collapseWhitespace:false    //删除空白符与换行符
             }
-         })
+        }),
+        new webpack.optimize.UglifyJsPlugin({
+            compress: {
+                warnings: false
+            }
+        }),
+        new webpack.optimize.CommonsChunkPlugin('common',  'js/common.entry.js')
     ]
 
 
