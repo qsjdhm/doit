@@ -534,23 +534,23 @@ export default class EditBookPage extends React.Component {
                                    onCancel={this.handleCancel}>
                                 <Form horizontal>
                                     <FormItem
-                                        label="图书封面 : ">
+                                        label="图书封面">
 										{this.state.mUploadDOM}
                                     </FormItem>
                                     <FormItem
-                                        label="图书分类 : ">
+                                        label="图书分类">
                                         {this.state.mSortDOM}
                                     </FormItem>
                                     <FormItem
-                                        label="图书名称 : ">
+                                        label="图书名称">
                                         <Input value={this.state.mTitle} onChange={this.mTitleChange} placeholder="" size="large"/>
                                     </FormItem>
                                     <FormItem
-                                        label="图书高度 : ">
+                                        label="图书高度">
                                         <Input value={this.state.mHeight} onChange={this.mHeightChange} placeholder="" size="large"/>
                                     </FormItem>
                                     <FormItem
-                                        label="下载路径 : ">
+                                        label="下载路径">
                                         <Input value={this.state.mPath} onChange={this.mPathChange} type="textarea" rows="3" placeholder="" size="large"/>
                                     </FormItem>
                                 </Form>
