@@ -357,12 +357,12 @@ export default class ArticleRecomPage extends React.Component {
                                    onCancel={this.handleCancel}>
                                 <Form horizontal>
                                     <FormItem
-                                        label="文章推荐量 : ">
-                                        <Input value={this.state.mRecomNum} onChange={this.mRecomChange} placeholder="" size="large"/>
+                                        label="文章推荐量">
+                                        <Input style={{width:400}} value={this.state.mRecomNum} onChange={this.mRecomChange} placeholder="" size="large"/>
                                     </FormItem>
                                     <FormItem
-                                        label="文章阅读量 : ">
-                                        <Input value={this.state.mReadNum} onChange={this.mReadChange} placeholder="" size="large"/>
+                                        label="文章阅读量">
+                                        <Input style={{width:400}} value={this.state.mReadNum} onChange={this.mReadChange} placeholder="" size="large"/>
                                     </FormItem>
                                 </Form>
                             </Modal>

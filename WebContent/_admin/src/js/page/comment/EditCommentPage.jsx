@@ -288,11 +288,11 @@ export default class EditCommentPage extends React.Component {
                                    onCancel={this.handleCancel}>
                                 <Form horizontal>
                                     <FormItem
-                                        label="评论人 : ">
+                                        label="评论人">
                                         <Input value={this.state.mCommUser} onChange={this.mUserChange} placeholder="" size="large"/>
                                     </FormItem>
                                     <FormItem
-                                        label="评论内容 : ">
+                                        label="评论内容">
                                         <Input value={this.state.mCommContent} onChange={this.mContentChange} type="textarea" rows="3" placeholder="" size="large"/>
                                     </FormItem>
                                 </Form>

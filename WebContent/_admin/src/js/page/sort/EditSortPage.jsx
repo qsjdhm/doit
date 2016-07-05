@@ -386,11 +386,11 @@ export default class EditSortPage extends React.Component {
                                    onCancel={this.handleCancel}>
                                 <Form horizontal>
                                     <FormItem
-                                        label="所属分类 : ">
+                                        label="所属分类">
 										{this.state.mSortDOM}
                                     </FormItem>
                                     <FormItem
-                                        label="分类名称 : ">
+                                        label="分类名称">
                                         <Input value={this.state.mSortName} onChange={this.mNameChange} placeholder="" size="large"/>
                                     </FormItem>
                                 </Form>

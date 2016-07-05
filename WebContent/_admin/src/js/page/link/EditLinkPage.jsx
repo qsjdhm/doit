@@ -285,11 +285,11 @@ export default class EditLinkPage extends React.Component {
                                    onCancel={this.handleCancel}>
                                 <Form horizontal>
                                     <FormItem
-                                        label="外链名称 : ">
+                                        label="外链名称">
                                         <Input value={this.state.mLinkName} onChange={this.mNameChange} placeholder="" size="large"/>
                                     </FormItem>
                                     <FormItem
-                                        label="外链URL : ">
+                                        label="外链URL">
                                         <Input value={this.state.mLinkURL} onChange={this.mURLChange} placeholder="" size="large"/>
                                     </FormItem>
                                 </Form>

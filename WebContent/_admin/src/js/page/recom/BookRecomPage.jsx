@@ -354,12 +354,12 @@ export default class BookRecomPage extends React.Component {
                                    onCancel={this.handleCancel}>
                                 <Form horizontal>
                                     <FormItem
-                                        label="图书推荐量 : ">
-                                        <Input value={this.state.mRecomNum} onChange={this.mRecomChange} placeholder="" size="large"/>
+                                        label="图书推荐量">
+                                        <Input style={{width:400}} value={this.state.mRecomNum} onChange={this.mRecomChange} placeholder="" size="large"/>
                                     </FormItem>
                                     <FormItem
-                                        label="图书下载量 : ">
-                                        <Input value={this.state.mDown_Num} onChange={this.mDownChange} placeholder="" size="large"/>
+                                        label="图书下载量">
+                                        <Input style={{width:400}} value={this.state.mDown_Num} onChange={this.mDownChange} placeholder="" size="large"/>
                                     </FormItem>
                                 </Form>
                             </Modal>

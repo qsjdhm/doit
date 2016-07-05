@@ -331,15 +331,15 @@ export default class EditUserPage extends React.Component {
 							       onCancel={this.handleCancel}>
 								<Form horizontal>
 									<FormItem
-										label="用户名称 : ">
+										label="用户名称">
 										<Input value={this.state.mName} onChange={this.mNameChange} placeholder="" size="large"/>
 									</FormItem>
 									<FormItem
-										label="用户密码 : ">
+										label="用户密码">
 										<Input value={this.state.mPassword} onChange={this.mPasswordChange} placeholder="" size="large"/>
 									</FormItem>
 									<FormItem
-										label="用户邮箱 : ">
+										label="用户邮箱">
 										<Input value={this.state.mEmail} onChange={this.mEmailChange} placeholder="" size="large"/>
 									</FormItem>
 								</Form>
