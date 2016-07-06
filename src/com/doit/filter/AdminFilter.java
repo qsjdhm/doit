@@ -33,7 +33,7 @@ public class AdminFilter extends OncePerRequestFilter {
 		String url = request.getRequestURI();
 
 		// 如果是后台管理页面需要过滤
-		if (url.indexOf("admin/home") != -1 || url.indexOf("/delPage") != -1 || url.indexOf("/updatePage") != -1 || url.indexOf("/addPage") != -1) {
+		if (url.indexOf("_admin/") != -1) {
 			// 是否过滤
 			boolean doFilter = true;
 			for (String s : notFilter) {
@@ -62,6 +62,7 @@ public class AdminFilter extends OncePerRequestFilter {
 				// 如果不执行过滤，则继续
 				filterChain.doFilter(request, response);
 			}
+			//filterChain.doFilter(request, response);
 		} else {
 			// 如果不是后台管理页面
 			filterChain.doFilter(request, response);
