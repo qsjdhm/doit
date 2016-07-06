@@ -12,8 +12,13 @@ module.exports = {
     //},
 
 	//entry: path.resolve(__dirname, './_admin/src/js/index.jsx'),
+	//https://segmentfault.com/q/1010000002607794
+
     entry: {
-        main: path.resolve(__dirname, './_admin/src/js/index.jsx'),
+		//main: path.resolve(__dirname, './_admin/src/js/index.jsx'),
+		//login: path.resolve(__dirname, './_login/src/js/index.jsx'),
+		"_admin/admin": './_admin/src/js/index.jsx',
+		"_login/login": './_login/src/js/index.jsx',
         common: ['react','jquery','antd']
     },
 	output: {
