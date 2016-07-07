@@ -52,4 +52,8 @@ Temporary Items
 /WebContent/_admin/js/
 /WebContent/_admin/img/
 /WebContent/_admin/index.html
+/WebContent/_login/css/
+/WebContent/_login/js/
+/WebContent/_login/img/
+/WebContent/_login/login.html
 /WebContent/WEB-INF/applicationContext.xml

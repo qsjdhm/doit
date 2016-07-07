@@ -3,26 +3,14 @@ var HtmlWebpackPlugin = require('html-webpack-plugin');
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
 var path = require('path');
 var nodeModulesPath = path.resolve(__dirname, 'node_modules');
-var ueditorPath = path.resolve(__dirname, './_admin/ueditor1.6.1');
+
 module.exports = {
-    //entry: {
-    //    page1: path.resolve(__dirname, './src/js/index.jsx'),
-    //        //支持数组形式，将加载数组中的所有模块，但以最后一个模块作为输出
-    //    page2: path.resolve(__dirname, './src/js/hello.jsx')
-    //},
-
-	//entry: path.resolve(__dirname, './_admin/src/js/index.jsx'),
-	//https://segmentfault.com/q/1010000002607794
-
     entry: {
-		main: path.resolve(__dirname, './_admin/src/js/index.jsx'),
-		//login: path.resolve(__dirname, './_admin/src/js/login.jsx'),
-		//"_admin/admin": './_admin/src/js/index.jsx',
-		//"_login/login": './_login/src/js/index.jsx',
+		login: path.resolve(__dirname, './src/js/login.jsx'),
         common: ['react','jquery','antd']
     },
 	output: {
-		path: path.resolve(__dirname, './_admin'),
+		path: path.resolve(__dirname, './'),
         publicPath: "",
         hash: true,
 		filename: 'js/[name].entry.js'
@@ -35,13 +23,11 @@ module.exports = {
 			{
 				test: /\.js$/,
 				loader: 'babel-loader',
-                //exclude: [nodeModulesPath, ueditorPath]
                 exclude: /node_modules/
-				//,query: {presets: ['es2015','react']}
 			},
 			{
 				test: /\.jsx?$/,
-				exclude: /node_modules/,
+                exclude: /node_modules/,
 				loader: 'babel',
 				query: {presets: ['es2015','react']}
 			},
@@ -69,11 +55,13 @@ module.exports = {
         new ExtractTextPlugin("css/[name].css", {allChunks: true}),
         new HtmlWebpackPlugin({                        //根据模板插入css/js等生成最终HTML
             //favicon:'./src/img/favicon.ico', //favicon路径
-            filename: './index.html',    //生成的html存放路径，相对于 path
-            template:'./_admin/src/template/index.html',    //html模板路径
+            filename: './login.html',    //生成的html存放路径，相对于 path
+            template:'./src/template/login.html',    //html模板路径
+            inject:true,    //允许插件修改哪些内容，包括head与body
+            hash:true,    //为静态资源生成hash值
             inject: 'body', //js插入的位置，true/'head'/'body'/false
             hash: true, //为静态资源生成hash值
-            chunks: ['main', 'common'],//需要引入的chunk，不配置就会引入所有页面的资源
+            chunks: ['login', 'common'],//需要引入的chunk，不配置就会引入所有页面的资源
             minify:{    //压缩HTML文件
                 removeComments:true,    //移除HTML中的注释
                 collapseWhitespace:false    //删除空白符与换行符

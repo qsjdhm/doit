@@ -44,7 +44,6 @@ export default class MRoute extends React.Component {
     render() {
         return (
             <Router history={hashHistory}>
-                <Route name="登录页"                                                           path="/"             component={LoginPage}/>
                 <Route name="首页"                             bpath="#/home"                  path="/home"         component={MainPage}>
                     <IndexRoute name="首页"                    bpath="#/home"                                       component={HomePage}/>
                     <Route name="新增文章"   sort="Article"    bpath="#/home/addArticle"       path="addArticle"    component={AddArticlePage}/>
