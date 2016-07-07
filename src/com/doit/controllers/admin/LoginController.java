@@ -79,6 +79,7 @@ public class LoginController {
 			jsonObject.put("success", "1");
 			jsonObject.put("msg", "登陆成功");
 			OperateLoginUser.setUserId(successUser.getSessionId(), String.valueOf(1));
+			//response.sendRedirect("/doit/_admin/#/home");
 			//request.getSession().setAttribute("loginedUser", name);
 		}else if(aFlag!=0){  // 账号错误
 			jsonObject.put("success", "-1");
@@ -86,8 +87,14 @@ public class LoginController {
 		}else if(pFlag!=0){  // 密码错误
 			jsonObject.put("success", "-1");
 			jsonObject.put("msg", "密码错误");
+		}else if(pFlag!=0){  // 密码错误
+			jsonObject.put("success", "-1");
+			jsonObject.put("msg", "账户名和密码错误");
 		}
 		
+		response.setContentType("text/html;charset=utf-8");
+        response.setHeader("Cache-Control", "no-cache"); 
+		response.setCharacterEncoding("UTF-8");
 		response.getWriter().print(jsonObject); 
 	}
 	

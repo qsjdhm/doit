@@ -46,26 +46,25 @@ public class AdminFilter extends OncePerRequestFilter {
 					break;
 				}
 			}
-//			if (doFilter) {
-//				// 执行过滤
-//				// 从session中获取登录者实体
-//				System.out.println("admin:"+request.getSession().getId());
-//				String sessionUser =  OperateLoginUser.getUserId(request.getSession().getId());
-//
-//				//Object obj = request.getSession().getAttribute("loginedUser");
-//				if (null == sessionUser) {
-//					System.out.println(sessionUser);
-//					response.setCharacterEncoding("UTF-8");
-//					response.sendRedirect("/doit/login");
-//				} else {
-//					// 如果session中存在登录者实体，则继续
-//					filterChain.doFilter(request, response);
-//				}
-//			} else {
-//				// 如果不执行过滤，则继续
-//				filterChain.doFilter(request, response);
-//			}
-			filterChain.doFilter(request, response);
+			if (doFilter) {
+				// 执行过滤
+				// 从session中获取登录者实体
+				System.out.println("admin:"+request.getSession().getId());
+				String sessionUser =  OperateLoginUser.getUserId(request.getSession().getId());
+
+				//Object obj = request.getSession().getAttribute("loginedUser");
+				if (null == sessionUser) {
+					System.out.println(sessionUser);
+					response.setCharacterEncoding("UTF-8");
+					response.sendRedirect("/doit/_login/#/");
+				} else {
+					// 如果session中存在登录者实体，则继续
+					filterChain.doFilter(request, response);
+				}
+			} else {
+				// 如果不执行过滤，则继续
+				filterChain.doFilter(request, response);
+			}
 		} else {
 			// 如果不是后台管理页面
 			filterChain.doFilter(request, response);

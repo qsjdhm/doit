@@ -19,7 +19,7 @@ export default class LRoute extends React.Component {
         return (
             <Router history={hashHistory}>
                 <Route path="/" component={LoginPage}></Route>
-                <Route path="*" component={NotFoundPage}></Route>
+				<Route path="*" component={NotFoundPage}/>
             </Router>
         );
     }

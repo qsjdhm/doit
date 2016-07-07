@@ -3,13 +3,10 @@
  */
 
 
-
-
 import React from 'react';
 import ReactDOM from 'react-dom';
 
 import jQuery from 'jquery';
-
 
 
 import { message } from 'antd';
@@ -50,20 +47,18 @@ export default class LoginPage extends React.Component {
     // 用户名变化
     nameChange(e) {
         const name = e.target.value;
-        // 设置state中的图书标签数据
         this.settingState(name, "no");
     }
 
     // 密码变化
     passwordChange(e) {
         const password = e.target.value;
-        // 设置state中的图书标签数据
         this.settingState("no", password);
     }
 
     // 提交按钮点击
     submitClick() {
-        // 新增图书
+        // 登录
         this.login();
     }
 
@@ -71,7 +66,6 @@ export default class LoginPage extends React.Component {
 
 
     login() {
-        const self = this;
         jQuery.ajax({
             type : "POST",
             url : "/doit/loginAction",
@@ -84,7 +78,9 @@ export default class LoginPage extends React.Component {
             success : function(cbData) {
                 if(cbData.success === "1"){
                     window.location.href = "/doit/_admin/#/home";
-                }
+                } else {
+					message.error(cbData.msg);
+				}
             },error :function(){
                 message.error("登录连接出错！");
             }
@@ -100,8 +96,8 @@ export default class LoginPage extends React.Component {
                     <div className="container">
                         <h1>Welcome</h1>
                         <form className="form">
-                            <input type="text" placeholder="Username" />
-                            <input type="password" placeholder="Password" />
+                            <input onChange={this.nameChange} type="text" placeholder="Username" />
+                            <input onChange={this.passwordChange} type="password" placeholder="Password" />
                             <button onClick={this.submitClick} >Login</button>
                         </form>
                     </div>

@@ -6,7 +6,6 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Router, Route, IndexRoute, hashHistory } from 'react-router';
 
-import LoginPage         from './page/LoginPage';
 import MainPage          from './page/MainPage';
 import HomePage          from './page/HomePage';
 import NotFoundPage      from './page/NotFoundPage';
