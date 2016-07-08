@@ -46,7 +46,7 @@ module.exports = {
             {
                 test: /\.(gif|jpg|png|woff|svg|eot|ttf)\??.*$/,
                 // 超过limit的图片会让 url-loader处理
-                loader: 'url-loader?limit=10&name=img/[hash:8].[name].[ext]'
+                loader: 'url-loader?limit=1&name=img/[hash:8].[name].[ext]'
             }
 
 		] 
@@ -67,11 +67,12 @@ module.exports = {
                 collapseWhitespace:false    //删除空白符与换行符
             }
         }),
-        new webpack.optimize.UglifyJsPlugin({
-            compress: {
-                warnings: false
-            }
-        }),
+        // 压缩
+        //new webpack.optimize.UglifyJsPlugin({
+        //    compress: {
+        //        warnings: false
+        //    }
+        //}),
         new webpack.optimize.CommonsChunkPlugin('common',  'js/common.entry.js')
     ]
 
