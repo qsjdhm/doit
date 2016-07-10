@@ -66,6 +66,21 @@ export default class LoginPage extends React.Component {
 
 
     login() {
+		//fetch("/doit/loginAction", {
+		//	method: "POST",
+		//	headers: {
+		//		"Content-Type": "application/x-www-form-urlencoded; charset=utf-8"
+		//	},
+		//	body: "name="+this.state.name+"&password="+this.state.password
+		//}).then(function(res) {
+		//	if (res.ok) {
+		//		res.json().then(function(obj) {
+		//			return obj;
+		//		})
+		//	}
+		//}, function(e) {
+		//	alert("Error submitting form!");
+		//});
         jQuery.ajax({
             type : "POST",
             url : "/doit/loginAction",
@@ -77,7 +92,7 @@ export default class LoginPage extends React.Component {
             contentType: "application/x-www-form-urlencoded; charset=utf-8",
             success : function(cbData) {
                 if(cbData.success === "1"){
-                    window.location.href = "/doit/_admin/#/home";
+                    window.location.href = "/doit/_admin/#/";
                 } else {
 					message.error(cbData.msg);
 				}

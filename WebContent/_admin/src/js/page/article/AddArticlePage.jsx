@@ -18,6 +18,8 @@ import SelectComponent     from '../../components/select/js/SelectComponent';
 import UeditorComponent    from '../../components/ueditor/js/UeditorComponent';
 import TagComponent        from '../../components/tag/js/TagComponent';
 
+import ajaxComponent        from '../../components/ajax/js/ajaxComponent';
+
 import '../../../css/article.less';
 
 
@@ -134,83 +136,75 @@ export default class AddArticlePage extends React.Component {
     /******************************事件响应方法--结束***********************************/
 
 
-
     // 首先得到文章的分类
     byTypeGetSort() {
-        const self = this;
-        jQuery.ajax({
-            type : "POST",
-            url : "/doit/sortAction/byTypeGetSort",
-            data : {
-                "type" : "article"
-            },
-            dataType:"json",
-            contentType: "application/x-www-form-urlencoded; charset=utf-8",
-            success : function(cbData) {
-                if(cbData.success === "1"){
-                    let sortArray = [];
-                    for(let item of cbData.data){
-                        const sortObj = {
-                            "id" : item.Sort_ID,
-                            "name" : item.Sort_Name
-                        };
-                        sortArray.push(sortObj);
-                    }
-
-                    // 设置state中的分类数据
-                    self.settingState(sortArray, sortArray[0].id, sortArray[0].name, "no", "no", "no", "no");
-
-                    // 设置sortDOM--因为ajax之后select的默认数据不会自动设置
-                    self.setState({
-                        sortDOM : <SelectComponent
-                                    defaultValue={sortArray[0].id}
-                                    data={sortArray}
-                                    selected={self.sortSelected}
-                                  />
-                    });
-                }
-            },error :function(){
-                message.error("请求文章分类连接出错！");
-            }
-        });
+		const url = "/doit/sortAction/byTypeGetSort";
+		const method = "POST";
+		const body = {
+			"type" : "article"
+		};
+		const errInfo = "请求文章分类连接出错！";
+		ajaxComponent.send(this, url, method, body, errInfo, this.requestSortCallback);
     }
+
+	// 请求文章分类的回调方法
+	requestSortCallback(cbData) {
+		if(cbData.success === "1"){
+			let sortArray = [];
+			for(let item of cbData.data){
+				const sortObj = {
+					"id" : item.Sort_ID,
+					"name" : item.Sort_Name
+				};
+				sortArray.push(sortObj);
+			}
+			// 设置state中的分类数据
+			this.settingState(sortArray, sortArray[0].id, sortArray[0].name, "no", "no", "no", "no");
+
+			// 设置sortDOM--因为ajax之后select的默认数据不会自动设置
+			this.setState({
+				sortDOM : <SelectComponent
+					defaultValue={sortArray[0].id}
+					data={sortArray}
+					selected={this.sortSelected}
+					/>
+			});
+		}
+	}
 
     // 获取标签列表
     getTags() {
-        const self = this;
-        jQuery.ajax({
-            type : "POST",
-            url : "/doit/sortAction/byTypeGetSort",
-            data : {
-                "type" : "tag"
-            },
-            dataType:"json",
-            contentType: "application/x-www-form-urlencoded; charset=utf-8",
-            success : function(cbData) {
-                if(cbData.success === "1"){
-                    let tagArray = [];
-                    for(let item of cbData.data){
-                        const sortObj = {
-                            "id" : item.Sort_ID,
-                            "name" : item.Sort_Name
-                        };
-                        tagArray.push(sortObj);
-                    }
-
-                    // 设置sortDOM--因为ajax之后select的默认数据不会自动设置
-                    self.setState({
-                        tagDOM : <TagComponent
-									width={820}
-                                    data={tagArray}
-                                    selected={self.tagSelected}
-                                 />
-                    });
-                }
-            },error :function(){
-                message.error("请求文章标签连接出错！");
-            }
-        });
+		const url = "/doit/sortAction/byTypeGetSort";
+		const method = "POST";
+		const body = {
+			"type" : "tag"
+		};
+		const errInfo = "请求文章标签连接出错！";
+		ajaxComponent.send(this, url, method, body, errInfo, this.requestTagCallback);
     }
+
+	// 请求标签的回调方法
+	requestTagCallback(cbData) {
+		if(cbData.success === "1"){
+			let tagArray = [];
+			for(let item of cbData.data){
+				const sortObj = {
+					"id" : item.Sort_ID,
+					"name" : item.Sort_Name
+				};
+				tagArray.push(sortObj);
+			}
+
+			// 设置sortDOM--因为ajax之后select的默认数据不会自动设置
+			this.setState({
+				tagDOM : <TagComponent
+					width={820}
+					data={tagArray}
+					selected={self.tagSelected}
+					/>
+			});
+		}
+	}
 
     // 新增文章
     submitData() {
