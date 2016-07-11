@@ -6,10 +6,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import jQuery from 'jquery';
-
-
 import { message } from 'antd';
+
+import fetchComponent      from '../components/fetch/js/fetchComponent';
+
 
 import '../../css/login.less';
 
@@ -66,42 +66,24 @@ export default class LoginPage extends React.Component {
 
 
     login() {
-		//fetch("/doit/loginAction", {
-		//	method: "POST",
-		//	headers: {
-		//		"Content-Type": "application/x-www-form-urlencoded; charset=utf-8"
-		//	},
-		//	body: "name="+this.state.name+"&password="+this.state.password
-		//}).then(function(res) {
-		//	if (res.ok) {
-		//		res.json().then(function(obj) {
-		//			return obj;
-		//		})
-		//	}
-		//}, function(e) {
-		//	alert("Error submitting form!");
-		//});
-        jQuery.ajax({
-            type : "POST",
-            url : "/doit/loginAction",
-            data : {
-                "name" : this.state.name,
-                "password" : this.state.password
-            },
-            dataType:"json",
-            contentType: "application/x-www-form-urlencoded; charset=utf-8",
-            success : function(cbData) {
-                if(cbData.success === "1"){
-                    window.location.href = "/doit/_admin/#/";
-                } else {
-					message.error(cbData.msg);
-				}
-            },error :function(){
-                message.error("登录连接出错！");
-            }
-        });
+        const url = "/doit/loginAction";
+        const method = "POST";
+        const body = {
+            "name" : this.state.name,
+            "password" : this.state.password
+        };
+        const errInfo = "登录连接出错！";
+        fetchComponent.send(this, url, method, body, errInfo, this.requestLoginCallback);
     }
 
+    // 请求文章分类的回调方法
+    requestLoginCallback(cbData) {
+        if(cbData.success === "1"){
+            window.location.href = "/doit/_admin/#/";
+        } else {
+            message.error(cbData.msg);
+        }
+    }
 
 
     render() {

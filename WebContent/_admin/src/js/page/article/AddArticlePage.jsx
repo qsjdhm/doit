@@ -17,8 +17,7 @@ import BreadcrumbComponent from '../../components/breadcrumb/js/BreadcrumbCompon
 import SelectComponent     from '../../components/select/js/SelectComponent';
 import UeditorComponent    from '../../components/ueditor/js/UeditorComponent';
 import TagComponent        from '../../components/tag/js/TagComponent';
-
-import ajaxComponent        from '../../components/ajax/js/ajaxComponent';
+import fetchComponent      from '../../components/fetch/js/fetchComponent';
 
 import '../../../css/article.less';
 
@@ -144,7 +143,7 @@ export default class AddArticlePage extends React.Component {
 			"type" : "article"
 		};
 		const errInfo = "请求文章分类连接出错！";
-		ajaxComponent.send(this, url, method, body, errInfo, this.requestSortCallback);
+        fetchComponent.send(this, url, method, body, errInfo, this.requestSortCallback);
     }
 
 	// 请求文章分类的回调方法
@@ -180,7 +179,7 @@ export default class AddArticlePage extends React.Component {
 			"type" : "tag"
 		};
 		const errInfo = "请求文章标签连接出错！";
-		ajaxComponent.send(this, url, method, body, errInfo, this.requestTagCallback);
+        fetchComponent.send(this, url, method, body, errInfo, this.requestTagCallback);
     }
 
 	// 请求标签的回调方法
@@ -200,7 +199,7 @@ export default class AddArticlePage extends React.Component {
 				tagDOM : <TagComponent
 					width={820}
 					data={tagArray}
-					selected={self.tagSelected}
+					selected={this.tagSelected}
 					/>
 			});
 		}
@@ -210,38 +209,28 @@ export default class AddArticlePage extends React.Component {
     submitData() {
         const self = this;
         setTimeout(function() {
-            const sortId = self.state.sortId;
-            const sortName = encodeURI(encodeURI(self.state.sortName));
-            const title = encodeURI(encodeURI(self.state.title));
-            const content = encodeURI(encodeURI(self.state.content));
-            const tags = encodeURI(encodeURI(self.state.tags.join(",")));
-
-            jQuery.ajax({
-                type : "POST",
-                url : "/doit/articleAction/addArticle",
-                data : {
-                    "sortId"   : sortId,
-                    "sortName" : sortName,
-                    "title"    : title,
-                    "content"  : content,
-                    "tags"     : tags
-                },
-                dataType:"json",
-                contentType: "application/x-www-form-urlencoded; charset=utf-8",
-                success : function(cbData) {
-                    console.info(cbData);
-                    // 因为富文本无法实时获取，所以在这里保存到state中
-                    self.settingState("no", "no", "no", "no", content, "no", false);
-                    if(cbData.success === "1") {
-                        message.success(cbData.msg+"！", 3);
-                    } else {
-                        message.error(cbData.msg+"！", 3);
-                    }
-                },error :function(){
-                    message.error("新增文章连接出错！");
-                }
-            });
+            const url = "/doit/articleAction/addArticle";
+            const method = "POST";
+            const body = {
+                "sortId"   : self.state.sortId,
+                "sortName" : encodeURI(encodeURI(self.state.sortName)),
+                "title"    : encodeURI(encodeURI(self.state.title)),
+                "content"  : encodeURI(encodeURI(self.state.content)),
+                "tags"     : encodeURI(encodeURI(self.state.tags.join(",")))
+            };
+            const errInfo = "新增文章连接出错！";
+            fetchComponent.send(self, url, method, body, errInfo, self.requestSubmitCallback);
         }, 0);
+    }
+
+    // 保存文章的回调方法
+    requestSubmitCallback(cbData) {
+        this.settingState("no", "no", "no", "no", "no", "no", false);
+        if(cbData.success === "1") {
+            message.success(cbData.msg+"！", 3);
+        } else {
+            message.error(cbData.msg+"！", 3);
+        }
     }
 
     render() {
