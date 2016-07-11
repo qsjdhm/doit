@@ -15,6 +15,7 @@ import BreadcrumbComponent from '../../components/breadcrumb/js/BreadcrumbCompon
 import SelectComponent     from '../../components/select/js/SelectComponent';
 import TableComponent      from '../../components/table/js/TableComponent';
 import PaginationComponent from '../../components/pagination/js/PaginationComponent';
+import fetchComponent      from '../../components/fetch/js/fetchComponent';
 
 import '../../../css/article.less';
 
@@ -124,104 +125,96 @@ export default class DelArticlePage extends React.Component {
 
     // 首先得到文章的分类
     byTypeGetSort() {
-        const self = this;
-        jQuery.ajax({
-            type : "POST",
-            url : "/doit/sortAction/byTypeGetSort",
-            data : {
-                "type" : "article"
-            },
-            dataType:"json",
-            contentType: "application/x-www-form-urlencoded; charset=utf-8",
-            success : function(cbData) {
-                if(cbData.success === "1"){
-                    let sortArray = [];
-                    for(let item of cbData.data){
-                        const sortObj = {
-                            "id" : item.Sort_ID,
-                            "name" : item.Sort_Name
-                        };
-                        sortArray.push(sortObj);
-                    }
-
-                    // 设置state中的分类数据
-                    self.settingState(sortArray[0].id, "no", "no", "no", "no", "no");
-
-                    // 设置sortDOM--因为ajax之后select的默认数据不会自动设置
-                    self.setState({
-                        sortDOM : <SelectComponent
-                            defaultValue={sortArray[0].id}
-                            data={sortArray}
-                            selected={self.sortSelected} />
-                    });
-
-                    // 根据第一个分类id获取文章列表
-                    self.getArticleCount(sortArray[0].id);
-                }
-            },error :function(){
-                message.error("请求文章分类连接出错！");
-            }
-        });
+		const url = "/doit/sortAction/byTypeGetSort";
+		const method = "POST";
+		const body = {
+			"type" : "article"
+		};
+		const errInfo = "请求文章分类连接出错！";
+		fetchComponent.send(this, url, method, body, errInfo, this.requestSortCallback);
     }
+
+	// 请求文章分类的回调方法
+	requestSortCallback(cbData) {
+
+		if(cbData.success === "1"){
+			let sortArray = [];
+			for(let item of cbData.data){
+				const sortObj = {
+					"id" : item.Sort_ID,
+					"name" : item.Sort_Name
+				};
+				sortArray.push(sortObj);
+			}
+
+			// 设置state中的分类数据
+			this.settingState(sortArray[0].id, "no", "no", "no", "no", "no");
+
+			// 设置sortDOM--因为ajax之后select的默认数据不会自动设置
+			this.setState({
+				sortDOM : <SelectComponent
+					defaultValue={sortArray[0].id}
+					data={sortArray}
+					selected={this.sortSelected} />
+			});
+
+			// 根据第一个分类id获取文章列表
+			this.getArticleCount(sortArray[0].id);
+		}
+	}
 
     // 根据分类id获取文章列表
     getArticleCount(sortId) {
-        const self = this;
-        jQuery.ajax({
-            type : "POST",
-            url : "/doit/articleAction/getArticleCount",
-            data : {
-                "sort" : sortId
-            },
-            dataType:"json",
-            contentType: "application/x-www-form-urlencoded; charset=utf-8",
-            success : function(cbData) {
-                if(cbData.success === "1"){
-
-                    // 设置state中的分类数据
-                    self.settingState(sortId, "no", "no", "no", "no", "no");
-
-                    // paginationDOM--因为ajax之后select的默认数据不会自动设置
-                    self.setState({
-                        paginationDOM : <PaginationComponent
-                            count={cbData.data}
-                            pageSize={self.state.pageSize}
-                            pageed={self.paginationClick}/>
-                    });
-
-                    // 根据当前分类加载第一页文章数据
-                    self.getArticleList(1);
-                }
-            },error :function(){
-                message.error("请求文章个数连接出错！");
-            }
-        });
+		const url = "/doit/articleAction/getArticleCount";
+		const method = "POST";
+		const body = {
+			"sort" : sortId
+		};
+		const errInfo = "请求文章总个数连接出错！";
+		fetchComponent.send(this, url, method, body, errInfo, this.requestCountCallback);
     }
+
+	// 请求文章总个数的回调方法
+	requestCountCallback(cbData) {
+
+		if(cbData.success === "1"){
+			// 设置state中的分类数据
+			this.settingState(sortId, "no", "no", "no", "no", "no");
+
+			// paginationDOM--因为ajax之后select的默认数据不会自动设置
+			this.setState({
+				paginationDOM : <PaginationComponent
+					count={cbData.data}
+					pageSize={this.state.pageSize}
+					pageed={this.paginationClick}/>
+			});
+
+			// 根据当前分类加载第一页文章数据
+			this.getArticleList(1);
+		}
+	}
 
     // 根据当前分类加载第一页文章数据
     getArticleList(nowPage) {
-        const self = this;
-        jQuery.ajax({
-            type : "POST",
-            url : "/doit/articleAction/getArticleList",
-            data : {
-                "sort" : self.state.sortId,
-                "page" : nowPage,
-                "size" : self.state.pageSize
-            },
-            dataType:"json",
-            contentType: "application/x-www-form-urlencoded; charset=utf-8",
-            success : function(cbData) {
-                if(cbData.success === "1"){
-                    console.info(cbData);
-                    // 组织表格数据
-                    self.dealTableData(cbData);
-                }
-            },error :function(){
-                message.error("请求文章列表连接出错！");
-            }
-        });
+		const url = "/doit/articleAction/getArticleList";
+		const method = "POST";
+		const body = {
+			"sort" : self.state.sortId,
+			"page" : nowPage,
+			"size" : self.state.pageSize
+		};
+		const errInfo = "请求文章列表连接出错！";
+		fetchComponent.send(this, url, method, body, errInfo, this.requestArticleListCallback);
     }
+
+	// 请求文章列表的回调方法
+	requestArticleListCallback(cbData) {
+
+		if(cbData.success === "1"){
+			// 组织表格数据
+			this.dealTableData(cbData);
+		}
+	}
 
     // 组织表格数据
     dealTableData(cbData) {
@@ -286,27 +279,24 @@ export default class DelArticlePage extends React.Component {
 
     // 删除文章
     delArticleList(selectStr) {
-        const self = this;
-        jQuery.ajax({
-            type : "POST",
-            url : "/doit/articleAction/delArticle",
-            data : {
-                "selectId" : selectStr
-            },
-            dataType:"json",
-            contentType: "application/x-www-form-urlencoded; charset=utf-8",
-            success : function(cbData) {
-                if(cbData.success === "1"){
-                    self.settingState("no", "no", "no", false, "no", false);
-                    message.success(cbData.msg+"！", 3);
-                    // 根据分类id获取文章列表
-                    self.getArticleCount(self.state.sortId);
-                }
-            },error :function(){
-                message.error("删除文章列表连接出错！");
-            }
-        });
+		const url = "/doit/articleAction/getArticleList";
+		const method = "POST";
+		const body = {
+			"selectId" : selectStr
+		};
+		const errInfo = "删除文章列表连接出错！";
+		fetchComponent.send(this, url, method, body, errInfo, this.requestDelCallback);
     }
+
+	// 请求删除文章回调放方法
+	requestDelCallback(cbData) {
+		if(cbData.success === "1"){
+			this.settingState("no", "no", "no", false, "no", false);
+			message.success(cbData.msg+"！", 3);
+			// 根据分类id获取文章列表
+			this.getArticleCount(this.state.sortId);
+		}
+	}
 
 
 

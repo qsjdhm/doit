@@ -5,6 +5,7 @@
 
 import React from 'react';
 import ReactDOM from 'react-dom';
+import jQuery from 'jquery';
 
 import { message } from 'antd';
 
@@ -66,23 +67,48 @@ export default class LoginPage extends React.Component {
 
 
     login() {
-        const url = "/doit/loginAction";
-        const method = "POST";
-        const body = {
-            "name" : this.state.name,
-            "password" : this.state.password
-        };
-        const errInfo = "登录连接出错！";
-        fetchComponent.send(this, url, method, body, errInfo, this.requestLoginCallback);
+		const self = this;
+
+		jQuery.ajax({
+			type : "POST",
+			url : "/doit/loginAction",
+			data : {
+				"name" : self.state.name,
+				"password" : self.state.password
+			},
+			dataType:"json",
+			contentType: "application/x-www-form-urlencoded; charset=utf-8",
+			success : function(cbData) {
+				if(cbData.success === "1"){
+					window.location.href = "/doit/_admin/#/";
+				} else {
+					message.error(cbData.msg);
+				}
+			},error :function(){
+				message.error("请求文章列表连接出错！");
+			}
+		});
+
+
+
+        //const url = "/doit/loginAction";
+        //const method = "POST";
+        //const body = {
+        //    "name" : this.state.name,
+        //    "password" : this.state.password
+        //};
+        //const errInfo = "登录连接出错！";
+        //fetchComponent.send(this, url, method, body, errInfo, this.requestLoginCallback);
     }
 
     // 请求文章分类的回调方法
     requestLoginCallback(cbData) {
-        if(cbData.success === "1"){
-            window.location.href = "/doit/_admin/#/";
-        } else {
-            message.error(cbData.msg);
-        }
+		window.location.href = "/doit/_admin/#/";
+        //if(cbData.success === "1"){
+        //    window.location.href = "/doit/_admin/#/";
+        //} else {
+        //    message.error(cbData.msg);
+        //}
     }
 
 

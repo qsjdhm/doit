@@ -78,8 +78,10 @@ public class LoginController {
 		if(aFlag==0 && pFlag == 0){  // 成功
 			jsonObject.put("success", "1");
 			jsonObject.put("msg", "登陆成功");
+			System.out.println("登陆成功");
 			OperateLoginUser.setUserId(successUser.getSessionId(), String.valueOf(1));
-			//response.sendRedirect("/doit/_admin/#/home");
+			//response.sendRedirect("/doit/_admin/#/");
+			//request.getRequestDispatcher("/doit/_admin/#/").forward(request,response);
 			//request.getSession().setAttribute("loginedUser", name);
 		}else if(aFlag!=0){  // 账号错误
 			jsonObject.put("success", "-1");
