@@ -10,6 +10,7 @@ import { message } from 'antd';
 function init(self, url, method, body, errorInfo, callback) {
     fetch(url, {
         method: method,
+        credentials: "include",
         headers: {
             "Content-Type": "application/x-www-form-urlencoded; charset=utf-8"
         },

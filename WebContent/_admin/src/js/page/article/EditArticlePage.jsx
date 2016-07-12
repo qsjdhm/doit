@@ -4,7 +4,6 @@
 
 import React from 'react';
 import ReactDOM from 'react-dom';
-import jQuery from 'jquery';
 
 import { Modal, Form, Input, message, Row, Col } from 'antd';
 
@@ -15,9 +14,9 @@ import BreadcrumbComponent from '../../components/breadcrumb/js/BreadcrumbCompon
 import SelectComponent     from '../../components/select/js/SelectComponent';
 import TableComponent      from '../../components/table/js/TableComponent';
 import PaginationComponent from '../../components/pagination/js/PaginationComponent';
-
 import UeditorComponent    from '../../components/ueditor/js/UeditorComponent';
 import TagComponent        from '../../components/tag/js/TagComponent';
+import fetchComponent      from '../../components/fetch/js/fetchComponent';
 
 export default class EditArticlePage extends React.Component {
     constructor(props) {
@@ -207,7 +206,6 @@ export default class EditArticlePage extends React.Component {
 
 	// 标签切换
 	mTagSelected(tag){
-		console.info(tag);
 		// 设置state中的文章标签数据
 		this.settingState("no", "no", "no",
 						"no", "no", "no", "no", "no",
@@ -218,140 +216,129 @@ export default class EditArticlePage extends React.Component {
 
 
     // 首先得到文章的分类
-	byTypeGetSort() {
-		const self = this;
-		jQuery.ajax({
-			type : "POST",
-			url : "/doit/sortAction/byTypeGetSort",
-			data : {
-				"type" : "article"
-			},
-			dataType:"json",
-			contentType: "application/x-www-form-urlencoded; charset=utf-8",
-			success : function(cbData) {
-				if(cbData.success === "1"){
-					let sortArray = [];
-					for(let item of cbData.data){
-						const sortObj = {
-							"id" : item.Sort_ID,
-							"name" : item.Sort_Name
-						};
-						sortArray.push(sortObj);
-					}
+    byTypeGetSort() {
+        const url = "/doit/sortAction/byTypeGetSort";
+        const method = "POST";
+        const body = {
+            "type" : "article"
+        };
+        const errInfo = "请求文章分类连接出错！";
+        fetchComponent.send(this, url, method, body, errInfo, this.requestSortCallback);
+    }
 
-                    // 设置state中的分类数据
-                    self.settingState(sortArray[0].id, "no", "no",
-									"no", sortArray, sortArray[0].id, sortArray[0].name, "no",
-									"no", "no", "no", "no");
+    // 请求文章分类的回调方法
+    requestSortCallback(cbData) {
 
-					// 设置sortDOM--因为ajax之后select的默认数据不会自动设置
-					self.setState({
-						sortDOM : <SelectComponent
-									defaultValue={sortArray[0].id}
-									data={sortArray}
-									selected={self.sortSelected} />
-					});
+        if(cbData.success === "1"){
+            let sortArray = [];
+            for(let item of cbData.data){
+                const sortObj = {
+                    "id" : item.Sort_ID,
+                    "name" : item.Sort_Name
+                };
+                sortArray.push(sortObj);
+            }
 
-					// 根据第一个分类id获取文章列表
-					self.getArticleCount(sortArray[0].id);
-				}
-			},error :function(){
-                message.error("请求文章分类连接出错！");
-			}
-		});
-	}
+            // 设置state中的分类数据
+            this.settingState(sortArray[0].id, "no", "no",
+                "no", sortArray, sortArray[0].id, sortArray[0].name, "no",
+                "no", "no", "no", "no");
+
+            // 设置sortDOM--因为ajax之后select的默认数据不会自动设置
+            this.setState({
+                sortDOM : <SelectComponent
+                    defaultValue={sortArray[0].id}
+                    data={sortArray}
+                    selected={this.sortSelected} />
+            });
+
+            // 根据第一个分类id获取文章列表
+            this.getArticleCount(sortArray[0].id);
+        }
+    }
 
 	// 获取标签列表
 	getTags() {
-		const self = this;
-		jQuery.ajax({
-			type : "POST",
-			url : "/doit/sortAction/byTypeGetSort",
-			data : {
-				"type" : "tag"
-			},
-			dataType:"json",
-			contentType: "application/x-www-form-urlencoded; charset=utf-8",
-			success : function(cbData) {
-				if(cbData.success === "1"){
-					let tagArray = [];
-					for(let item of cbData.data){
-						const sortObj = {
-							"id" : item.Sort_ID,
-							"name" : item.Sort_Name
-						};
-						tagArray.push(sortObj);
-					}
-					self.settingState("no", "no", "no",
-						"no", "no", "no", "no", tagArray,
-						"no", "no", "no", "no");
-				}
-			},error :function(){
-				message.error("请求文章标签连接出错！");
-			}
-		});
+        const url = "/doit/sortAction/byTypeGetSort";
+        const method = "POST";
+        const body = {
+            "type" : "tag"
+        };
+        const errInfo = "请求文章标签连接出错！";
+        fetchComponent.send(this, url, method, body, errInfo, this.requestTagCallback);
 	}
+
+    // 请求文章标签的回调方法
+    requestTagCallback(cbData) {
+        if(cbData.success === "1"){
+            let tagArray = [];
+            for(let item of cbData.data){
+                const sortObj = {
+                    "id" : item.Sort_ID,
+                    "name" : item.Sort_Name
+                };
+                tagArray.push(sortObj);
+            }
+            this.settingState("no", "no", "no",
+                "no", "no", "no", "no", tagArray,
+                "no", "no", "no", "no");
+        }
+    }
 
 	// 根据分类id获取文章列表
 	getArticleCount(sortId) {
-		const self = this;
-		jQuery.ajax({
-			type : "POST",
-			url : "/doit/articleAction/getArticleCount",
-			data : {
-				"sort" : sortId
-			},
-			dataType:"json",
-			contentType: "application/x-www-form-urlencoded; charset=utf-8",
-			success : function(cbData) {
-				if(cbData.success === "1"){
-
-                    // 设置state中的分类数据
-                    self.settingState(sortId, "no", "no",
-									"no", "no", "no", "no", "no",
-									"no", "no", "no", "no");
-
-					// paginationDOM--因为ajax之后select的默认数据不会自动设置
-					self.setState({
-						paginationDOM : <PaginationComponent
-											count={cbData.data}
-											pageSize={self.state.pageSize}
-											pageed={self.paginationClick}/>
-					});
-
-					// 根据当前分类加载第一页文章数据
-					self.getArticleList(1);
-				}
-			},error :function(){
-                message.error("请求文章个数连接出错！");
-			}
-		});
+        const url = "/doit/articleAction/getArticleCount";
+        const method = "POST";
+        const body = {
+            "sort" : sortId
+        };
+        const errInfo = "请求文章总个数连接出错！";
+        fetchComponent.send(this, url, method, body, errInfo, this.requestCountCallback);
 	}
+
+    // 请求文章总个数的回调方法
+    requestCountCallback(cbData) {
+
+        if(cbData.success === "1"){
+            // 设置state中的分类数据
+            this.settingState(this.state.sortId, "no", "no",
+                "no", "no", "no", "no", "no",
+                "no", "no", "no", "no");
+
+            // paginationDOM--因为ajax之后select的默认数据不会自动设置
+            this.setState({
+                paginationDOM : <PaginationComponent
+                    count={cbData.data}
+                    pageSize={this.state.pageSize}
+                    pageed={this.paginationClick}/>
+            });
+
+            // 根据当前分类加载第一页文章数据
+            this.getArticleList(1);
+        }
+    }
 
 	// 根据当前分类加载第一页文章数据
 	getArticleList(nowPage) {
-		const self = this;
-		jQuery.ajax({
-			type : "POST",
-			url : "/doit/articleAction/getArticleList",
-			data : {
-				"sort" : self.state.sortId,
-				"page" : nowPage,
-				"size" : self.state.pageSize
-			},
-			dataType:"json",
-			contentType: "application/x-www-form-urlencoded; charset=utf-8",
-			success : function(cbData) {
-				if(cbData.success === "1"){
-					console.info(cbData);
-					// 组织表格数据
-					self.dealTableData(cbData);
-				}
-			},error :function(){
-                message.error("请求文章列表连接出错！");
-			}
-		});
+        const url = "/doit/articleAction/getArticleList";
+        const method = "POST";
+        const body = {
+            "sort" : this.state.sortId,
+            "page" : nowPage,
+            "size" : this.state.pageSize
+        };
+        const errInfo = "请求文章列表连接出错！";
+        fetchComponent.send(this, url, method, body, errInfo, this.requestArticleListCallback);
 	}
+
+    // 请求文章列表的回调方法
+    requestArticleListCallback(cbData) {
+
+        if(cbData.success === "1"){
+            // 组织表格数据
+            this.dealTableData(cbData);
+        }
+    }
 
 	// 组织表格数据
 	dealTableData(cbData) {
@@ -410,30 +397,27 @@ export default class EditArticlePage extends React.Component {
 
 	// 根据ID获取文章全部信息
 	getArticle(id) {
-		const self = this;
-		jQuery.ajax({
-			type : "POST",
-			url : "/doit/articleAction/getArticle",
-			data : {
-				"selectId" : id
-			},
-			dataType:"json",
-			contentType: "application/x-www-form-urlencoded; charset=utf-8",
-			success : function(cbData) {
-				console.info(cbData);
-				const tagArray = cbData.tag.split(",");
-				if(cbData.success === "1"){
-					self.settingState("no", "no", "no",
-						"no", "no", cbData.sortId, cbData.sortName, "no",
-						cbData.id, cbData.title, cbData.content, tagArray);
-					// 初始化弹出窗所使用的组件
-					self.initModelComponentsData();
-				}
-			},error :function(){
-				message.error("请求文章信息连接出错！");
-			}
-		});
+        const url = "/doit/articleAction/getArticle";
+        const method = "POST";
+        const body = {
+            "selectId" : id
+        };
+        const errInfo = "请求文章信息连接出错！";
+        fetchComponent.send(this, url, method, body, errInfo, this.requestArticleCallback);
 	}
+
+    // 请求文章列表的回调方法
+    requestArticleCallback(cbData) {
+
+        const tagArray = cbData.tag.split(",");
+        if(cbData.success === "1"){
+            this.settingState("no", "no", "no",
+                "no", "no", cbData.sortId, cbData.sortName, "no",
+                cbData.id, cbData.title, cbData.content, tagArray);
+            // 初始化弹出窗所使用的组件
+            this.initModelComponentsData();
+        }
+    }
 
 	// 初始化弹出窗所使用的组件
 	initModelComponentsData() {
@@ -459,56 +443,46 @@ export default class EditArticlePage extends React.Component {
 		});
 	}
 
-
 	// 更新文章信息
 	updateArticle() {
-		const self = this;
-		setTimeout(function() {
-			const sortId = self.state.mSortId;
-			const sortName = encodeURI(encodeURI(self.state.mSortName));
-			const id = self.state.mId;
-			const title = encodeURI(encodeURI(self.state.mTitle));
-			const content = self.state.mContent;
-			const tags = encodeURI(encodeURI(self.state.mTags.join(",")));
-
-			jQuery.ajax({
-				type : "POST",
-				url : "/doit/articleAction/updateArticle",
-				data : {
-					"sortId"   : sortId,
-					"sortName" : sortName,
-					"id"       : id,
-					"title"    : title,
-					"content"  : content,
-					"tags"     : tags
-				},
-				dataType:"json",
-				contentType: "application/x-www-form-urlencoded; charset=utf-8",
-				success : function(cbData) {
-					console.info(cbData);
-					if(cbData.success === "1") {
-						self.settingState("no", "no", "no",
-							false, "no", "no", "no", "no",
-							"", "", "", "");
-						self.setState({
-							mSortDOM : false,
-							mUeditorDOM : false,
-							mTagDOM : false
-						});
-						message.success(cbData.msg+"！", 3);
-						// 刷新文章列表
-						self.getArticleList(self.state.nowPage);
-					} else {
-						message.error(cbData.msg+"！", 3);
-					}
-				},error :function(){
-					message.error("修改文章连接出错！");
-				}
-			});
-		}, 0);
-
-
+        const self = this;
+        setTimeout(function() {
+            const url = "/doit/articleAction/updateArticle";
+            const method = "POST";
+            const body = {
+                "id"       : self.state.mId,
+                "sortId"   : self.state.mSortId,
+                "sortName" : encodeURI(encodeURI(self.state.mSortName)),
+                "title"    : encodeURI(encodeURI(self.state.mTitle)),
+                "content"  : self.state.mContent,
+                "tags"     : encodeURI(encodeURI(self.state.mTags.join(",")))
+            };
+            const errInfo = "修改文章连接出错！";
+            fetchComponent.send(self, url, method, body, errInfo, self.requestUpdateCallback);
+        }, 0);
 	}
+
+    // 更新文章的回调方法
+    requestUpdateCallback(cbData) {
+        if(cbData.success === "1") {
+            this.settingState("no", "no", "no",
+                false, "no", "no", "no", "no",
+                "", "", "", "");
+            this.setState({
+                mSortDOM : false,
+                mUeditorDOM : false,
+                mTagDOM : false
+            });
+            message.success(cbData.msg+"！", 3);
+            // 刷新文章列表
+            this.getArticleList(this.state.nowPage);
+        } else {
+            message.error(cbData.msg+"！", 3);
+        }
+    }
+
+
+
 
     render() {
         return (

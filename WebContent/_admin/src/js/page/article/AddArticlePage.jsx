@@ -214,7 +214,7 @@ export default class AddArticlePage extends React.Component {
                 "sortId"   : self.state.sortId,
                 "sortName" : encodeURI(encodeURI(self.state.sortName)),
                 "title"    : encodeURI(encodeURI(self.state.title)),
-                "content"  : encodeURI(encodeURI(self.state.content)),
+                "content"  : self.state.content,
                 "tags"     : encodeURI(encodeURI(self.state.tags.join(",")))
             };
             const errInfo = "新增文章连接出错！";
