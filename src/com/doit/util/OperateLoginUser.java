@@ -13,12 +13,10 @@ public class OperateLoginUser {
 	
 	
     public static void setUserId(String pSessionId,String pUserId){
-    	System.out.println("spSessionId::::::"+pSessionId);
     		pMap.put(pSessionId, pUserId);
     } 
     
     public static String getUserId(String pSessionId){
-    	System.out.println("gpSessionId::::::"+pSessionId);
     		return (String) pMap.get(pSessionId);
     }
     
