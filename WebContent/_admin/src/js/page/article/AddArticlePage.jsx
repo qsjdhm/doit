@@ -5,8 +5,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-
-
 import { Input, Button, message, Row, Col } from 'antd';
 
 import MenuComponent       from '../../components/menu/js/MenuComponent';

@@ -178,7 +178,7 @@ export default class DelArticlePage extends React.Component {
 
 		if(cbData.success === "1"){
 			// 设置state中的分类数据
-			this.settingState(sortId, "no", "no", "no", "no", "no");
+			this.settingState(this.state.sortId, "no", "no", "no", "no", "no");
 
 			// paginationDOM--因为ajax之后select的默认数据不会自动设置
 			this.setState({
@@ -198,9 +198,9 @@ export default class DelArticlePage extends React.Component {
 		const url = "/doit/articleAction/getArticleList";
 		const method = "POST";
 		const body = {
-			"sort" : self.state.sortId,
+			"sort" : this.state.sortId,
 			"page" : nowPage,
-			"size" : self.state.pageSize
+			"size" : this.state.pageSize
 		};
 		const errInfo = "请求文章列表连接出错！";
 		fetchComponent.send(this, url, method, body, errInfo, this.requestArticleListCallback);
@@ -278,7 +278,7 @@ export default class DelArticlePage extends React.Component {
 
     // 删除文章
     delArticleList(selectStr) {
-		const url = "/doit/articleAction/getArticleList";
+		const url = "/doit/articleAction/delArticle";
 		const method = "POST";
 		const body = {
 			"selectId" : selectStr

@@ -4,9 +4,6 @@
 
 import React from 'react';
 import ReactDOM from 'react-dom';
-import jQuery from 'jquery';
-
-
 
 import { Input, Button, notification, message, Row, Col } from 'antd';
 
@@ -17,6 +14,7 @@ import BreadcrumbComponent from '../../components/breadcrumb/js/BreadcrumbCompon
 import SelectComponent     from '../../components/select/js/SelectComponent';
 import UeditorComponent    from '../../components/ueditor/js/UeditorComponent';
 import TagComponent        from '../../components/tag/js/TagComponent';
+import fetchComponent      from '../../components/fetch/js/fetchComponent';
 
 import '../../../css/note.less';
 
@@ -136,116 +134,101 @@ export default class AddNotePage extends React.Component {
 
 	// 首先得到笔记的分类
 	byTypeGetSort() {
-		const self = this;
-		jQuery.ajax({
-			type : "POST",
-			url : "/doit/sortAction/byTypeGetSort",
-			data : {
-				"type" : "note"
-			},
-			dataType:"json",
-			contentType: "application/x-www-form-urlencoded; charset=utf-8",
-			success : function(cbData) {
-				if(cbData.success === "1"){
-					let sortArray = [];
-					for(let item of cbData.data){
-						const sortObj = {
-							"id" : item.Sort_ID,
-							"name" : item.Sort_Name
-						};
-						sortArray.push(sortObj);
-					}
+		const url = "/doit/sortAction/byTypeGetSort";
+		const method = "POST";
+		const body = {
+			"type" : "note"
+		};
+		const errInfo = "请求笔记分类连接出错！";
+		fetchComponent.send(this, url, method, body, errInfo, this.requestSortCallback);
+	}
 
-					// 设置state中的分类数据
-					self.settingState(sortArray, sortArray[0].id, sortArray[0].name, "no", "no", "no", "no");
-
-					// 设置sortDOM--因为ajax之后select的默认数据不会自动设置
-					self.setState({
-						sortDOM : <SelectComponent
-							defaultValue={sortArray[0].id}
-							data={sortArray}
-							selected={self.sortSelected}
-						/>
-					});
-				}
-			},error :function(){
-				message.error("请求笔记分类连接出错！");
+	// 请求笔记分类的回调方法
+	requestSortCallback(cbData) {
+		if(cbData.success === "1"){
+			let sortArray = [];
+			for(let item of cbData.data){
+				const sortObj = {
+					"id" : item.Sort_ID,
+					"name" : item.Sort_Name
+				};
+				sortArray.push(sortObj);
 			}
-		});
+
+			// 设置state中的分类数据
+			this.settingState(sortArray, sortArray[0].id, sortArray[0].name, "no", "no", "no", "no");
+
+			// 设置sortDOM--因为ajax之后select的默认数据不会自动设置
+			this.setState({
+				sortDOM : <SelectComponent
+					defaultValue={sortArray[0].id}
+					data={sortArray}
+					selected={this.sortSelected}
+					/>
+			});
+		}
 	}
 
 	// 获取标签列表
 	getTags() {
-		const self = this;
-		jQuery.ajax({
-			type : "POST",
-			url : "/doit/sortAction/byTypeGetSort",
-			data : {
-				"type" : "tag"
-			},
-			dataType:"json",
-			contentType: "application/x-www-form-urlencoded; charset=utf-8",
-			success : function(cbData) {
-				if(cbData.success === "1"){
-					let tagArray = [];
-					for(let item of cbData.data){
-						const sortObj = {
-							"id" : item.Sort_ID,
-							"name" : item.Sort_Name
-						};
-						tagArray.push(sortObj);
-					}
+		const url = "/doit/sortAction/byTypeGetSort";
+		const method = "POST";
+		const body = {
+			"type" : "tag"
+		};
+		const errInfo = "请求笔记标签连接出错！";
+		fetchComponent.send(this, url, method, body, errInfo, this.requestTagCallback);
+	}
 
-					// 设置sortDOM--因为ajax之后select的默认数据不会自动设置
-					self.setState({
-						tagDOM : <TagComponent
-							width={820}
-							data={tagArray}
-							selected={self.tagSelected}
-						/>
-					});
-				}
-			},error :function(){
-				message.error("请求笔记标签连接出错！");
+	// 请求标签的回调方法
+	requestTagCallback(cbData) {
+		if(cbData.success === "1"){
+			let tagArray = [];
+			for(let item of cbData.data){
+				const sortObj = {
+					"id" : item.Sort_ID,
+					"name" : item.Sort_Name
+				};
+				tagArray.push(sortObj);
 			}
-		});
+
+			// 设置sortDOM--因为ajax之后select的默认数据不会自动设置
+			this.setState({
+				tagDOM : <TagComponent
+					width={820}
+					data={tagArray}
+					selected={this.tagSelected}
+					/>
+			});
+		}
 	}
 
 	// 新增笔记
 	submitData() {
 		const self = this;
 		setTimeout(function() {
-			const sortId = self.state.sortId;
-			const sortName = encodeURI(encodeURI(self.state.sortName));
-			const title = encodeURI(encodeURI(self.state.title));
-			const content = encodeURI(encodeURI(self.state.content));
-			const tags = encodeURI(encodeURI(self.state.tags.join(",")));
-
-			jQuery.ajax({
-				type : "POST",
-				url : "/doit/noteAction/addArticle",
-				data : {
-					"sortId"   : sortId,
-					"sortName" : sortName,
-					"title"    : title,
-					"content"  : content,
-					"tags"     : tags
-				},
-				dataType:"json",
-				contentType: "application/x-www-form-urlencoded; charset=utf-8",
-				success : function(cbData) {
-					console.info(cbData);
-					self.settingState("no", "no", "no", "no", content, "no", false);
-					if(cbData.success === "1") {
-                        message.success(cbData.msg+"！", 3);
-					} else {
-                        message.error(cbData.msg+"！", 3);
-					}
-				},error :function(){
-					message.error("新增笔记连接出错！");
-				}
-			});
+			const url = "/doit/articleAction/addArticle";
+			const method = "POST";
+			const body = {
+				"sortId"   : self.state.sortId,
+				"sortName" : encodeURI(encodeURI(self.state.sortName)),
+				"title"    : encodeURI(encodeURI(self.state.title)),
+				"content"  : self.state.content,
+				"tags"     : encodeURI(encodeURI(self.state.tags.join(",")))
+			};
+			const errInfo = "新增笔记连接出错！";
+			fetchComponent.send(self, url, method, body, errInfo, self.requestSubmitCallback);
 		}, 0);
+	}
+
+	// 保存笔记的回调方法
+	requestSubmitCallback(cbData) {
+		this.settingState("no", "no", "no", "no", "no", "no", false);
+		if(cbData.success === "1") {
+			message.success(cbData.msg+"！", 3);
+		} else {
+			message.error(cbData.msg+"！", 3);
+		}
 	}
 
 
