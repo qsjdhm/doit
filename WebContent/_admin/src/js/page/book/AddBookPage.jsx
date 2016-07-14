@@ -4,9 +4,6 @@
 
 import React from 'react';
 import ReactDOM from 'react-dom';
-import jQuery from 'jquery';
-
-
 
 import { Form, Upload, Input, Button, Icon, message, Row, Col } from 'antd';
 
@@ -15,6 +12,7 @@ import SearchComponent     from '../../components/search/js/SearchComponent';
 import ToolBarComponent    from '../../components/toolbar/js/ToolBarComponent';
 import BreadcrumbComponent from '../../components/breadcrumb/js/BreadcrumbComponent';
 import SelectComponent     from '../../components/select/js/SelectComponent';
+import fetchComponent      from '../../components/fetch/js/fetchComponent';
 
 import '../../../css/book.less';
 
@@ -145,42 +143,40 @@ export default class AddBookPage extends React.Component {
 
     // 首先得到图书的分类
     byTypeGetSort() {
-        const self = this;
-        jQuery.ajax({
-            type : "POST",
-            url : "/doit/sortAction/byTypeGetSort",
-            data : {
-                "type" : "book"
-            },
-            dataType:"json",
-            contentType: "application/x-www-form-urlencoded; charset=utf-8",
-            success : function(cbData) {
-                if(cbData.success === "1"){
-                    let sortArray = [];
-                    for(let item of cbData.data){
-                        const sortObj = {
-                            "id" : item.Sort_ID,
-                            "name" : item.Sort_Name
-                        };
-                        sortArray.push(sortObj);
-                    }
+        const url = "/doit/sortAction/byTypeGetSort";
+        const method = "POST";
+        const body = {
+            "type" : "book"
+        };
+        const errInfo = "请求图书分类连接出错！";
+        fetchComponent.send(this, url, method, body, errInfo, this.requestSortCallback);
+    }
 
-                    // 设置state中的分类数据
-                    self.settingState(sortArray, sortArray[0].id, sortArray[0].name, "no", "no", "no", "no", "no");
+    // 请求图书分类的回调方法
+    requestSortCallback(cbData) {
 
-                    // 设置sortDOM--因为ajax之后select的默认数据不会自动设置
-                    self.setState({
-                        sortDOM : <SelectComponent
-                            defaultValue={sortArray[0].id}
-                            data={sortArray}
-                            selected={self.sortSelected}
-                        />
-                    });
-                }
-            },error :function(){
-                message.error("请求图书分类连接出错！");
+        if(cbData.success === "1"){
+            let sortArray = [];
+            for(let item of cbData.data){
+                const sortObj = {
+                    "id" : item.Sort_ID,
+                    "name" : item.Sort_Name
+                };
+                sortArray.push(sortObj);
             }
-        });
+
+            // 设置state中的分类数据
+            this.settingState(sortArray, sortArray[0].id, sortArray[0].name, "no", "no", "no", "no", "no");
+
+            // 设置sortDOM--因为ajax之后select的默认数据不会自动设置
+            this.setState({
+                sortDOM : <SelectComponent
+                    defaultValue={sortArray[0].id}
+                    data={sortArray}
+                    selected={this.sortSelected}
+                />
+            });
+        }
     }
 
     // 上传成功的回调方法
@@ -199,40 +195,29 @@ export default class AddBookPage extends React.Component {
     submitData() {
         const self = this;
         setTimeout(function() {
-
-            const cover    = self.state.cover;
-            const sortId   = self.state.sortId;
-            const sortName = encodeURI(encodeURI(self.state.sortName));
-            const title    = encodeURI(encodeURI(self.state.title));
-            const height   = self.state.height;
-            const path     = self.state.path.replace(/&/g, "*");
-
-            jQuery.ajax({
-                type : "POST",
-                url : "/doit/bookAction/addBook",
-                data : {
-                    "name" : title,
-                    "sortId" : sortId,
-                    "sortName" : sortName,
-                    "height" : height,
-                    "cover" : cover,
-                    "link" : path
-                },
-                dataType:"json",
-                contentType: "application/x-www-form-urlencoded; charset=utf-8",
-                success : function(cbData) {
-                    console.info(cbData);
-                    self.settingState("no", "no", "no", "no", "no", "no", "no", false);
-                    if(cbData.success === "1") {
-                        message.success(cbData.msg+"！", 3);
-                    } else {
-                        message.error(cbData.msg+"！", 3);
-                    }
-                },error :function(){
-                    message.error("新增图书连接出错！");
-                }
-            });
+            const url = "/doit/bookAction/addBook";
+            const method = "POST";
+            const body = {
+                "name"     : encodeURI(encodeURI(self.state.title)),
+                "sortId"   : self.state.sortId,
+                "sortName" : encodeURI(encodeURI(self.state.sortName)),
+                "height"   : self.state.height,
+                "cover"    : self.state.cover,
+                "link"     : self.state.path.replace(/&/g, "*")
+            };
+            const errInfo = "新增图书连接出错！";
+            fetchComponent.send(self, url, method, body, errInfo, self.requestSubmitCallback);
         }, 0);
+    }
+
+    // 保存图书的回调方法
+    requestSubmitCallback(cbData) {
+        this.settingState("no", "no", "no", "no", "no", "no", "no", false);
+        if(cbData.success === "1") {
+            message.success(cbData.msg+"！", 3);
+        } else {
+            message.error(cbData.msg+"！", 3);
+        }
     }
 
     render() {
@@ -281,7 +266,7 @@ export default class AddBookPage extends React.Component {
                             <div className="page add-book-page">
                                 <Form horizontal>
                                     <FormItem
-                                        label="图书封面 : ">
+                                        label="图书封面">
                                         <Upload {...props}>
                                             <Button className="uploader-btn" type="ghost">
                                                 <Icon type="upload" /> 点击上传
@@ -289,19 +274,19 @@ export default class AddBookPage extends React.Component {
                                         </Upload>
                                     </FormItem>
                                     <FormItem
-                                        label="图书分类 : ">
+                                        label="图书分类">
                                     {this.state.sortDOM}
                                     </FormItem>
                                     <FormItem
-                                        label="图书名称 : ">
+                                        label="图书名称">
                                         <Input onChange={this.titleChange} placeholder="" size="large"/>
                                     </FormItem>
                                     <FormItem
-                                        label="图书高度 : ">
+                                        label="图书高度">
                                         <Input onChange={this.heightChange} placeholder="" size="large"/>
                                     </FormItem>
                                     <FormItem
-                                        label="下载路径 : ">
+                                        label="下载路径">
                                         <Input onChange={this.pathChange} type="textarea" rows="3" size="large"/>
                                     </FormItem>
                                     <FormItem
