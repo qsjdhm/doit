@@ -4,7 +4,6 @@
 
 import React from 'react';
 import ReactDOM from 'react-dom';
-import jQuery from 'jquery';
 
 import { Modal, Form, Upload, Button, Input, Icon, message, Row, Col } from 'antd';
 
@@ -15,6 +14,7 @@ import BreadcrumbComponent from '../../components/breadcrumb/js/BreadcrumbCompon
 import SelectComponent     from '../../components/select/js/SelectComponent';
 import TableComponent      from '../../components/table/js/TableComponent';
 import PaginationComponent from '../../components/pagination/js/PaginationComponent';
+import fetchComponent      from '../../components/fetch/js/fetchComponent';
 
 export default class EditBookPage extends React.Component {
     constructor(props) {
@@ -124,18 +124,6 @@ export default class EditBookPage extends React.Component {
 
     // 分类切换
     sortSelected(sortId){
-        //let nowSort = {
-        //    sortId   : sortId,
-        //    sortName : ""
-        //};
-        //const sorts = this.state.mAllSort;
-        //for(let sort of sorts){
-        //    if(sort.id === sortId) {
-        //        nowSort.sortName = sort.name;
-        //        break;
-        //    }
-        //}
-
         this.settingState(sortId, "no", "no",
                         "no", "no", "no", "no",
                         "no", "no", "no", "no", "no");
@@ -242,109 +230,98 @@ export default class EditBookPage extends React.Component {
 
     // 首先得到图书的分类
     byTypeGetSort() {
-        const self = this;
-        jQuery.ajax({
-            type : "POST",
-            url : "/doit/sortAction/byTypeGetSort",
-            data : {
-                "type" : "book"
-            },
-            dataType:"json",
-            contentType: "application/x-www-form-urlencoded; charset=utf-8",
-            success : function(cbData) {
-                if(cbData.success === "1"){
-                    let sortArray = [];
-                    for(let item of cbData.data){
-                        const sortObj = {
-                            "id" : item.Sort_ID,
-                            "name" : item.Sort_Name
-                        };
-                        sortArray.push(sortObj);
-                    }
-
-                    // 设置state中的分类数据
-                    self.settingState(sortArray[0].id, "no", "no",
-                                    "no", sortArray, sortArray[0].id, sortArray[0].name,
-                                    "no", "no", "no", "no", "no");
-                    // 设置sortDOM--因为ajax之后select的默认数据不会自动设置
-                    self.setState({
-                        sortDOM : <SelectComponent
-                            defaultValue={sortArray[0].id}
-                            data={sortArray}
-                            selected={self.sortSelected} />
-                    });
-
-                    // 根据第一个分类id获取图书列表
-                    self.getBookCount(sortArray[0].id);
-                }
-            },error :function(){
-                message.error("请求图书分类连接出错！");
-            }
-        });
+		const url = "/doit/sortAction/byTypeGetSort";
+		const method = "POST";
+		const body = {
+			"type" : "book"
+		};
+		const errInfo = "请求图书分类连接出错！";
+		fetchComponent.send(this, url, method, body, errInfo, this.requestSortCallback);
     }
+
+	// 请求图书分类的回调方法
+	requestSortCallback(cbData) {
+		if(cbData.success === "1"){
+			let sortArray = [];
+			for(let item of cbData.data){
+				const sortObj = {
+					"id" : item.Sort_ID,
+					"name" : item.Sort_Name
+				};
+				sortArray.push(sortObj);
+			}
+
+			// 设置state中的分类数据
+			this.settingState(sortArray[0].id, "no", "no",
+				"no", sortArray, sortArray[0].id, sortArray[0].name,
+				"no", "no", "no", "no", "no");
+			// 设置sortDOM--因为ajax之后select的默认数据不会自动设置
+			this.setState({
+				sortDOM : <SelectComponent
+					defaultValue={sortArray[0].id}
+					data={sortArray}
+					selected={this.sortSelected} />
+			});
+
+			// 根据第一个分类id获取图书列表
+			this.getBookCount(sortArray[0].id);
+		}
+	}
 
     // 根据分类id获取图书列表
     getBookCount(sortId) {
-        const self = this;
-        jQuery.ajax({
-            type : "POST",
-            url : "/doit/bookAction/getBookCount",
-            data : {
-                "sort" : sortId
-            },
-            dataType:"json",
-            contentType: "application/x-www-form-urlencoded; charset=utf-8",
-            success : function(cbData) {
-                if(cbData.success === "1"){
-
-                    // 设置state中的分类数据
-                    self.settingState(sortId, "no", "no",
-                                    "no", "no", "no", "no",
-                                    "no", "no", "no", "no", "no");
-
-                    // paginationDOM--因为ajax之后select的默认数据不会自动设置
-                    self.setState({
-                        paginationDOM : <PaginationComponent
-                            count={cbData.data}
-                            pageSize={self.state.pageSize}
-                            pageed={self.paginationClick}/>
-                    });
-
-                    // 根据当前分类加载第一页图书数据
-                    self.getBookList(1);
-                }
-            },error :function(){
-                message.error("请求图书个数连接出错！");
-            }
-        });
+		const url = "/doit/bookAction/getBookCount";
+		const method = "POST";
+		const body = {
+			"sort" : sortId
+		};
+		const errInfo = "请求图书总个数连接出错！";
+		fetchComponent.send(this, url, method, body, errInfo, this.requestCountCallback);
     }
+
+	// 请求图书总个数的回调方法
+	requestCountCallback(cbData) {
+
+		if(cbData.success === "1"){
+			// 设置state中的分类数据
+			this.settingState(this.state.sortId, "no", "no",
+				"no", "no", "no", "no",
+				"no", "no", "no", "no", "no");
+
+			// paginationDOM--因为ajax之后select的默认数据不会自动设置
+			this.setState({
+				paginationDOM : <PaginationComponent
+					count={cbData.data}
+					pageSize={this.state.pageSize}
+					pageed={this.paginationClick}/>
+			});
+
+			// 根据当前分类加载第一页图书数据
+			this.getBookList(1);
+		}
+	}
 
     // 根据当前分类加载第一页图书数据
     getBookList(nowPage) {
-        const self = this;
-		console.info("getBookList");
-		console.info(self.state.sortId);
-        jQuery.ajax({
-            type : "POST",
-            url : "/doit/bookAction/getBookList",
-            data : {
-                "sort" : self.state.sortId,
-                "page" : nowPage,
-                "size" : self.state.pageSize
-            },
-            dataType:"json",
-            contentType: "application/x-www-form-urlencoded; charset=utf-8",
-            success : function(cbData) {
-                if(cbData.success === "1"){
-                    console.info(cbData);
-                    // 组织表格数据
-                    self.dealTableData(cbData);
-                }
-            },error :function(){
-                message.error("请求图书列表连接出错！");
-            }
-        });
+		const url = "/doit/bookAction/getBookList";
+		const method = "POST";
+		const body = {
+			"sort" : this.state.sortId,
+			"page" : nowPage,
+			"size" : this.state.pageSize
+		};
+		const errInfo = "请求图书列表连接出错！";
+		fetchComponent.send(this, url, method, body, errInfo, this.requestBookListCallback);
     }
+
+	// 请求图书列表的回调方法
+	requestBookListCallback(cbData) {
+
+		if(cbData.success === "1"){
+			// 组织表格数据
+			this.dealTableData(cbData);
+		}
+	}
 
     // 组织表格数据
     dealTableData(cbData) {
@@ -401,28 +378,25 @@ export default class EditBookPage extends React.Component {
 
     // 根据ID获取用户全部信息
     getBook(id) {
-        const self = this;
-        jQuery.ajax({
-            type : "POST",
-            url : "/doit/bookAction/getBook",
-            data : {
-                "selectId" : id
-            },
-            dataType:"json",
-            contentType: "application/x-www-form-urlencoded; charset=utf-8",
-            success : function(cbData) {
-                if(cbData.success === "1"){
-                    self.settingState("no", "no", "no",
-                        "no", "no", cbData.sortId, cbData.sortName,
-                        cbData.id, cbData.name, cbData.height, cbData.cover, cbData.link);
-                    // 初始化父分类下拉框的数据
-                    self.initMSortSelectData();
-                }
-            },error :function(){
-                message.error("请求用户信息连接出错！");
-            }
-        });
+		const url = "/doit/bookAction/getBook";
+		const method = "POST";
+		const body = {
+			"selectId" : id
+		};
+		const errInfo = "请求图书信息连接出错！";
+		fetchComponent.send(this, url, method, body, errInfo, this.requestBookCallback);
     }
+
+	// 请求图书列表的回调方法
+	requestBookCallback(cbData) {
+		if(cbData.success === "1"){
+			this.settingState("no", "no", "no",
+				"no", "no", cbData.sortId, cbData.sortName,
+				cbData.id, cbData.name, cbData.height, cbData.cover, cbData.link);
+			// 初始化父分类下拉框的数据
+			this.initMSortSelectData();
+		}
+	}
 
     // 初始化分类下拉框的数据
     initMSortSelectData() {
@@ -463,37 +437,34 @@ export default class EditBookPage extends React.Component {
 
     // 更新图书信息
     updateBook() {
-        const self = this;
-        jQuery.ajax({
-            type : "POST",
-            url : "/doit/bookAction/updateBook",
-            data : {
-				"sortId" : this.state.mSortId,
-				"sortName" : encodeURI(encodeURI(this.state.mSortName)),
-				"id" : this.state.mId,
-				"name" : encodeURI(encodeURI(this.state.mTitle)),
-				"height" : this.state.mHeight,
-				"cover" : this.state.mCover,
-				"link" : this.state.mPath
-            },
-            dataType:"json",
-            contentType: "application/x-www-form-urlencoded; charset=utf-8",
-            success : function(cbData) {
-				self.settingState("no", "no", "no",
-					false, "no", "no", "no",
-					"no", "no", "no", "no", "no");
-                if(cbData.success === "1") {
-                    // 重新获取当前页数据
-                    self.getBookList(self.state.nowPage);
-                    message.success(cbData.msg+"！", 3);
-                } else {
-                    message.error(cbData.msg+"！", 3);
-                }
-            },error :function(){
-                message.error("更新图书信息连接出错！");
-            }
-        });
+		const url = "/doit/bookAction/updateBook";
+		const method = "POST";
+		const body = {
+			"id"       : this.state.mId,
+			"sortId"   : this.state.mSortId,
+			"sortName" : encodeURI(encodeURI(this.state.mSortName)),
+			"name"     : encodeURI(encodeURI(this.state.mTitle)),
+			"height"   : this.state.mHeight,
+			"cover"    : this.state.mCover,
+			"link"     : this.state.mPath
+		};
+		const errInfo = "修改图书连接出错！";
+		fetchComponent.send(this, url, method, body, errInfo, this.requestUpdateCallback);
     }
+
+	// 更新图书的回调方法
+	requestUpdateCallback(cbData) {
+		this.settingState("no", "no", "no",
+			false, "no", "no", "no",
+			"no", "no", "no", "no", "no");
+		if(cbData.success === "1") {
+			// 重新获取当前页数据
+			this.getBookList(this.state.nowPage);
+			message.success(cbData.msg+"！", 3);
+		} else {
+			message.error(cbData.msg+"！", 3);
+		}
+	}
 
     render() {
 		const self = this;

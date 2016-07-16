@@ -12,7 +12,7 @@ module.exports = {
 		main: path.resolve(__dirname, './src/js/index.jsx'),
 		//"_admin/admin": './_admin/src/js/index.jsx',
 		//"_login/login": './_login/src/js/index.jsx',
-        common: ['react','jquery','antd']
+        common: ['react','antd']
     },
 	output: {
 		path: path.resolve(__dirname, './'),

@@ -118,7 +118,7 @@ public class AdminLinkController {
 		// 因为前台分页插件的索引是从0开始，所以加1
 		page = page +1;
 		GenerateHtml generateHtml = new GenerateHtml();
-		List <TLink> links = linkService.getLink(page, 6);
+		List <TLink> links = linkService.getLink(page, 10);
 		String linkHtml = generateHtml.generateAdminLinkDelHtml(links);
 		// 3.获取笔记下的第一个子分类
 		int noteFirstSortID = sortService.getFirstSortByFSort(8);
@@ -193,7 +193,7 @@ public class AdminLinkController {
 	public void getLinkList(HttpServletRequest request, HttpServletResponse response) throws Exception{
 		
 		int page = Integer.parseInt(request.getParameter("page"));
-		List <TLink> links = linkService.getLink(page, 6);
+		List <TLink> links = linkService.getLink(page, 10);
 		
 		JSONArray linkJsonArray = new JSONArray();
 		for(int i=0; i<links.size(); i++){

@@ -4,7 +4,6 @@
 
 import React from 'react';
 import ReactDOM from 'react-dom';
-import jQuery from 'jquery';
 
 import { Popconfirm, Button, message, Row, Col } from 'antd';
 
@@ -14,6 +13,7 @@ import ToolBarComponent    from '../../components/toolbar/js/ToolBarComponent';
 import BreadcrumbComponent from '../../components/breadcrumb/js/BreadcrumbComponent';
 import TableComponent      from '../../components/table/js/TableComponent';
 import PaginationComponent from '../../components/pagination/js/PaginationComponent';
+import fetchComponent      from '../../components/fetch/js/fetchComponent';
 
 import '../../../css/user.less';
 
@@ -84,10 +84,11 @@ export default class DelUserPage extends React.Component {
 
 	// 操作列点击
 	operationClick(index, item){
-		console.info(index);
-		console.info(item);
-		// 删除用户
-		this.delUserList(item.User_ID.toString());
+		const self = this;
+		setTimeout(function(){
+			// 删除用户
+			self.delUserList(item.User_ID.toString());
+		}, 0);
 	}
 
 	// 选中用户
@@ -111,54 +112,48 @@ export default class DelUserPage extends React.Component {
 
 	// 获取用户列表
 	getUserCount() {
-		const self = this;
-		jQuery.ajax({
-			type : "POST",
-			url : "/doit/userAction/getUserCount",
-			data : {},
-			dataType:"json",
-			contentType: "application/x-www-form-urlencoded; charset=utf-8",
-			success : function(cbData) {
-				if(cbData.success === "1"){
-					// paginationDOM--因为ajax之后select的默认数据不会自动设置
-					self.setState({
-						paginationDOM : <PaginationComponent
-							count={cbData.data}
-							pageSize={self.state.pageSize}
-							pageed={self.paginationClick}/>
-					});
+		const url = "/doit/userAction/getUserCount";
+		const method = "POST";
+		const body = {};
+		const errInfo = "请求用户个数连接出错！";
+		fetchComponent.send(this, url, method, body, errInfo, this.requestCountCallback);
+	}
 
-					// 根据当前分类加载第一页用户数据
-					self.getUserList(1);
-				}
-			},error :function(){
-				message.error("请求用户个数连接出错！");
-			}
-		});
+	// 请求用户总个数的回调方法
+	requestCountCallback(cbData) {
+		if(cbData.success === "1"){
+			// paginationDOM--因为ajax之后select的默认数据不会自动设置
+			this.setState({
+				paginationDOM : <PaginationComponent
+					count={cbData.data}
+					pageSize={this.state.pageSize}
+					pageed={this.paginationClick}/>
+			});
+
+			// 根据当前分类加载第一页用户数据
+			this.getUserList(1);
+		}
 	}
 
 	// 根据当前分类加载第一页用户数据
 	getUserList(nowPage) {
-		const self = this;
-		jQuery.ajax({
-			type : "POST",
-			url : "/doit/userAction/getUserList",
-			data : {
-				"page" : nowPage,
-				"size" : self.state.pageSize
-			},
-			dataType:"json",
-			contentType: "application/x-www-form-urlencoded; charset=utf-8",
-			success : function(cbData) {
-				if(cbData.success === "1"){
-					console.info(cbData);
-					// 组织表格数据
-					self.dealTableData(cbData);
-				}
-			},error :function(){
-				message.error("请求用户列表连接出错！");
-			}
-		});
+		const url = "/doit/userAction/getUserList";
+		const method = "POST";
+		const body = {
+			"page" : nowPage,
+			"size" : this.state.pageSize
+		};
+		const errInfo = "请求用户列表连接出错！";
+		fetchComponent.send(this, url, method, body, errInfo, this.requestUserListCallback);
+	}
+
+	// 请求用户列表的回调方法
+	requestUserListCallback(cbData) {
+
+		if(cbData.success === "1"){
+			// 组织表格数据
+			this.dealTableData(cbData);
+		}
 	}
 
 	// 组织表格数据
@@ -218,29 +213,24 @@ export default class DelUserPage extends React.Component {
 
 	// 删除用户
 	delUserList(selectStr) {
-		const self = this;
-		jQuery.ajax({
-			type : "POST",
-			url : "/doit/userAction/delUser",
-			data : {
-				"selectId" : selectStr
-			},
-			dataType:"json",
-			contentType: "application/x-www-form-urlencoded; charset=utf-8",
-			success : function(cbData) {
-				if(cbData.success === "1"){
-					self.settingState("no", "no", false, "no", false);
-                    message.success(cbData.msg+"！", 3);
-					// 获取用户列表
-					self.getUserCount();
-				}
-			},error :function(){
-				message.error("删除用户列表连接出错！");
-			}
-		});
+		const url = "/doit/userAction/delUser";
+		const method = "POST";
+		const body = {
+			"selectId" : selectStr
+		};
+		const errInfo = "删除用户信息连接出错！";
+		fetchComponent.send(this, url, method, body, errInfo, this.requestDelCallback);
 	}
 
-
+	// 删除用户回调方法
+	requestDelCallback(cbData) {
+		if(cbData.success === "1"){
+			this.settingState("no", "no", false, "no", false);
+			message.success(cbData.msg+"！", 3);
+			// 获取用户列表
+			this.getUserCount();
+		}
+	}
 
 	render() {
 

@@ -4,7 +4,6 @@
 
 import React from 'react';
 import ReactDOM from 'react-dom';
-import jQuery from 'jquery';
 
 import { Modal, Form, Input, message, Row, Col } from 'antd';
 
@@ -14,6 +13,7 @@ import ToolBarComponent    from '../../components/toolbar/js/ToolBarComponent';
 import BreadcrumbComponent from '../../components/breadcrumb/js/BreadcrumbComponent';
 import TableComponent      from '../../components/table/js/TableComponent';
 import PaginationComponent from '../../components/pagination/js/PaginationComponent';
+import fetchComponent      from '../../components/fetch/js/fetchComponent';
 
 
 export default class EditLinkPage extends React.Component {
@@ -92,7 +92,10 @@ export default class EditLinkPage extends React.Component {
 
     // 操作列点击
     operationClick(index, item){
-        this.settingState("no", "no", true, item.Link_ID, item.Link_Name, item.Link_Url);
+		const self = this;
+		setTimeout(function(){
+			self.settingState("no", "no", true, item.Link_ID, item.Link_Name, item.Link_Url);
+		}, 0);
     }
 
     // 弹出框确认点击
@@ -121,54 +124,49 @@ export default class EditLinkPage extends React.Component {
 
 	// 获取链接列表
 	getLinkCount() {
-		const self = this;
-		jQuery.ajax({
-			type : "POST",
-			url : "/doit/linkAction/getLinkCount",
-			data : {},
-			dataType:"json",
-			contentType: "application/x-www-form-urlencoded; charset=utf-8",
-			success : function(cbData) {
-				if(cbData.success === "1"){
-					// paginationDOM--因为ajax之后select的默认数据不会自动设置
-					self.setState({
-						paginationDOM : <PaginationComponent
-							count={cbData.data}
-							pageSize={self.state.pageSize}
-							pageed={self.paginationClick}/>
-					});
+		const url = "/doit/linkAction/getLinkCount";
+		const method = "POST";
+		const body = {};
+		const errInfo = "请求链接个数连接出错！";
+		fetchComponent.send(this, url, method, body, errInfo, this.requestCountCallback);
+	}
 
-					// 根据当前分类加载第一页链接数据
-					self.getLinkList(1);
-				}
-			},error :function(){
-				message.error("请求链接个数连接出错！");
-			}
-		});
+	// 请求外链总个数的回调方法
+	requestCountCallback(cbData) {
+
+		if(cbData.success === "1"){
+			// paginationDOM--因为ajax之后select的默认数据不会自动设置
+			this.setState({
+				paginationDOM : <PaginationComponent
+					count={cbData.data}
+					pageSize={this.state.pageSize}
+					pageed={this.paginationClick}/>
+			});
+
+			// 根据当前分类加载第一页链接数据
+			this.getLinkList(1);
+		}
 	}
 
 	// 根据当前分类加载第一页链接数据
 	getLinkList(nowPage) {
-		const self = this;
-		jQuery.ajax({
-			type : "POST",
-			url : "/doit/linkAction/getLinkList",
-			data : {
-				"page" : nowPage,
-				"size" : self.state.pageSize
-			},
-			dataType:"json",
-			contentType: "application/x-www-form-urlencoded; charset=utf-8",
-			success : function(cbData) {
-				if(cbData.success === "1"){
-					console.info(cbData);
-					// 组织表格数据
-					self.dealTableData(cbData);
-				}
-			},error :function(){
-				message.error("请求链接列表连接出错！");
-			}
-		});
+		const url = "/doit/linkAction/getLinkList";
+		const method = "POST";
+		const body = {
+			"page" : nowPage,
+			"size" : this.state.pageSize
+		};
+		const errInfo = "请求链接列表连接出错！";
+		fetchComponent.send(this, url, method, body, errInfo, this.requestLinkListCallback);
+	}
+
+	// 请求外链列表的回调方法
+	requestLinkListCallback(cbData) {
+
+		if(cbData.success === "1"){
+			// 组织表格数据
+			this.dealTableData(cbData);
+		}
 	}
 
 	// 组织表格数据
@@ -221,32 +219,28 @@ export default class EditLinkPage extends React.Component {
 
     // 更新外链信息
     updateLink() {
-        const self = this;
-        jQuery.ajax({
-            type : "POST",
-            url : "/doit/linkAction/updateLink",
-            data : {
-                "id" : this.state.mId,
-                "name" : encodeURI(encodeURI(this.state.mLinkName)),
-                "url" : encodeURI(encodeURI(this.state.mLinkURL))
-            },
-            dataType:"json",
-            contentType: "application/x-www-form-urlencoded; charset=utf-8",
-            success : function(cbData) {
-                self.settingState("no", "no", false, "", "", "", "");
-                if(cbData.success === "1") {
-                    // 重新获取当前页数据
-                    self.getLinkList(self.state.nowPage);
-                    message.success(cbData.msg+"！", 3);
-                } else {
-                    message.error(cbData.msg+"！", 3);
-                }
-            },error :function(){
-                message.error("更新外链信息连接出错！");
-            }
-        });
-
+		const url = "/doit/linkAction/updateLink";
+		const method = "POST";
+		const body = {
+			"id"       : this.state.mId,
+			"name"     : encodeURI(encodeURI(this.state.mLinkName)),
+			"url"      : encodeURI(encodeURI(this.state.mLinkURL))
+		};
+		const errInfo = "更新外链信息连接出错！";
+		fetchComponent.send(this, url, method, body, errInfo, this.requestUpdateCallback);
     }
+
+	// 更新外链的回调方法
+	requestUpdateCallback(cbData) {
+		this.settingState("no", "no", false, "", "", "", "");
+		if(cbData.success === "1") {
+			// 重新获取当前页数据
+			this.getLinkList(this.state.nowPage);
+			message.success(cbData.msg+"！", 3);
+		} else {
+			message.error(cbData.msg+"！", 3);
+		}
+	}
 
 
 	render() {

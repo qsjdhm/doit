@@ -4,9 +4,6 @@
 
 import React from 'react';
 import ReactDOM from 'react-dom';
-import jQuery from 'jquery';
-
-
 
 import { Form, Upload, Input, Button, Icon, notification, message, Row, Col } from 'antd';
 
@@ -15,6 +12,7 @@ import SearchComponent     from '../../components/search/js/SearchComponent';
 import ToolBarComponent    from '../../components/toolbar/js/ToolBarComponent';
 import BreadcrumbComponent from '../../components/breadcrumb/js/BreadcrumbComponent';
 import SelectComponent     from '../../components/select/js/SelectComponent';
+import fetchComponent      from '../../components/fetch/js/fetchComponent';
 
 import '../../../css/sort.less';
 
@@ -119,32 +117,26 @@ export default class AddSortPage extends React.Component {
 	submitData() {
 		const self = this;
 		setTimeout(function() {
-
-			const fSortId = self.state.fSortId;
-			const name    = encodeURI(encodeURI(self.state.name));
-
-			jQuery.ajax({
-				type : "POST",
-				url : "/doit/sortAction/addSort",
-				data : {
-					"fSortId"  : fSortId,
-					"sortName" : name
-				},
-				dataType:"json",
-				contentType: "application/x-www-form-urlencoded; charset=utf-8",
-				success : function(cbData) {
-					console.info(cbData);
-					self.settingState("no", "no", false);
-					if(cbData.success === "1") {
-                        message.success(cbData.msg+"！", 3);
-					} else {
-                        message.error(cbData.msg+"！", 3);
-					}
-				},error :function(){
-					message.error("新增分类连接出错！");
-				}
-			});
+			const url = "/doit/sortAction/addSort";
+			const method = "POST";
+			const body = {
+				"fSortId"  : self.state.fSortId,
+				"sortName" : encodeURI(encodeURI(self.state.name))
+			};
+			const errInfo = "新增分类连接出错！";
+			fetchComponent.send(self, url, method, body, errInfo, self.requestSubmitCallback);
 		}, 0);
+	}
+
+	// 新增分类回调方法
+	requestSubmitCallback(cbData) {
+
+		this.settingState("no", "no", false);
+		if(cbData.success === "1") {
+			message.success(cbData.msg+"！", 3);
+		} else {
+			message.error(cbData.msg+"！", 3);
+		}
 	}
 
 	render() {
@@ -174,11 +166,11 @@ export default class AddSortPage extends React.Component {
 							<div className="page add-sort-page">
 								<Form horizontal>
 									<FormItem
-										label="所属父类 : ">
+										label="所属父类">
 										{this.state.sortDOM}
 									</FormItem>
 									<FormItem
-										label="分类名称 : ">
+										label="分类名称">
 										<Input onChange={this.nameChange} placeholder="" size="large"/>
 									</FormItem>
 									<FormItem

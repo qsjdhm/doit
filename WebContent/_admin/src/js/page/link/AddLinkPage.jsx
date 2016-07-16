@@ -4,9 +4,6 @@
 
 import React from 'react';
 import ReactDOM from 'react-dom';
-import jQuery from 'jquery';
-
-
 
 import { Form, Input, Button, Icon, message, Row, Col } from 'antd';
 
@@ -14,6 +11,7 @@ import MenuComponent       from '../../components/menu/js/MenuComponent';
 import SearchComponent     from '../../components/search/js/SearchComponent';
 import ToolBarComponent    from '../../components/toolbar/js/ToolBarComponent';
 import BreadcrumbComponent from '../../components/breadcrumb/js/BreadcrumbComponent';
+import fetchComponent      from '../../components/fetch/js/fetchComponent';
 
 import '../../../css/link.less';
 
@@ -91,31 +89,25 @@ export default class AddLinkPage extends React.Component {
 	submitData() {
 		const self = this;
 		setTimeout(function() {
-			const title    = encodeURI(encodeURI(self.state.title));
-			const url      = encodeURI(encodeURI(self.state.url));
-
-			jQuery.ajax({
-				type : "POST",
-				url : "/doit/linkAction/addLink",
-				data : {
-					"name" : title,
-					"url" : url
-				},
-				dataType:"json",
-				contentType: "application/x-www-form-urlencoded; charset=utf-8",
-				success : function(cbData) {
-					console.info(cbData);
-					self.settingState("no", "no", false);
-					if(cbData.success === "1") {
-                        message.success(cbData.msg+"！", 3);
-					} else {
-                        message.error(cbData.msg+"！", 3);
-					}
-				},error :function(){
-					message.error("新增链接连接出错！");
-				}
-			});
+			const url = "/doit/linkAction/addLink";
+			const method = "POST";
+			const body = {
+				"name" : encodeURI(encodeURI(self.state.title)),
+				"url"  : encodeURI(encodeURI(self.state.url))
+			};
+			const errInfo = "新增链接连接出错！";
+			fetchComponent.send(self, url, method, body, errInfo, self.requestSubmitCallback);
 		}, 0);
+	}
+
+	// 新增外链回调方法
+	requestSubmitCallback(cbData) {
+		this.settingState("no", "no", false);
+		if(cbData.success === "1") {
+			message.success(cbData.msg+"！", 3);
+		} else {
+			message.error(cbData.msg+"！", 3);
+		}
 	}
 
 
@@ -146,11 +138,11 @@ export default class AddLinkPage extends React.Component {
 							<div className="page add-book-page">
 								<Form horizontal>
 									<FormItem
-										label="链接名称 : ">
+										label="链接名称">
 										<Input onChange={this.titleChange} placeholder="" size="large"/>
 									</FormItem>
 									<FormItem
-										label="链接地址 : ">
+										label="链接地址">
 										<Input onChange={this.urlChange} placeholder="" size="large"/>
 									</FormItem>
 									<FormItem

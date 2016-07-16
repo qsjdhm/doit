@@ -4,7 +4,6 @@
 
 import React from 'react';
 import ReactDOM from 'react-dom';
-import jQuery from 'jquery';
 
 import { Modal, Form, Input, message, Row, Col } from 'antd';
 
@@ -15,6 +14,7 @@ import BreadcrumbComponent from '../../components/breadcrumb/js/BreadcrumbCompon
 import SelectComponent     from '../../components/select/js/SelectComponent';
 import TableComponent      from '../../components/table/js/TableComponent';
 import PaginationComponent from '../../components/pagination/js/PaginationComponent';
+import fetchComponent      from '../../components/fetch/js/fetchComponent';
 
 export default class NoteRecomPage extends React.Component {
     constructor(props) {
@@ -107,7 +107,10 @@ export default class NoteRecomPage extends React.Component {
 
     // 操作列点击
     operationClick(index, item){
-        this.settingState("no", "no", "no", true, item.Article_ID, item.Recommend_Num, item.Read_Num);
+		const self = this;
+		setTimeout(function(){
+			self.settingState("no", "no", "no", true, item.Article_ID, item.Recommend_Num, item.Read_Num);
+		}, 0);
     }
 
     // 弹出框确认点击
@@ -137,104 +140,95 @@ export default class NoteRecomPage extends React.Component {
 
     // 首先得到笔记的分类
     byTypeGetSort() {
-        const self = this;
-        jQuery.ajax({
-            type : "POST",
-            url : "/doit/sortAction/byTypeGetSort",
-            data : {
-                "type" : "note"
-            },
-            dataType:"json",
-            contentType: "application/x-www-form-urlencoded; charset=utf-8",
-            success : function(cbData) {
-                if(cbData.success === "1"){
-                    let sortArray = [];
-                    for(let item of cbData.data){
-                        const sortObj = {
-                            "id" : item.Sort_ID,
-                            "name" : item.Sort_Name
-                        };
-                        sortArray.push(sortObj);
-                    }
-
-                    // 设置state中的分类数据
-                    self.settingState(sortArray[0].id, "no", "no", "no", "no", "no", "no");
-
-                    // 设置sortDOM--因为ajax之后select的默认数据不会自动设置
-                    self.setState({
-                        sortDOM : <SelectComponent
-                            defaultValue={sortArray[0].id}
-                            data={sortArray}
-                            selected={self.sortSelected} />
-                    });
-
-                    // 根据第一个分类id获取笔记列表
-                    self.getNoteCount(sortArray[0].id);
-                }
-            },error :function(){
-                message.error("请求笔记分类连接出错！");
-            }
-        });
+		const url = "/doit/sortAction/byTypeGetSort";
+		const method = "POST";
+		const body = {
+			"type" : "note"
+		};
+		const errInfo = "请求笔记分类连接出错！";
+		fetchComponent.send(this, url, method, body, errInfo, this.requestSortCallback);
     }
+
+	// 请求笔记分类的回调方法
+	requestSortCallback(cbData) {
+		if(cbData.success === "1"){
+			let sortArray = [];
+			for(let item of cbData.data){
+				const sortObj = {
+					"id" : item.Sort_ID,
+					"name" : item.Sort_Name
+				};
+				sortArray.push(sortObj);
+			}
+
+			// 设置state中的分类数据
+			this.settingState(sortArray[0].id, "no", "no", "no", "no", "no", "no");
+
+			// 设置sortDOM--因为ajax之后select的默认数据不会自动设置
+			this.setState({
+				sortDOM : <SelectComponent
+					defaultValue={sortArray[0].id}
+					data={sortArray}
+					selected={this.sortSelected} />
+			});
+
+			// 根据第一个分类id获取笔记列表
+			this.getNoteCount(sortArray[0].id);
+		}
+	}
 
     // 根据分类id获取笔记列表
     getNoteCount(sortId) {
-        const self = this;
-        jQuery.ajax({
-            type : "POST",
-            url : "/doit/noteAction/getNoteCount",
-            data : {
-                "sort" : sortId
-            },
-            dataType:"json",
-            contentType: "application/x-www-form-urlencoded; charset=utf-8",
-            success : function(cbData) {
-                if(cbData.success === "1"){
-
-                    // 设置state中的分类数据
-                    self.settingState(sortId, "no", "no", "no", "no", "no", "no");
-
-                    // paginationDOM--因为ajax之后select的默认数据不会自动设置
-                    self.setState({
-                        paginationDOM : <PaginationComponent
-                            count={cbData.data}
-                            pageSize={self.state.pageSize}
-                            pageed={self.paginationClick}/>
-                    });
-
-                    // 根据当前分类加载第一页笔记数据
-                    self.getNoteList(1);
-                }
-            },error :function(){
-                message.error("请求笔记个数连接出错！");
-            }
-        });
+		const url = "/doit/noteAction/getNoteCount";
+		const method = "POST";
+		const body = {
+			"sort" : sortId
+		};
+		const errInfo = "请求笔记总个数连接出错！";
+		fetchComponent.send(this, url, method, body, errInfo, this.requestCountCallback);
     }
+
+	// 请求笔记总个数的回调方法
+	requestCountCallback(cbData) {
+
+		if(cbData.success === "1"){
+			// 设置state中的分类数据
+			this.settingState(this.state.sortId, "no", "no", "no", "no", "no", "no");
+
+			// paginationDOM--因为ajax之后select的默认数据不会自动设置
+			this.setState({
+				paginationDOM : <PaginationComponent
+					count={cbData.data}
+					pageSize={this.state.pageSize}
+					pageed={this.paginationClick}/>
+			});
+
+			// 根据当前分类加载第一页笔记数据
+			this.getNoteList(1);
+		}
+	}
 
     // 根据当前分类加载第一页笔记数据
     getNoteList(nowPage) {
-        const self = this;
-        jQuery.ajax({
-            type : "POST",
-            url : "/doit/noteAction/getNoteList",
-            data : {
-                "sort" : self.state.sortId,
-                "page" : nowPage,
-                "size" : self.state.pageSize
-            },
-            dataType:"json",
-            contentType: "application/x-www-form-urlencoded; charset=utf-8",
-            success : function(cbData) {
-                if(cbData.success === "1"){
-                    console.info(cbData);
-                    // 组织表格数据
-                    self.dealTableData(cbData);
-                }
-            },error :function(){
-                message.error("请求笔记列表连接出错！");
-            }
-        });
+		const url = "/doit/noteAction/getNoteList";
+		const method = "POST";
+		const body = {
+			"sort" : this.state.sortId,
+			"page" : nowPage,
+			"size" : this.state.pageSize
+		};
+		const errInfo = "请求笔记列表连接出错！";
+		fetchComponent.send(this, url, method, body, errInfo, this.requestNoteListCallback);
     }
+
+	// 请求笔记列表的回调方法
+	requestNoteListCallback(cbData) {
+
+		if(cbData.success === "1"){
+			// 组织表格数据
+			this.dealTableData(cbData);
+		}
+	}
 
     // 组织表格数据
     dealTableData(cbData) {
@@ -293,32 +287,31 @@ export default class NoteRecomPage extends React.Component {
 
     // 更新笔记信息
     updateNote() {
-        const self = this;
-        jQuery.ajax({
-            type : "POST",
-            url : "/doit/recommendAction/recommendNote",
-            data : {
-                "id" : this.state.mId,
-                "recommendNum" : this.state.mRecomNum,
-                "readNum" : this.state.mReadNum
-            },
-            dataType:"json",
-            contentType: "application/x-www-form-urlencoded; charset=utf-8",
-            success : function(cbData) {
-                self.settingState("no", "no", "no", false, "", "", "", "");
-                if(cbData.success === "1") {
-                    // 重新获取当前页数据
-                    self.getNoteList(self.state.nowPage);
-                    message.success(cbData.msg+"！", 3);
-                } else {
-                    message.error(cbData.msg+"！", 3);
-                }
-            },error :function(){
-                message.error("更新笔记信息连接出错！");
-            }
-        });
-
+		const self = this;
+		setTimeout(function() {
+			const url = "/doit/recommendAction/recommendNote";
+			const method = "POST";
+			const body = {
+				"id"           : self.state.mId,
+				"recommendNum" : self.state.mRecomNum,
+				"readNum"      : self.state.mReadNum
+			};
+			const errInfo = "修改笔记连接出错！";
+			fetchComponent.send(self, url, method, body, errInfo, self.requestUpdateCallback);
+		}, 0);
     }
+
+	// 更新笔记的回调方法
+	requestUpdateCallback(cbData) {
+		this.settingState("no", "no", "no", false, "", "", "", "");
+		if(cbData.success === "1") {
+			// 重新获取当前页数据
+			this.getNoteList(this.state.nowPage);
+			message.success(cbData.msg+"！", 3);
+		} else {
+			message.error(cbData.msg+"！", 3);
+		}
+	}
 
     render() {
         const FormItem = Form.Item;

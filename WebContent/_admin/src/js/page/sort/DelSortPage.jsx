@@ -4,7 +4,6 @@
 
 import React from 'react';
 import ReactDOM from 'react-dom';
-import jQuery from 'jquery';
 
 import { Popconfirm, Button, message, Row, Col } from 'antd';
 
@@ -15,6 +14,7 @@ import BreadcrumbComponent from '../../components/breadcrumb/js/BreadcrumbCompon
 import SelectComponent     from '../../components/select/js/SelectComponent';
 import TableComponent      from '../../components/table/js/TableComponent';
 import PaginationComponent from '../../components/pagination/js/PaginationComponent';
+import fetchComponent      from '../../components/fetch/js/fetchComponent';
 
 import '../../../css/sort.less';
 
@@ -125,10 +125,11 @@ export default class DelSortPage extends React.Component {
 
 	// 操作列点击
 	operationClick(index, item){
-		console.info(index);
-		console.info(item);
-		// 删除分类
-		this.delSortList(item.Sort_ID.toString());
+		const self = this;
+		setTimeout(function(){
+			// 删除分类
+			self.delSortList(item.Sort_ID.toString());
+		},0);
 	}
 
 	// 选中分类
@@ -152,61 +153,55 @@ export default class DelSortPage extends React.Component {
 
 	// 根据分类id获取分类列表
 	getSortCount(sortId) {
-		const self = this;
-		jQuery.ajax({
-			type : "POST",
-			url : "/doit/sortAction/getSortCount",
-			data : {
-				"fSort" : sortId
-			},
-			dataType:"json",
-			contentType: "application/x-www-form-urlencoded; charset=utf-8",
-			success : function(cbData) {
-				if(cbData.success === "1"){
+		const url = "/doit/sortAction/getSortCount";
+		const method = "POST";
+		const body = {
+			"fSort" : sortId
+		};
+		const errInfo = "请求分类个数连接出错！";
+		fetchComponent.send(this, url, method, body, errInfo, this.requestCountCallback);
+	}
 
-					// 设置state中的分类数据
-					self.settingState(sortId, "no", "no", "no", "no", "no");
+	// 请求分类总个数的回调方法
+	requestCountCallback(cbData) {
 
-					// paginationDOM--因为ajax之后select的默认数据不会自动设置
-					self.setState({
-						paginationDOM : <PaginationComponent
-							count={cbData.data}
-							pageSize={self.state.pageSize}
-							pageed={self.paginationClick}/>
-					});
+		if(cbData.success === "1"){
+			// 设置state中的分类数据
+			this.settingState(this.state.sortId, "no", "no", "no", "no", "no");
 
-					// 根据当前分类加载第一页分类数据
-					self.getSortList(1);
-				}
-			},error :function(){
-				message.error("请求分类个数连接出错！");
-			}
-		});
+			// paginationDOM--因为ajax之后select的默认数据不会自动设置
+			this.setState({
+				paginationDOM : <PaginationComponent
+					count={cbData.data}
+					pageSize={this.state.pageSize}
+					pageed={this.paginationClick}/>
+			});
+
+			// 根据当前分类加载第一页分类数据
+			this.getSortList(1);
+		}
 	}
 
 	// 根据当前分类加载第一页分类数据
 	getSortList(nowPage) {
-		const self = this;
-		jQuery.ajax({
-			type : "POST",
-			url : "/doit/sortAction/getSortList",
-			data : {
-				"fSort" : self.state.sortId,
-				"page" : nowPage,
-				"size" : self.state.pageSize
-			},
-			dataType:"json",
-			contentType: "application/x-www-form-urlencoded; charset=utf-8",
-			success : function(cbData) {
-				if(cbData.success === "1"){
-					console.info(cbData);
-					// 组织表格数据
-					self.dealTableData(cbData);
-				}
-			},error :function(){
-				message.error("请求分类列表连接出错！");
-			}
-		});
+		const url = "/doit/sortAction/getSortList";
+		const method = "POST";
+		const body = {
+			"fSort" : this.state.sortId,
+			"page"  : nowPage,
+			"size"  : this.state.pageSize
+		};
+		const errInfo = "请求分类列表连接出错！";
+		fetchComponent.send(this, url, method, body, errInfo, this.requestSortListCallback);
+	}
+
+	// 请求分类列表的回调方法
+	requestSortListCallback(cbData) {
+
+		if(cbData.success === "1"){
+			// 组织表格数据
+			this.dealTableData(cbData);
+		}
 	}
 
 	// 组织表格数据
@@ -266,28 +261,25 @@ export default class DelSortPage extends React.Component {
 
 	// 删除分类
 	delSortList(selectStr) {
-		const self = this;
-		jQuery.ajax({
-			type : "POST",
-			url : "/doit/sortAction/delSort",
-			data : {
-				"selectId" : selectStr
-			},
-			dataType:"json",
-			contentType: "application/x-www-form-urlencoded; charset=utf-8",
-			success : function(cbData) {
-				if(cbData.success === "1"){
-					self.settingState("no", "no", "no", false, "no", false);
-                    message.success(cbData.msg+"！", 3);
-					// 根据分类id获取分类列表
-					self.getSortCount(self.state.sortId);
-				}
-			},error :function(){
-				message.error("删除分类列表连接出错！");
-			}
-		});
+		const url = "/doit/sortAction/delSort";
+		const method = "POST";
+		const body = {
+			"selectId" : selectStr
+		};
+		const errInfo = "删除分类列表连接出错！";
+		fetchComponent.send(this, url, method, body, errInfo, this.requestDelCallback);
 	}
 
+	// 删除分类回调方法
+	requestDelCallback(cbData) {
+
+		if(cbData.success === "1"){
+			this.settingState("no", "no", "no", false, "no", false);
+			message.success(cbData.msg+"！", 3);
+			// 根据分类id获取分类列表
+			this.getSortCount(this.state.sortId);
+		}
+	}
 
 
 	render() {

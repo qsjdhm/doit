@@ -4,7 +4,6 @@
 
 import React from 'react';
 import ReactDOM from 'react-dom';
-import jQuery from 'jquery';
 
 import { Modal, Form, Input, message, Row, Col } from 'antd';
 
@@ -15,6 +14,7 @@ import BreadcrumbComponent from '../../components/breadcrumb/js/BreadcrumbCompon
 import SelectComponent     from '../../components/select/js/SelectComponent';
 import TableComponent      from '../../components/table/js/TableComponent';
 import PaginationComponent from '../../components/pagination/js/PaginationComponent';
+import fetchComponent      from '../../components/fetch/js/fetchComponent';
 
 export default class EditSortPage extends React.Component {
 	constructor(props) {
@@ -149,61 +149,52 @@ export default class EditSortPage extends React.Component {
 
 	// 根据分类id获取分类列表
 	getSortCount(sortId) {
-		const self = this;
-		jQuery.ajax({
-			type : "POST",
-			url : "/doit/sortAction/getSortCount",
-			data : {
-				"fSort" : sortId
-			},
-			dataType:"json",
-			contentType: "application/x-www-form-urlencoded; charset=utf-8",
-			success : function(cbData) {
-				if(cbData.success === "1"){
+		const url = "/doit/sortAction/getSortCount";
+		const method = "POST";
+		const body = {
+			"fSort" : sortId
+		};
+		const errInfo = "请求分类个数连接出错！";
+		fetchComponent.send(this, url, method, body, errInfo, this.requestCountCallback);
+	}
 
-					// 设置state中的分类数据
-					self.settingState(sortId, "no", "no", "no", "no", "no", "no");
+	// 请求分类总个数的回调方法
+	requestCountCallback(cbData) {
 
-					// paginationDOM--因为ajax之后select的默认数据不会自动设置
-					self.setState({
-						paginationDOM : <PaginationComponent
-							count={cbData.data}
-							pageSize={self.state.pageSize}
-							pageed={self.paginationClick}/>
-					});
+		if(cbData.success === "1"){
+			// paginationDOM--因为ajax之后select的默认数据不会自动设置
+			this.setState({
+				paginationDOM : <PaginationComponent
+					count={cbData.data}
+					pageSize={this.state.pageSize}
+					pageed={this.paginationClick}/>
+			});
 
-					// 根据当前分类加载第一页分类数据
-					self.getSortList(1);
-				}
-			},error :function(){
-				message.error("请求分类个数连接出错！");
-			}
-		});
+			// 根据当前分类加载第一页分类数据
+			this.getSortList(1);
+		}
 	}
 
 	// 根据当前分类加载第一页分类数据
 	getSortList(nowPage) {
-		const self = this;
-		jQuery.ajax({
-			type : "POST",
-			url : "/doit/sortAction/getSortList",
-			data : {
-				"fSort" : self.state.sortId,
-				"page" : nowPage,
-				"size" : self.state.pageSize
-			},
-			dataType:"json",
-			contentType: "application/x-www-form-urlencoded; charset=utf-8",
-			success : function(cbData) {
-				if(cbData.success === "1"){
-					console.info(cbData);
-					// 组织表格数据
-					self.dealTableData(cbData);
-				}
-			},error :function(){
-				message.error("请求分类列表连接出错！");
-			}
-		});
+		const url = "/doit/sortAction/getSortList";
+		const method = "POST";
+		const body = {
+			"fSort" : this.state.sortId,
+			"page"  : nowPage,
+			"size"  : this.state.pageSize
+		};
+		const errInfo = "请求分类列表连接出错！";
+		fetchComponent.send(this, url, method, body, errInfo, this.requestSortListCallback);
+	}
+
+	// 请求分类列表的回调方法
+	requestSortListCallback(cbData) {
+
+		if(cbData.success === "1"){
+			// 组织表格数据
+			this.dealTableData(cbData);
+		}
 	}
 
     // 初始化分类下拉框的数据
@@ -320,33 +311,28 @@ export default class EditSortPage extends React.Component {
 
     // 更新分类信息
     updateSort() {
-        const self = this;
-        jQuery.ajax({
-            type : "POST",
-            url : "/doit/sortAction/updateSort",
-            data : {
-                "id" : this.state.mId,
-                "fId" : encodeURI(encodeURI(this.state.mFSortId)),
-                "name" : encodeURI(encodeURI(this.state.mSortName))
-            },
-            dataType:"json",
-            contentType: "application/x-www-form-urlencoded; charset=utf-8",
-            success : function(cbData) {
-                self.settingState("no", "no", "no", false, "no", "no", "no");
-                if(cbData.success === "1") {
-                    // 重新获取当前页数据
-                    self.getSortList(self.state.nowPage);
-                    message.success(cbData.msg+"！", 3);
-                } else {
-                    message.error(cbData.msg+"！", 3);
-                }
-            },error :function(){
-                message.error("更新分类信息连接出错！");
-            }
-        });
+		const url = "/doit/sortAction/updateSort";
+		const method = "POST";
+		const body = {
+			"id"   : this.state.mId,
+			"fId"  : encodeURI(encodeURI(this.state.mFSortId)),
+			"name" : encodeURI(encodeURI(this.state.mSortName))
+		};
+		const errInfo = "更新分类信息连接出错！";
+		fetchComponent.send(this, url, method, body, errInfo, this.requestUpdateCallback);
     }
 
-
+	// 更新分类的回调方法
+	requestUpdateCallback(cbData) {
+		this.settingState("no", "no", "no", false, "no", "no", "no");
+		if(cbData.success === "1") {
+			// 重新获取当前页数据
+			this.getSortList(this.state.nowPage);
+			message.success(cbData.msg+"！", 3);
+		} else {
+			message.error(cbData.msg+"！", 3);
+		}
+	}
 
 
 	render() {

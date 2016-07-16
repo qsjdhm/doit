@@ -4,7 +4,6 @@
 
 import React from 'react';
 import ReactDOM from 'react-dom';
-import jQuery from 'jquery';
 
 import { Modal, Form, Input, message, Row, Col } from 'antd';
 
@@ -14,6 +13,7 @@ import ToolBarComponent    from '../../components/toolbar/js/ToolBarComponent';
 import BreadcrumbComponent from '../../components/breadcrumb/js/BreadcrumbComponent';
 import TableComponent      from '../../components/table/js/TableComponent';
 import PaginationComponent from '../../components/pagination/js/PaginationComponent';
+import fetchComponent      from '../../components/fetch/js/fetchComponent';
 
 
 export default class EditUserPage extends React.Component {
@@ -103,9 +103,12 @@ export default class EditUserPage extends React.Component {
 
 	// 操作列点击
 	operationClick(index, item){
-		this.settingState("no", "no", true, "no", "no", "no", "no");
-		// 根据ID获取用户全部信息
-		this.getUser(item.User_ID);
+		const self = this;
+		setTimeout(function(){
+			self.settingState("no", "no", true, item.User_ID, "no", "no", "no");
+			// 根据ID获取用户全部信息
+			self.getUser(item.User_ID);
+		}, 0);
 	}
 
 	// 弹出框确认点击
@@ -139,54 +142,49 @@ export default class EditUserPage extends React.Component {
 
 	// 获取用户列表
 	getUserCount() {
-		const self = this;
-		jQuery.ajax({
-			type : "POST",
-			url : "/doit/userAction/getUserCount",
-			data : {},
-			dataType:"json",
-			contentType: "application/x-www-form-urlencoded; charset=utf-8",
-			success : function(cbData) {
-				if(cbData.success === "1"){
-					// paginationDOM--因为ajax之后select的默认数据不会自动设置
-					self.setState({
-						paginationDOM : <PaginationComponent
-							count={cbData.data}
-							pageSize={self.state.pageSize}
-							pageed={self.paginationClick}/>
-					});
+		const url = "/doit/userAction/getUserCount";
+		const method = "POST";
+		const body = {};
+		const errInfo = "请求用户个数连接出错！";
+		fetchComponent.send(this, url, method, body, errInfo, this.requestCountCallback);
+	}
 
-					// 根据当前分类加载第一页用户数据
-					self.getUserList(1);
-				}
-			},error :function(){
-				message.error("请求用户个数连接出错！");
-			}
-		});
+	// 请求用户总个数的回调方法
+	requestCountCallback(cbData) {
+
+		if(cbData.success === "1"){
+			// paginationDOM--因为ajax之后select的默认数据不会自动设置
+			this.setState({
+				paginationDOM : <PaginationComponent
+					count={cbData.data}
+					pageSize={this.state.pageSize}
+					pageed={this.paginationClick}/>
+			});
+
+			// 根据当前分类加载第一页用户数据
+			this.getUserList(1);
+		}
 	}
 
 	// 根据当前分类加载第一页用户数据
 	getUserList(nowPage) {
-		const self = this;
-		jQuery.ajax({
-			type : "POST",
-			url : "/doit/userAction/getUserList",
-			data : {
-				"page" : nowPage,
-				"size" : self.state.pageSize
-			},
-			dataType:"json",
-			contentType: "application/x-www-form-urlencoded; charset=utf-8",
-			success : function(cbData) {
-				if(cbData.success === "1"){
-					console.info(cbData);
-					// 组织表格数据
-					self.dealTableData(cbData);
-				}
-			},error :function(){
-				message.error("请求用户列表连接出错！");
-			}
-		});
+		const url = "/doit/userAction/getUserList";
+		const method = "POST";
+		const body = {
+			"page" : nowPage,
+			"size" : this.state.pageSize
+		};
+		const errInfo = "请求用户列表连接出错！";
+		fetchComponent.send(this, url, method, body, errInfo, this.requestUserListCallback);
+	}
+
+	// 请求用户列表的回调方法
+	requestUserListCallback(cbData) {
+
+		if(cbData.success === "1"){
+			// 组织表格数据
+			this.dealTableData(cbData);
+		}
 	}
 
 	// 组织表格数据
@@ -239,61 +237,48 @@ export default class EditUserPage extends React.Component {
 
 	// 根据ID获取用户全部信息
 	getUser(id) {
-		// 保存用户id
-		this.settingState("no", "no", true, id, "no", "no", "no");
-		const self = this;
-		jQuery.ajax({
-			type : "POST",
-			url : "/doit/userAction/getUser",
-			data : {
-				"selectId" : id
-			},
-			dataType:"json",
-			contentType: "application/x-www-form-urlencoded; charset=utf-8",
-			success : function(cbData) {
-				if(cbData.success === "1"){
-					self.settingState("no", "no", "no", id, cbData.name, "no", cbData.email);
-				}
-			},error :function(){
-				message.error("请求用户信息连接出错！");
-			}
-		});
+		const url = "/doit/userAction/getUser";
+		const method = "POST";
+		const body = {
+			"selectId" : id
+		};
+		const errInfo = "请求用户信息连接出错！";
+		fetchComponent.send(this, url, method, body, errInfo, this.requestUserCallback);
+	}
+
+	// 请求用户信息回调方法
+	requestUserCallback(cbData) {
+
+		if(cbData.success === "1"){
+			this.settingState("no", "no", "no", "no", cbData.name, "no", cbData.email);
+		}
 	}
 
 	// 更新用户信息
 	updateUser() {
-		const self     = this;
-		const id       = this.state.mId;
-		const name     = encodeURI(encodeURI(this.state.mName));
-		const password = encodeURI(encodeURI(this.state.mPassword));
-		const email    = encodeURI(encodeURI(this.state.mEmail));
-		jQuery.ajax({
-			type : "POST",
-			url : "/doit/userAction/updateUser",
-			data : {
-				"id" : id,
-				"name" : name,
-				"password" : password,
-				"email" : email
-			},
-			dataType:"json",
-			contentType: "application/x-www-form-urlencoded; charset=utf-8",
-			success : function(cbData) {
-				self.settingState("no", "no", false, "", "", "", "");
-				if(cbData.success === "1") {
-					// 重新获取当前页数据
-					self.getUserList(self.state.nowPage);
-                    message.success(cbData.msg+"！", 3);
-				} else {
-                    message.error(cbData.msg+"！", 3);
-				}
-			},error :function(){
-				message.error("更新用户信息连接出错！");
-			}
-		});
+		const url = "/doit/userAction/updateUser";
+		const method = "POST";
+		const body = {
+			"id"       : this.state.mId,
+			"name"     : encodeURI(encodeURI(this.state.mName)),
+			"password" : encodeURI(encodeURI(this.state.mPassword)),
+			"email"    : encodeURI(encodeURI(this.state.mEmail))
+		};
+		const errInfo = "更新用户信息连接出错！";
+		fetchComponent.send(this, url, method, body, errInfo, this.requestUpdateCallback);
 	}
 
-
+	// 更新用户的回调方法
+	requestUpdateCallback(cbData) {
+		this.settingState("no", "no", false, "", "", "", "");
+		if(cbData.success === "1") {
+			// 重新获取当前页数据
+			this.getUserList(this.state.nowPage);
+			message.success(cbData.msg+"！", 3);
+		} else {
+			message.error(cbData.msg+"！", 3);
+		}
+	}
 
 	render() {
 		const FormItem = Form.Item;

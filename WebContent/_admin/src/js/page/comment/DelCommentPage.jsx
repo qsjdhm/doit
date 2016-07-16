@@ -4,7 +4,6 @@
 
 import React from 'react';
 import ReactDOM from 'react-dom';
-import jQuery from 'jquery';
 
 import { Popconfirm, Button, message, Row, Col } from 'antd';
 
@@ -14,6 +13,7 @@ import ToolBarComponent    from '../../components/toolbar/js/ToolBarComponent';
 import BreadcrumbComponent from '../../components/breadcrumb/js/BreadcrumbComponent';
 import TableComponent      from '../../components/table/js/TableComponent';
 import PaginationComponent from '../../components/pagination/js/PaginationComponent';
+import fetchComponent      from '../../components/fetch/js/fetchComponent';
 
 import '../../../css/comment.less';
 
@@ -84,10 +84,11 @@ export default class DelCommentPage extends React.Component {
 
     // 操作列点击
     operationClick(index, item){
-        console.info(index);
-        console.info(item);
-        // 删除评论
-        this.delCommentList(item.Comment_ID.toString());
+		const self = this;
+		setTimeout(function(){
+			// 删除评论
+			self.delCommentList(item.Comment_ID.toString());
+		}, 0);
     }
 
     // 选中评论
@@ -111,55 +112,50 @@ export default class DelCommentPage extends React.Component {
 
     // 获取评论列表
     getCommentCount() {
-        const self = this;
-        jQuery.ajax({
-            type : "POST",
-            url : "/doit/commentAction/getCommentCount",
-            data : {},
-            dataType:"json",
-            contentType: "application/x-www-form-urlencoded; charset=utf-8",
-            success : function(cbData) {
-                if(cbData.success === "1"){
-                    // paginationDOM--因为ajax之后select的默认数据不会自动设置
-                    self.setState({
-                        paginationDOM : <PaginationComponent
-                            count={cbData.data}
-                            pageSize={self.state.pageSize}
-                            pageed={self.paginationClick}/>
-                    });
-
-                    // 根据当前分类加载第一页评论数据
-                    self.getCommentList(1);
-                }
-            },error :function(){
-                message.error("请求评论个数连接出错！");
-            }
-        });
+		const url = "/doit/commentAction/getCommentCount";
+		const method = "POST";
+		const body = {};
+		const errInfo = "请求评论个数连接出错！";
+		fetchComponent.send(this, url, method, body, errInfo, this.requestCountCallback);
     }
+
+	// 请求评论总个数的回调方法
+	requestCountCallback(cbData) {
+
+		if(cbData.success === "1"){
+			// paginationDOM--因为ajax之后select的默认数据不会自动设置
+			this.setState({
+				paginationDOM : <PaginationComponent
+					count={cbData.data}
+					pageSize={this.state.pageSize}
+					pageed={this.paginationClick}/>
+			});
+
+			// 根据当前分类加载第一页评论数据
+			this.getCommentList(1);
+		}
+	}
 
     // 根据当前分类加载第一页评论数据
     getCommentList(nowPage) {
-        const self = this;
-        jQuery.ajax({
-            type : "POST",
-            url : "/doit/commentAction/getCommentList",
-            data : {
-                "page" : nowPage,
-                "size" : self.state.pageSize
-            },
-            dataType:"json",
-            contentType: "application/x-www-form-urlencoded; charset=utf-8",
-            success : function(cbData) {
-                if(cbData.success === "1"){
-                    console.info(cbData);
-                    // 组织表格数据
-                    self.dealTableData(cbData);
-                }
-            },error :function(){
-                message.error("请求评论列表连接出错！");
-            }
-        });
+		const url = "/doit/commentAction/getCommentList";
+		const method = "POST";
+		const body = {
+			"page" : nowPage,
+			"size" : this.state.pageSize
+		};
+		const errInfo = "请求评论列表连接出错！";
+		fetchComponent.send(this, url, method, body, errInfo, this.requestCommentListCallback);
     }
+
+	// 请求评论列表的回调方法
+	requestCommentListCallback(cbData) {
+
+		if(cbData.success === "1"){
+			// 组织表格数据
+			this.dealTableData(cbData);
+		}
+	}
 
     // 组织表格数据
     dealTableData(cbData) {
@@ -175,7 +171,7 @@ export default class DelCommentPage extends React.Component {
             { title: 'ID', width: idWidth, dataIndex: 'Comment_ID', key: 'Comment_ID' },
             { title: '内容', width: contentWidth, dataIndex: 'Comment_Content', key: 'Comment_Content' },
             { title: '对应文章', width: articleWidth, dataIndex: 'Comment_ArticleTitle', key: 'Comment_ArticleTitle' },
-            { title: '评论人', width: userWidth, dataIndex: 'Comment_Person_Name', key: 'Comment_Person_Name' },
+            { title: '评论用户', width: userWidth, dataIndex: 'Comment_Person_Name', key: 'Comment_Person_Name' },
             //, { title: '操作', width: operationWidth, dataIndex: '', key: 'operation', render: (index, item) => <a href='javascript:void(0)' onClick={self.openEditModel.bind(null, index, item)}>修改</a> },
         ];
 
@@ -220,27 +216,25 @@ export default class DelCommentPage extends React.Component {
 
     // 删除评论
     delCommentList(selectStr) {
-        const self = this;
-        jQuery.ajax({
-            type : "POST",
-            url : "/doit/commentAction/delComment",
-            data : {
-                "selectId" : selectStr
-            },
-            dataType:"json",
-            contentType: "application/x-www-form-urlencoded; charset=utf-8",
-            success : function(cbData) {
-                if(cbData.success === "1"){
-                    self.settingState("no", "no", false, "no", false);
-                    message.success(cbData.msg+"！", 3);
-                    // 获取评论列表
-                    self.getCommentCount();
-                }
-            },error :function(){
-                message.error("删除评论列表连接出错！");
-            }
-        });
+		const url = "/doit/commentAction/delComment";
+		const method = "POST";
+		const body = {
+			"selectId" : selectStr
+		};
+		const errInfo = "删除评论信息连接出错！";
+		fetchComponent.send(this, url, method, body, errInfo, this.requestDelCallback);
     }
+
+	// 删除评论的回调方法
+	requestDelCallback(cbData) {
+
+		if(cbData.success === "1"){
+			this.settingState("no", "no", false, "no", false);
+			message.success(cbData.msg+"！", 3);
+			// 获取评论列表
+			this.getCommentCount();
+		}
+	}
 
 
 

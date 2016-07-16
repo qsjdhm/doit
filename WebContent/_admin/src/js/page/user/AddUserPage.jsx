@@ -4,9 +4,6 @@
 
 import React from 'react';
 import ReactDOM from 'react-dom';
-import jQuery from 'jquery';
-
-
 
 import { Form, Input, Button, Icon, message, Row, Col } from 'antd';
 
@@ -14,9 +11,9 @@ import MenuComponent       from '../../components/menu/js/MenuComponent';
 import SearchComponent     from '../../components/search/js/SearchComponent';
 import ToolBarComponent    from '../../components/toolbar/js/ToolBarComponent';
 import BreadcrumbComponent from '../../components/breadcrumb/js/BreadcrumbComponent';
+import fetchComponent      from '../../components/fetch/js/fetchComponent';
 
 import '../../../css/link.less';
-
 
 export default class AddUserPage extends React.Component {
 
@@ -104,33 +101,26 @@ export default class AddUserPage extends React.Component {
 	submitData() {
 		const self = this;
 		setTimeout(function() {
-			const name     = encodeURI(encodeURI(self.state.name));
-			const password = encodeURI(encodeURI(self.state.password));
-			const email    = encodeURI(encodeURI(self.state.email));
-
-			jQuery.ajax({
-				type : "POST",
-				url : "/doit/userAction/addUser",
-				data : {
-					"name" : name,
-					"password" : password,
-					"email" : email
-				},
-				dataType:"json",
-				contentType: "application/x-www-form-urlencoded; charset=utf-8",
-				success : function(cbData) {
-					console.info(cbData);
-					self.settingState("no", "no", false);
-					if(cbData.success === "1") {
-                        message.success(cbData.msg+"！", 3);
-					} else {
-                        message.error(cbData.msg+"！", 3);
-					}
-				},error :function(){
-					message.error("新增用户连接出错！");
-				}
-			});
+			const url = "/doit/userAction/addUser";
+			const method = "POST";
+			const body = {
+				"name"      : encodeURI(encodeURI(self.state.name)),
+				"password"  : encodeURI(encodeURI(self.state.password)),
+				"email"     : encodeURI(encodeURI(self.state.email))
+			};
+			const errInfo = "新增用户连接出错！";
+			fetchComponent.send(self, url, method, body, errInfo, self.requestSubmitCallback);
 		}, 0);
+	}
+
+	// 新增用户回调方法
+	requestSubmitCallback(cbData) {
+		this.settingState("no", "no", "no", false);
+		if(cbData.success === "1") {
+			message.success(cbData.msg+"！", 3);
+		} else {
+			message.error(cbData.msg+"！", 3);
+		}
 	}
 
 	render() {
@@ -160,15 +150,15 @@ export default class AddUserPage extends React.Component {
 							<div className="page add-book-page">
 								<Form horizontal>
 									<FormItem
-										label="用户名称 : ">
+										label="用户名称">
 										<Input onChange={this.nameChange} placeholder="" size="large"/>
 									</FormItem>
 									<FormItem
-										label="用户密码 : ">
+										label="用户密码">
 										<Input onChange={this.passwordChange} placeholder="" size="large"/>
 									</FormItem>
 									<FormItem
-										label="用户邮箱 : ">
+										label="用户邮箱">
 										<Input onChange={this.emailChange} placeholder="" size="large"/>
 									</FormItem>
 									<FormItem

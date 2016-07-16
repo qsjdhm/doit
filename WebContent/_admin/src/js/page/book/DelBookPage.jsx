@@ -98,8 +98,6 @@ export default class DelBookPage extends React.Component {
 
     // 操作列点击
     operationClick(index, item){
-        console.info(index);
-        console.info(item);
         // 删除图书
         this.delBookList(item.Book_ID.toString());
     }
@@ -124,104 +122,96 @@ export default class DelBookPage extends React.Component {
 
     // 首先得到图书的分类
     byTypeGetSort() {
-        const self = this;
-        jQuery.ajax({
-            type : "POST",
-            url : "/doit/sortAction/byTypeGetSort",
-            data : {
-                "type" : "book"
-            },
-            dataType:"json",
-            contentType: "application/x-www-form-urlencoded; charset=utf-8",
-            success : function(cbData) {
-                if(cbData.success === "1"){
-                    let sortArray = [];
-                    for(let item of cbData.data){
-                        const sortObj = {
-                            "id" : item.Sort_ID,
-                            "name" : item.Sort_Name
-                        };
-                        sortArray.push(sortObj);
-                    }
-
-                    // 设置state中的分类数据
-                    self.settingState(sortArray[0].id, "no", "no", "no", "no", "no");
-
-                    // 设置sortDOM--因为ajax之后select的默认数据不会自动设置
-                    self.setState({
-                        sortDOM : <SelectComponent
-                            defaultValue={sortArray[0].id}
-                            data={sortArray}
-                            selected={self.sortSelected} />
-                    });
-
-                    // 根据第一个分类id获取图书列表
-                    self.getBookCount(sortArray[0].id);
-                }
-            },error :function(){
-                message.error("请求图书分类连接出错！");
-            }
-        });
+		const url = "/doit/sortAction/byTypeGetSort";
+		const method = "POST";
+		const body = {
+			"type" : "book"
+		};
+		const errInfo = "请求图书分类连接出错！";
+		fetchComponent.send(this, url, method, body, errInfo, this.requestSortCallback);
     }
+
+	// 请求图书分类的回调方法
+	requestSortCallback(cbData) {
+
+		if(cbData.success === "1"){
+			let sortArray = [];
+			for(let item of cbData.data){
+				const sortObj = {
+					"id" : item.Sort_ID,
+					"name" : item.Sort_Name
+				};
+				sortArray.push(sortObj);
+			}
+
+			// 设置state中的分类数据
+			this.settingState(sortArray[0].id, "no", "no", "no", "no", "no");
+
+			// 设置sortDOM--因为ajax之后select的默认数据不会自动设置
+			this.setState({
+				sortDOM : <SelectComponent
+					defaultValue={sortArray[0].id}
+					data={sortArray}
+					selected={this.sortSelected} />
+			});
+
+			// 根据第一个分类id获取图书列表
+			this.getBookCount(sortArray[0].id);
+		}
+	}
 
     // 根据分类id获取图书列表
     getBookCount(sortId) {
-        const self = this;
-        jQuery.ajax({
-            type : "POST",
-            url : "/doit/bookAction/getBookCount",
-            data : {
-                "sort" : sortId
-            },
-            dataType:"json",
-            contentType: "application/x-www-form-urlencoded; charset=utf-8",
-            success : function(cbData) {
-                if(cbData.success === "1"){
-
-                    // 设置state中的分类数据
-                    self.settingState(sortId, "no", "no", "no", "no", "no");
-
-                    // paginationDOM--因为ajax之后select的默认数据不会自动设置
-                    self.setState({
-                        paginationDOM : <PaginationComponent
-                            count={cbData.data}
-                            pageSize={self.state.pageSize}
-                            pageed={self.paginationClick}/>
-                    });
-
-                    // 根据当前分类加载第一页图书数据
-                    self.getBookList(1);
-                }
-            },error :function(){
-                message.error("请求图书个数连接出错！");
-            }
-        });
+		const url = "/doit/bookAction/getBookCount";
+		const method = "POST";
+		const body = {
+			"sort" : sortId
+		};
+		const errInfo = "请求图书总个数连接出错！";
+		fetchComponent.send(this, url, method, body, errInfo, this.requestCountCallback);
     }
+
+    // 请求图书总个数的回调方法
+	requestCountCallback(cbData) {
+		if(cbData.success === "1"){
+
+			// 设置state中的分类数据
+			this.settingState(this.state.sortId, "no", "no", "no", "no", "no");
+
+			// paginationDOM--因为ajax之后select的默认数据不会自动设置
+			this.setState({
+				paginationDOM : <PaginationComponent
+					count={cbData.data}
+					pageSize={this.state.pageSize}
+					pageed={this.paginationClick}/>
+			});
+
+			// 根据当前分类加载第一页图书数据
+			this.getBookList(1);
+		}
+	}
 
     // 根据当前分类加载第一页图书数据
     getBookList(nowPage) {
-        const self = this;
-        jQuery.ajax({
-            type : "POST",
-            url : "/doit/bookAction/getBookList",
-            data : {
-                "sort" : self.state.sortId,
-                "page" : nowPage,
-                "size" : self.state.pageSize
-            },
-            dataType:"json",
-            contentType: "application/x-www-form-urlencoded; charset=utf-8",
-            success : function(cbData) {
-                if(cbData.success === "1"){
-                    console.info(cbData);
-                    // 组织表格数据
-                    self.dealTableData(cbData);
-                }
-            },error :function(){
-                message.error("请求图书列表连接出错！");
-            }
-        });
+		const url = "/doit/bookAction/getBookList";
+		const method = "POST";
+		const body = {
+			"sort" : this.state.sortId,
+			"page" : nowPage,
+			"size" : this.state.pageSize
+		};
+		const errInfo = "请求图书列表连接出错！";
+		fetchComponent.send(this, url, method, body, errInfo, this.requestBookListCallback);
     }
+
+	// 请求图书列表的回调方法
+	requestBookListCallback(cbData) {
+
+		if(cbData.success === "1"){
+			// 组织表格数据
+			this.dealTableData(cbData);
+		}
+	}
 
     // 组织表格数据
     dealTableData(cbData) {
@@ -284,27 +274,24 @@ export default class DelBookPage extends React.Component {
 
     // 删除图书
     delBookList(selectStr) {
-        const self = this;
-        jQuery.ajax({
-            type : "POST",
-            url : "/doit/bookAction/delBook",
-            data : {
-                "selectId" : selectStr
-            },
-            dataType:"json",
-            contentType: "application/x-www-form-urlencoded; charset=utf-8",
-            success : function(cbData) {
-                if(cbData.success === "1"){
-                    self.settingState("no", "no", "no", false, "no", false);
-                    message.success(cbData.msg+"！", 3);
-                    // 根据分类id获取图书列表
-                    self.getBookCount(self.state.sortId);
-                }
-            },error :function(){
-                message.error("删除图书列表连接出错！");
-            }
-        });
+		const url = "/doit/bookAction/delBook";
+		const method = "POST";
+		const body = {
+			"selectId" : selectStr
+		};
+		const errInfo = "删除图书列表连接出错！";
+		fetchComponent.send(this, url, method, body, errInfo, this.requestDelCallback);
     }
+
+	// 删除图书列表回调
+	requestDelCallback(cbData) {
+		if(cbData.success === "1"){
+			this.settingState("no", "no", "no", false, "no", false);
+			message.success(cbData.msg+"！", 3);
+			// 根据分类id获取图书列表
+			this.getBookCount(this.state.sortId);
+		}
+	}
 
 
 

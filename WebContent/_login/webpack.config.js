@@ -7,7 +7,7 @@ var nodeModulesPath = path.resolve(__dirname, 'node_modules');
 module.exports = {
     entry: {
 		login: path.resolve(__dirname, './src/js/login.jsx'),
-        common: ['react','jquery','antd']
+        common: ['react','antd']
     },
 	output: {
 		path: path.resolve(__dirname, './'),

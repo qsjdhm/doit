@@ -48,10 +48,12 @@ Temporary Items
   
 
 /WebContent/node_modules/
+/WebContent/_admin/.idea/
 /WebContent/_admin/css/
 /WebContent/_admin/js/
 /WebContent/_admin/img/
 /WebContent/_admin/index.html
+/WebContent/_login/.idea/
 /WebContent/_login/css/
 /WebContent/_login/js/
 /WebContent/_login/img/
