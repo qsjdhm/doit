@@ -219,7 +219,7 @@ export default class DelLinkPage extends React.Component {
 		const body = {
 			"selectId" : selectStr
 		};
-		const errInfo = "删除链接列表连接出错！111";
+		const errInfo = "删除链接列表连接出错！";
 		fetchComponent.send(this, url, method, body, errInfo, this.requestDelCallback);
 	}
 
