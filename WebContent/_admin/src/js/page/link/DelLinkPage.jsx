@@ -215,7 +215,7 @@ export default class DelLinkPage extends React.Component {
 	// 删除链接
 	delLinkList(selectStr) {
 		const url = "/doit/linkAction/delLink";
-		const method = "POST";
+		const method = "POST";   
 		const body = {    
 			"selectId" : selectStr
 		};
