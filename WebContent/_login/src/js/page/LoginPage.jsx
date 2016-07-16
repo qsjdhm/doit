@@ -81,7 +81,7 @@ export default class LoginPage extends React.Component {
     requestLoginCallback(cbData) {
         if(cbData.success === "1"){
             window.location.href = "/doit/_admin/#/";
-        } else {
+        } else { 
             message.error(cbData.msg);
         }
     }
