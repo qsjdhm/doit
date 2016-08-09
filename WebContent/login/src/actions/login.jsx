@@ -17,11 +17,3 @@ export function loginSystem () {
 		console.info( getState().login.password );
 	}
 };
-
-
-//导出减一的方法
-export function decrement() {
-	return {
-		type: DECREMENT_COUNTER
-	}
-}

@@ -59,4 +59,4 @@ Temporary Items
 /WebContent/_login/img/
 /WebContent/_login/index.html
 /WebContent/WEB-INF/applicationContext.xml
-/WebContent/login/node_modules/
+/WebContent/login/dist/

@@ -12,10 +12,12 @@ import { cr } from "../utils/index";
 import { CHANGE_USERNAME, CHANGE_PASSWORD } from "../actions/login";
 
 export default combineReducers ( {
-	username : cr( '', {
-		[CHANGE_USERNAME]( state, { value } ){ return value; }
-	} ),
-	password : cr( '', {
-		[CHANGE_PASSWORD]( state, { value } ){ return value; }
-	} ),
+    username : cr( '', {
+        [CHANGE_USERNAME]( state, { value } ){ return value; }
+    } ),
+    password : cr( '', {
+        [CHANGE_PASSWORD]( state, { value } ){ return value; }
+    } ),
 } );
+
+
