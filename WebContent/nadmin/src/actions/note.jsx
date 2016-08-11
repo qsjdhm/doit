@@ -3,13 +3,11 @@
 import fetchComponent      from '../components/fetch/js/fetchComponent';
 import { cac } from "../utils/index";
 
-export const CHANGE_USERNAME = "CHANGE_USERNAME";
-export const CHANGE_PASSWORD = "CHANGE_PASSWORD";
+export const SET_SORT_LIST = "SET_SORT_LIST";
 
 
-export const changeUserName = cac( CHANGE_USERNAME, "value" );
-export const changePassword = cac( CHANGE_PASSWORD, "value" );
 
+const setSortList = cac(SET_SORT_LIST, 'data');
 
 export function byTypeGetSort () {
     return (dispatch, getState) => {
@@ -20,8 +18,8 @@ export function byTypeGetSort () {
         };
         const errInfo = "请求笔记分类连接出错！";
         fetchComponent.send(this, url, method, body, errInfo, function(data){
-            console.info("action--------------");
-            console.info(data);
+			console.info(data.data);
+			dispatch(setSortList(data.data));
         });
     }
 }

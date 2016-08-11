@@ -21,7 +21,6 @@ import '../../css/note.less';
 export default class DelNotePage extends React.Component {
 	constructor(props) {
 		super(props);
-
 	}
 
     componentWillMount() {
@@ -29,8 +28,25 @@ export default class DelNotePage extends React.Component {
         this.props.dispatch(byTypeGetSort());
     }
 
-	render() {
+	renderList(){
 
+		if(this.props.sortArray.length !== 0) {
+			let sortList = [];
+			this.props.sortArray.map((item, i) =>{
+				const sortObj = {
+					"id" : item.Sort_ID,
+					"name" : item.Sort_Name
+				};
+				sortList.push(sortObj);
+			})
+
+			return <SelectComponent
+				defaultValue={sortList[0].id}
+				data={sortList} />
+		}
+	}
+
+	render() {
 		return (
 			<div>
 				<MenuComponent openSubMenu={this.props.route.sort} selectedMenu={this.props.route.bpath} />
@@ -55,7 +71,7 @@ export default class DelNotePage extends React.Component {
 								data={this.props.routes}
 							/>
 							<div id="note_page" className="page del-note-page">
-
+								{this.renderList()}
 							</div>
 						</div>
 					</div>
@@ -69,11 +85,10 @@ export default class DelNotePage extends React.Component {
 };
 
 
+
+
 function mapStateToProps ( state ) {
-
-    return {
-
-    }
+	return Object.assign({}, state.note);
 }
 
 export default connect( mapStateToProps )( DelNotePage );
