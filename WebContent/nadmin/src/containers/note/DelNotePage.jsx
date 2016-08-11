@@ -5,6 +5,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { connect } from "react-redux";
+import { byTypeGetSort } from '../../actions/note';
 
 import { Popconfirm, Button, message, Row, Col } from 'antd';
 
@@ -22,6 +23,11 @@ export default class DelNotePage extends React.Component {
 		super(props);
 
 	}
+
+    componentWillMount() {
+        // 获取笔记的分类列表
+        this.props.dispatch(byTypeGetSort());
+    }
 
 	render() {
 
