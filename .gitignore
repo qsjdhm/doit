@@ -61,3 +61,4 @@ Temporary Items
 /WebContent/WEB-INF/applicationContext.xml
 /WebContent/login/dist/
 /WebContent/nadmin/dist/
+/WebContent/npm-debug.log
