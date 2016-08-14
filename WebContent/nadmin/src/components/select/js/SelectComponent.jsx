@@ -6,51 +6,91 @@ import React from 'react';
 import { Select } from 'antd';
 import 'antd/dist/antd.css';
 import '../css/select.less';
+import { sortSelectChange } from '../../../actions/note';
 
-export default class SelectComponent extends React.Component {
+class SelectComponent extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {
-            defaultValue : this.props.defaultValue
-        }
+
+		this.state = {
+			dom: false
+		}
 
         // 遇到方法中使用this的都需要在这里绑定
         this.handleChange = this.handleChange.bind(this);
     }
 
-    //componentWillReceiveProps (nextProps) {
-    //    this.setState({
-    //        defaultValue : nextProps.defaultValue
-    //    });
-    //
-    //    console.info(nextProps.defaultValue);
-    //    console.info(this.state.defaultValue);
-    //}
-
     handleChange(value) {
         this.props.selected(value);
     }
 
-    render() {
-        const optionItems = this.props.data.map(function(item){
-            return (
-                <Select.Option key={item.id} value={item.id}>{item.name}</Select.Option>
-            );
-        });
+	componentWillReceiveProps (nextProps) {
+		if (nextProps.defaultValue !== this.props.defaultValue) {
+			console.info('zoubuzou');
+			this.setState({
+				dom: false
+			});
 
-        return (
-            <div className="select-package">
-                <Select
-                    size="large"
-	                defaultValue={this.props.defaultValue}
-                    style={{ width: 200 }}
-                    placeholder="请选择选项"
-                    optionFilterProp="children"
-                    notFoundContent="无法找到"
-                    onChange={this.handleChange}>
-                    {optionItems}
-                </Select>
-            </div>
-        );
+			let {data, defaultValue} = this.props;
+			const optionItems = data.map(function(item){
+				return (
+					<Select.Option key={item.id} value={item.id}>{item.name}</Select.Option>
+				);
+			});
+
+			const self = this;
+			setTimeout(function(){
+				self.setState({
+					dom: <Select
+						size="large"
+						defaultValue={self.props.defaultValue}
+						style={{ width: 200 }}
+						placeholder="请选择选项"
+						optionFilterProp="children"
+						notFoundContent="无法找到"
+						onChange={self.handleChange}>
+						{optionItems}
+					</Select>
+				});
+			},0)
+
+		}
+	}
+
+	componentWillMount () {
+		let {data, defaultValue} = this.props;
+		const optionItems = data.map(function(item){
+			return (
+				<Select.Option key={item.id} value={item.id}>{item.name}</Select.Option>
+			);
+		});
+
+		this.setState({
+			dom: <Select
+				size="large"
+				defaultValue={defaultValue}
+				style={{ width: 200 }}
+				placeholder="请选择选项"
+				optionFilterProp="children"
+				notFoundContent="无法找到"
+				onChange={this.handleChange}>
+				{optionItems}
+			</Select>
+		})
+	}
+
+    render() {
+		return (
+			<div className="select-package">
+				{this.state.dom}
+			</div>
+		);
+
     }
 };
+
+
+SelectComponent.propTypes = {
+	selected: React.PropTypes.func.isRequired
+}
+export default SelectComponent;
