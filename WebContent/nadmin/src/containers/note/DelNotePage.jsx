@@ -211,7 +211,7 @@ export default class DelNotePage extends React.Component {
 								   style={{ width: 430 }}
 								   size="large"
 								   placeholder=""/>
-							<span>{this.props.selectedNoteSort}</span>
+							<span>{this.props.selectedNoteSort2}</span>
 						</Modal>
 					</div>
 					<div className="ant-layout-footer">

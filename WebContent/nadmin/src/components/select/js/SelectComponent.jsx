@@ -26,7 +26,9 @@ class SelectComponent extends React.Component {
 
 	componentWillReceiveProps (nextProps) {
 		if (nextProps.defaultValue !== this.props.defaultValue) {
-			console.info('zoubuzou');
+            console.info('zoubuzou');
+            console.info(nextProps.defaultValue);
+            console.info(this.props.defaultValue);
 			this.setState({
 				dom: false
 			});

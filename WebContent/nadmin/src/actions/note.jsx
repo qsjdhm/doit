@@ -11,6 +11,7 @@ export const PAGE_CHANGE = "PAGE_CHANGE";
 export const SET_VISIBLE = "SET_VISIBLE";
 export const SET_SELECTED_NODE_TITLE = "SET_SELECTED_NODE_TITLE";
 export const SET_SELECTED_NODE_SORE = "SET_SELECTED_NODE_SORE";
+export const SET_SELECTED_NODE_SORE2 = "SET_SELECTED_NODE_SORE2";
 export const SET_MODEL_NOTE = "SET_MODEL_NOTE";
 
 
@@ -22,6 +23,7 @@ const setPageId = cac(PAGE_CHANGE, 'data');
 const setVisible = cac(SET_VISIBLE, 'data');
 const setSelectedNodeTitle = cac(SET_SELECTED_NODE_TITLE, 'data');
 const setSelectedNodeSort = cac(SET_SELECTED_NODE_SORE, 'data');
+const setSelectedNodeSort2 = cac(SET_SELECTED_NODE_SORE2, 'data');
 const setModelNote = cac(SET_MODEL_NOTE, 'data');
 
 
@@ -81,7 +83,7 @@ export function modelSortChange (sortId) {
 
 export function setModelSort (sortId) {
 	return (dispatch, getState) => {
-		dispatch(setSelectedNodeSort(sortId));
+		dispatch(setSelectedNodeSort2(sortId));
 	}
 }
 

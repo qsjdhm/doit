@@ -8,7 +8,7 @@
  */
 import {combineReducers} from 'redux';
 import {cr} from '../utils/index';
-import {SET_MODEL_NOTE, SET_SELECTED_NODE_SORE, SET_SELECTED_NODE_TITLE, SET_VISIBLE, SET_SORT_LIST, SET_NOTE_COUNT, SET_NOTE_LIST, SORT_CHANGE, PAGE_CHANGE, RESET_PAGE_DOM} from '../actions/note';
+import {SET_SELECTED_NODE_SORE2, SET_MODEL_NOTE, SET_SELECTED_NODE_SORE, SET_SELECTED_NODE_TITLE, SET_VISIBLE, SET_SORT_LIST, SET_NOTE_COUNT, SET_NOTE_LIST, SORT_CHANGE, PAGE_CHANGE, RESET_PAGE_DOM} from '../actions/note';
 
 
 export default combineReducers({
@@ -36,6 +36,9 @@ export default combineReducers({
 	selectedNoteSort: cr('', {
 		[SET_SELECTED_NODE_SORE](state, {data}){return data}
 	}),
+    selectedNoteSort2: cr('', {
+        [SET_SELECTED_NODE_SORE2](state, {data}){return data}
+    }),
 	modelNote: cr({}, {
 		[SET_MODEL_NOTE](state, {data}){return data}
 	}),
