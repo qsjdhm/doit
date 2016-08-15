@@ -7,7 +7,12 @@ import ReactDOM from 'react-dom';
 import { connect } from 'react-redux';
 
 import {
-    getSortList
+    getSortList,
+	selectedSortChange,
+	selectedPageChange,
+	getNote,
+	modelVisibleChange,
+	modelSaveNoteSortChange
 } from '../../actions/editNote';
 
 
@@ -35,9 +40,8 @@ export default class EditNotePage extends React.Component {
     }
 
 
-    sortChangeHandler () {
 
-    }
+
 
     // 渲染笔记分类下拉框
     renderSortSelect () {
@@ -49,7 +53,96 @@ export default class EditNotePage extends React.Component {
         }
     }
 
+	sortChangeHandler (sortId) {
+		this.props.dispatch(selectedSortChange(sortId));
+	}
 
+	// 渲染分页条
+	renderPaginationList() {
+		if(this.props.noteCount.length !== 0) {
+			return <PaginationComponent
+				count={this.props.noteCount}
+				pageSize={10}
+				pageed={this.paginationClickHandler.bind(this)}/>
+		}
+	}
+
+	paginationClickHandler(pageId) {
+		this.props.dispatch(selectedPageChange(pageId));
+	}
+
+	renderTableList() {
+		if (this.props.noteList.length !== 0){
+			const self = this;
+			const totalWidth = document.getElementById("note_page").offsetWidth - 25;
+			const idWidth        = totalWidth * 0.0749;
+			const titleWidth     = totalWidth * 0.3465;
+			const sortWidth      = totalWidth * 0.1737;
+			const recomWidth     = totalWidth * 0.0637;
+			const readWidth      = totalWidth * 0.0637;
+			const dateWidth      = totalWidth * 0.1766;
+			const operationWidth = totalWidth * 0.0656;
+
+			let tableColumns = [
+				{ title: 'ID', width: idWidth, dataIndex: 'Article_ID', key: 'Article_ID' },
+				{ title: '名称', width: titleWidth, dataIndex: 'Article_Title', key: 'Article_Title' },
+				{ title: '分类', width: sortWidth, dataIndex: 'Sort_Name', key: 'Sort_Name' },
+				{ title: '推荐量', width: recomWidth, dataIndex: 'Recommend_Num', key: 'Recommend_Num' },
+				{ title: '点击量', width: readWidth, dataIndex: 'Read_Num', key: 'Read_Num' },
+				{ title: '时间', width: dateWidth, dataIndex: 'Article_Date', key: 'Article_Date' }
+				//, { title: '操作', width: operationWidth, dataIndex: '', key: 'operation', render: (index, item) => <a href='javascript:void(0)' onClick={self.openEditModel.bind(null, index, item)}>修改</a> },
+			];
+
+			// 设置表格操作列配置
+			tableColumns.push({
+				title: '操作',
+				width: operationWidth,
+				dataIndex: 'operation',
+				key: 'operation',
+				render(index, item) {
+					return <a href='javascript:void(0)' onClick={self.operationClick.bind(self, index, item)}>修改</a>
+				}
+			});
+
+			// 表格的配置
+			const expandedRowRender = record => <p>{record.Article_Content}</p>;
+			const scroll = { y: 350, x: totalWidth };
+
+			return <TableComponent
+				tableColumns={tableColumns}
+				tableData={this.props.noteList}
+				expandedRowRender={expandedRowRender}
+				selectedRowKeys={false}
+				rowSelection={null}
+				checkboxSelected={false}
+				scroll={scroll}/>
+		}
+	}
+
+	operationClick (index, item) {
+		this.props.dispatch(getNote(item.Article_ID));
+	}
+
+	handleOk () {
+		this.props.dispatch(modelVisibleChange(false));
+	}
+
+	handleCancel () {
+		this.props.dispatch(modelVisibleChange(false));
+	}
+
+	renderModelSortList () {
+		if(this.props.sortList.length !== 0 && this.props.modelNoteSelectedSort !== '') {
+			return <SelectComponent
+				defaultValue={this.props.modelNoteSelectedSort}
+				data={this.props.sortList}
+				selected={this.modelSortChangeHandler.bind(this)}/>
+		}
+	}
+
+	modelSortChangeHandler (sortId) {
+		this.props.dispatch(modelSaveNoteSortChange(sortId));
+	}
 
 
 
@@ -79,9 +172,23 @@ export default class EditNotePage extends React.Component {
 								data={this.props.routes}
 							/>
 						</div>
-                        <div id="note_page" className="page del-note-page">
+                        <div id="note_page" className="page edit-note-page">
                             { this.renderSortSelect() }
+							{ this.renderTableList() }
+							{ this.renderPaginationList() }
                         </div>
+
+						<Modal title="修改笔记详细信息"
+							   width="840"
+							   style={{ top: 20 }}
+							   visible={this.props.modelVisible}
+							   onOk={this.handleOk.bind(this)}
+							   onCancel={this.handleCancel.bind(this)}>
+
+							{ this.renderModelSortList() }
+
+							{ this.props.modelSaveNoteSort }
+						</Modal>
 					</div>
 					<div className="ant-layout-footer">
 						52DOIT 版权所有 © 2016 由不拽注定被甩~技术支持
