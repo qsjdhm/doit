@@ -11,6 +11,7 @@ import HomePage          from '../containers/HomePage';
 import NotFound          from '../containers/NotFound';
 
 import DelNotePage       from '../containers/note/DelNotePage';
+import EditNotePage      from '../containers/note/EditNotePage';
 
 
 export default class MRoute extends React.Component {
@@ -24,6 +25,7 @@ export default class MRoute extends React.Component {
 				<Route name="首页"           bpath="#/"                path="/"             component={MainPage}>
 					<IndexRoute name="首页"  bpath="#/"                                     component={HomePage}/>
                     <Route name="删除笔记"   sort="Note"       bpath="#/delNote"          path="delNote"       component={DelNotePage}/>
+                    <Route name="编辑笔记"   sort="Note"       bpath="#/editNote"         path="editNote"       component={EditNotePage}/>
                 </Route>
 				<Route path="*" component={NotFound}/>
 			</Router>
