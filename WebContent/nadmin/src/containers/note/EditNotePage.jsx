@@ -12,7 +12,10 @@ import {
 	selectedPageChange,
 	getNote,
 	modelVisibleChange,
-	modelSaveNoteSortChange
+    modelSaveSortIdChange,
+    modelSaveTitleChange,
+    modelSaveContentChange,
+    modelSaveTagChange
 } from '../../actions/editNote';
 
 
@@ -26,6 +29,8 @@ import SelectComponent     from '../../components/select/js/SelectComponent';
 import TableComponent      from '../../components/table/js/TableComponent';
 import PaginationComponent from '../../components/pagination/js/PaginationComponent';
 import fetchComponent      from '../../components/fetch/js/fetchComponent';
+import UeditorComponent    from '../../components/ueditor/js/UeditorComponent';
+import TagComponent        from '../../components/tag/js/TagComponent';
 
 import '../../css/note.less';
 
@@ -71,6 +76,7 @@ export default class EditNotePage extends React.Component {
 		this.props.dispatch(selectedPageChange(pageId));
 	}
 
+    // 渲染数据表格
 	renderTableList() {
 		if (this.props.noteList.length !== 0){
 			const self = this;
@@ -124,6 +130,9 @@ export default class EditNotePage extends React.Component {
 	}
 
 	handleOk () {
+        // 富文本特殊不能实时变化数据，所以就在这里设置一次
+        const content = UE.getEditor("mContent").getContent();
+        this.props.dispatch(modelSaveContentChange(content));
 		this.props.dispatch(modelVisibleChange(false));
 	}
 
@@ -131,19 +140,51 @@ export default class EditNotePage extends React.Component {
 		this.props.dispatch(modelVisibleChange(false));
 	}
 
+    // 渲染弹出层的分类
 	renderModelSortList () {
-		if(this.props.sortList.length !== 0 && this.props.modelNoteSelectedSort !== '') {
+		if(this.props.sortList.length !== 0 && this.props.modelDefaultSortId !== '') {
 			return <SelectComponent
-				defaultValue={this.props.modelNoteSelectedSort}
+				defaultValue={this.props.modelDefaultSortId}
 				data={this.props.sortList}
 				selected={this.modelSortChangeHandler.bind(this)}/>
 		}
 	}
 
 	modelSortChangeHandler (sortId) {
-		this.props.dispatch(modelSaveNoteSortChange(sortId));
+		this.props.dispatch(modelSaveSortIdChange(sortId));
 	}
 
+    modelTitleChangeHandler (e) {
+        this.props.dispatch(modelSaveTitleChange(e.target.value));
+    }
+
+    // 渲染弹出层的富文本
+    renderModelUeditor () {
+        if(this.props.modelSaveContent !== '') {
+            return <UeditorComponent
+                value={this.props.modelSaveContent}
+                id="mContent"
+                width="805"
+                height="280"
+            />
+        }
+    }
+
+    // 渲染弹出层的标签
+    renderModelTag () {
+        if(this.props.tagList.length !== 0 && this.props.modelSaveTag !== '') {
+            return  <TagComponent
+                width={806}
+                data={this.props.tagList}
+                defaultValue={this.props.modelSaveTag}
+                selected={this.modelTagChangeHandler}
+            />
+        }
+    }
+
+    modelTagChangeHandler (tag) {
+        this.props.dispatch(modelSaveTagChange(tag.join(",")));
+    }
 
 
 	render() {
@@ -186,8 +227,9 @@ export default class EditNotePage extends React.Component {
 							   onCancel={this.handleCancel.bind(this)}>
 
 							{ this.renderModelSortList() }
-
-							{ this.props.modelSaveNoteSort }
+                            <Input value={this.props.modelSaveTitle} onChange={this.modelTitleChangeHandler.bind(this)}  style={{ width: 430 }} size="large" placeholder=""/>
+                            { this.renderModelUeditor() }
+                            { this.renderModelTag() }
 						</Modal>
 					</div>
 					<div className="ant-layout-footer">

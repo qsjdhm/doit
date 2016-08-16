@@ -14,7 +14,7 @@ class SelectComponent extends React.Component {
 
 		this.state = {
 			dom: false
-		}
+		};
 
         // 遇到方法中使用this的都需要在这里绑定
         this.handleChange = this.handleChange.bind(this);
@@ -26,9 +26,6 @@ class SelectComponent extends React.Component {
 
 	componentWillReceiveProps (nextProps) {
 		if (nextProps.defaultValue !== this.props.defaultValue) {
-            console.info('zoubuzou');
-            console.info(nextProps.defaultValue);
-            console.info(this.props.defaultValue);
 			this.setState({
 				dom: false
 			});

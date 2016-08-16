@@ -9,10 +9,19 @@ export const SET_SELECTED_SORT = 'SET_SELECTED_SORT';
 export const SET_NOTE_COUNT = 'SET_NOTE_COUNT';
 export const SET_SELECTED_PAGE = 'SET_SELECTED_PAGE';
 export const SET_NOTE_LIST = 'SET_NOTE_LIST';
+
 export const SET_MODEL_VISIBLE = 'SET_MODEL_VISIBLE';
-export const SET_MODEL_NOTE_ID = 'SET_MODEL_NOTE_ID';
-export const SET_MODEL_NOTE_SELECTED_SORT = 'SET_MODEL_NOTE_SELECTED_SORT';
-export const SET_SAVE_MODEL_NOTE_SORT = 'SET_SAVE_MODEL_NOTE_SORT';
+export const SET_MODEL_DEFAULT_SORT_ID = 'SET_MODEL_DEFAULT_SORT_ID';
+export const SET_MODEL_DEFAULT_TITLE = 'SET_MODEL_DEFAULT_TITLE';
+export const SET_MODEL_DEFAULT_CONTENT = 'SET_MODEL_DEFAULT_CONTENT';
+export const SET_MODEL_DEFAULT_TAG = 'SET_MODEL_DEFAULT_TAG';
+
+export const SET_MODEL_SAVE_ID = 'SET_MODEL_SAVE_ID';
+export const SET_MODEL_SAVE_SORT_ID = 'SET_MODEL_SAVE_SORT_ID';
+export const SET_MODEL_SAVE_TITLE = 'SET_MODEL_SAVE_TITLE';
+export const SET_MODEL_SAVE_CONTENT = 'SET_MODEL_SAVE_CONTENT';
+export const SET_MODEL_SAVE_TAG = 'SET_MODEL_SAVE_TAG';
+
 
 
 const setSortList = cac(SET_SORT_LIST, 'data');
@@ -21,10 +30,18 @@ const setSelectedSort = cac(SET_SELECTED_SORT, 'data');
 const setNoteCount = cac(SET_NOTE_COUNT, 'data');
 const setSelectedPage = cac(SET_SELECTED_PAGE, 'data');
 const setNoteList = cac(SET_NOTE_LIST, 'data');
+
 const setModelVisible = cac(SET_MODEL_VISIBLE, 'data');
-const setModelNoteId = cac(SET_MODEL_NOTE_ID, 'data');
-const setModelNoteSelectedSort = cac(SET_MODEL_NOTE_SELECTED_SORT, 'data');
-const setSaveModelNoteSort = cac(SET_SAVE_MODEL_NOTE_SORT, 'data');
+const setModelDefaultSortId = cac(SET_MODEL_DEFAULT_SORT_ID, 'data');
+const setModelDefaultTitle = cac(SET_MODEL_DEFAULT_TITLE, 'data');
+const setModelDefaultContent = cac(SET_MODEL_DEFAULT_CONTENT, 'data');
+const setModelDefaultTag = cac(SET_MODEL_DEFAULT_TAG, 'data');
+
+const setModelSaveId = cac(SET_MODEL_SAVE_ID, 'data');
+const setModelSaveSortId = cac(SET_MODEL_SAVE_SORT_ID, 'data');
+const setModelSaveTitle = cac(SET_MODEL_SAVE_TITLE, 'data');
+const setModelSaveContent = cac(SET_MODEL_SAVE_CONTENT, 'data');
+const setModelSaveTag = cac(SET_MODEL_SAVE_TAG, 'data');
 
 
 export function getSortList () {
@@ -113,9 +130,16 @@ export function getNote (noteId) {
 		const errInfo = "请求笔记信息连接出错！";
 		fetchComponent.send(this, url, method, body, errInfo, function(data){
 			dispatch(modelVisibleChange(true));
-			dispatch(modelNoteIdChange(data.id));
-			dispatch(setModelNoteSelectedSort(data.sortId));
-			dispatch(modelSaveNoteSortChange(data.sortId));
+			dispatch(setModelDefaultSortId(data.sortId));
+            dispatch(setModelDefaultTitle(data.title));
+            dispatch(setModelDefaultContent(data.content));
+            dispatch(setModelDefaultTag(data.tag));
+
+            dispatch(setModelSaveId(data.id));
+			dispatch(modelSaveSortIdChange(data.sortId));
+            dispatch(modelSaveTitleChange(data.title));
+            dispatch(modelSaveContentChange(data.content));
+            dispatch(modelSaveTagChange(data.tag.split(",")));
 		});
 	}
 }
@@ -126,15 +150,27 @@ export function modelVisibleChange (visible) {
 	}
 }
 
-export function modelNoteIdChange (noteId) {
+export function modelSaveSortIdChange (sortId) {
 	return (dispatch, getState) => {
-		dispatch(setModelNoteId(noteId));
+		dispatch(setModelSaveSortId(sortId));
 	}
 }
 
+export function modelSaveTitleChange (title) {
+    return (dispatch, getState) => {
+        dispatch(setModelSaveTitle(title));
+    }
+}
 
-export function modelSaveNoteSortChange (sortId) {
-	return (dispatch, getState) => {
-		dispatch(setSaveModelNoteSort(sortId));
-	}
+export function modelSaveContentChange (content) {
+    return (dispatch, getState) => {
+        dispatch(setModelSaveContent(content));
+    }
+}
+
+export function modelSaveTagChange (tag) {
+    return (dispatch, getState) => {
+        console.info(tag);
+        dispatch(setModelSaveTag(tag));
+    }
 }
