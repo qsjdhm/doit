@@ -16,6 +16,7 @@ import {
 
     SET_MODEL_SAVE_ID,
     SET_MODEL_SAVE_SORT_ID,
+	SET_MODEL_SAVE_SORT_NAME,
     SET_MODEL_SAVE_TITLE,
     SET_MODEL_SAVE_CONTENT,
     SET_MODEL_SAVE_TAG
@@ -92,9 +93,13 @@ export default combineReducers({
     modelSaveId: cr(0, {
         [SET_MODEL_SAVE_ID](state, {data}){return data}
     }),
-	// 设置弹出层中用于保存给后台的分类
+	// 设置弹出层中用于保存给后台的分类ID
 	modelSaveSortId: cr('', {
 		[SET_MODEL_SAVE_SORT_ID](state, {data}){return data}
+	}),
+	// 设置弹出层中用于保存给后台的分类NAME
+	modelSaveSortName: cr('', {
+		[SET_MODEL_SAVE_SORT_NAME](state, {data}){return data}
 	}),
     // 设置弹出层中用于保存给后台的名称
     modelSaveTitle: cr('', {

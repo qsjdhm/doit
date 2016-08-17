@@ -32,7 +32,7 @@ export default class TagComponent extends React.Component {
             let {data, defaultValue} = this.props;
             const optionItems = data.map(function(item){
                 return (
-                    <Select.Option key={item.id} value={item.id}>{item.name}</Select.Option>
+                    <Select.Option key={item.name} value={item.name}>{item.name}</Select.Option>
                 );
             });
 
@@ -59,7 +59,7 @@ export default class TagComponent extends React.Component {
         let {data, defaultValue} = this.props;
         const optionItems = data.map(function(item){
             return (
-                <Select.Option key={item.id} value={item.id}>{item.name}</Select.Option>
+                <Select.Option key={item.name} value={item.name}>{item.name}</Select.Option>
             );
         });
 

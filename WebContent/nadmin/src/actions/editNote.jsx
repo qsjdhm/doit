@@ -2,6 +2,7 @@
 
 import fetchComponent      from '../components/fetch/js/fetchComponent';
 import { cac }             from '../utils/index';
+import { message }         from 'antd';
 
 export const SET_SORT_LIST = 'SET_SORT_LIST';
 export const SET_TAG_LIST = 'SET_TAG_LIST';
@@ -18,6 +19,7 @@ export const SET_MODEL_DEFAULT_TAG = 'SET_MODEL_DEFAULT_TAG';
 
 export const SET_MODEL_SAVE_ID = 'SET_MODEL_SAVE_ID';
 export const SET_MODEL_SAVE_SORT_ID = 'SET_MODEL_SAVE_SORT_ID';
+export const SET_MODEL_SAVE_SORT_NAME = 'SET_MODEL_SAVE_SORT_NAME';
 export const SET_MODEL_SAVE_TITLE = 'SET_MODEL_SAVE_TITLE';
 export const SET_MODEL_SAVE_CONTENT = 'SET_MODEL_SAVE_CONTENT';
 export const SET_MODEL_SAVE_TAG = 'SET_MODEL_SAVE_TAG';
@@ -39,6 +41,7 @@ const setModelDefaultTag = cac(SET_MODEL_DEFAULT_TAG, 'data');
 
 const setModelSaveId = cac(SET_MODEL_SAVE_ID, 'data');
 const setModelSaveSortId = cac(SET_MODEL_SAVE_SORT_ID, 'data');
+const setModelSaveSortName = cac(SET_MODEL_SAVE_SORT_NAME, 'data');
 const setModelSaveTitle = cac(SET_MODEL_SAVE_TITLE, 'data');
 const setModelSaveContent = cac(SET_MODEL_SAVE_CONTENT, 'data');
 const setModelSaveTag = cac(SET_MODEL_SAVE_TAG, 'data');
@@ -133,10 +136,11 @@ export function getNote (noteId) {
 			dispatch(setModelDefaultSortId(data.sortId));
             dispatch(setModelDefaultTitle(data.title));
             dispatch(setModelDefaultContent(data.content));
-            dispatch(setModelDefaultTag(data.tag));
+            dispatch(setModelDefaultTag(data.tag.split(",")));
 
             dispatch(setModelSaveId(data.id));
 			dispatch(modelSaveSortIdChange(data.sortId));
+			dispatch(modelSaveSortNameChange(data.sortName));
             dispatch(modelSaveTitleChange(data.title));
             dispatch(modelSaveContentChange(data.content));
             dispatch(modelSaveTagChange(data.tag.split(",")));
@@ -156,6 +160,13 @@ export function modelSaveSortIdChange (sortId) {
 	}
 }
 
+export function modelSaveSortNameChange (sortName) {
+	return (dispatch, getState) => {
+		console.info(sortName);
+		dispatch(setModelSaveSortName(sortName));
+	}
+}
+
 export function modelSaveTitleChange (title) {
     return (dispatch, getState) => {
         dispatch(setModelSaveTitle(title));
@@ -170,7 +181,29 @@ export function modelSaveContentChange (content) {
 
 export function modelSaveTagChange (tag) {
     return (dispatch, getState) => {
-        console.info(tag);
         dispatch(setModelSaveTag(tag));
     }
+}
+
+export function updateNote () {
+	return (dispatch, getState) => {
+
+		console.info(getState().editNote);
+		const url = "/doit/noteAction/updateNote";
+		const method = "POST";
+		const body = {
+			"id"       : getState().editNote.modelSaveId,
+			"sortId"   : getState().editNote.modelSaveSortId,
+			"sortName" : encodeURI(encodeURI(getState().editNote.modelSaveSortName)),
+			"title"    : encodeURI(encodeURI(getState().editNote.modelSaveTitle)),
+			"content"  : getState().editNote.modelSaveContent,
+			"tags"     : encodeURI(encodeURI(getState().editNote.modelSaveTag))
+		};
+		const errInfo = "修改笔记连接出错！";
+		fetchComponent.send(self, url, method, body, errInfo, function(data){
+			message.success(data.msg+"！", 3);
+			dispatch(getNoteList());
+			dispatch(setModelVisible(false));
+		});
+	}
 }

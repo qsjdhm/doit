@@ -13,9 +13,11 @@ import {
 	getNote,
 	modelVisibleChange,
     modelSaveSortIdChange,
+	modelSaveSortNameChange,
     modelSaveTitleChange,
     modelSaveContentChange,
-    modelSaveTagChange
+    modelSaveTagChange,
+	updateNote
 } from '../../actions/editNote';
 
 
@@ -133,7 +135,10 @@ export default class EditNotePage extends React.Component {
         // 富文本特殊不能实时变化数据，所以就在这里设置一次
         const content = UE.getEditor("mContent").getContent();
         this.props.dispatch(modelSaveContentChange(content));
-		this.props.dispatch(modelVisibleChange(false));
+
+		this.props.dispatch(updateNote());
+
+		//this.props.dispatch(modelVisibleChange(false));
 	}
 
 	handleCancel () {
@@ -151,7 +156,21 @@ export default class EditNotePage extends React.Component {
 	}
 
 	modelSortChangeHandler (sortId) {
-		this.props.dispatch(modelSaveSortIdChange(sortId));
+		let nowSort = {
+			sortId   : sortId,
+			sortName : ""
+		};
+		console.info(sortId);
+		const sorts = this.props.sortList;
+		for(let sort of sorts){
+			if(sort.id === sortId) {
+				nowSort.sortName = sort.name;
+				break;
+			}
+		}
+
+		this.props.dispatch(modelSaveSortIdChange(nowSort.sortId));
+		this.props.dispatch(modelSaveSortNameChange(nowSort.sortName));
 	}
 
     modelTitleChangeHandler (e) {
@@ -172,12 +191,12 @@ export default class EditNotePage extends React.Component {
 
     // 渲染弹出层的标签
     renderModelTag () {
-        if(this.props.tagList.length !== 0 && this.props.modelSaveTag !== '') {
+        if(this.props.tagList.length !== 0 && this.props.modelDefaultTag !== '') {
             return  <TagComponent
                 width={806}
                 data={this.props.tagList}
-                defaultValue={this.props.modelSaveTag}
-                selected={this.modelTagChangeHandler}
+                defaultValue={this.props.modelDefaultTag}
+                selected={this.modelTagChangeHandler.bind(this)}
             />
         }
     }
