@@ -3,26 +3,38 @@ var HtmlWebpackPlugin = require('html-webpack-plugin');
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
 var path = require('path');
 var nodeModulesPath = path.resolve(__dirname, 'node_modules');
-var ueditorPath = path.resolve(__dirname, './ueditor1.6.1');
 module.exports = {
+	//entry: {
+	//    page1: path.resolve(__dirname, './src/js/index.jsx'),
+	//        //支持数组形式，将加载数组中的所有模块，但以最后一个模块作为输出
+	//    page2: path.resolve(__dirname, './src/js/hello.jsx')
+	//},
+	devtool: 'inline-source-map' ,
+	devServer: true,
+	hotComponents: true,
+	//entry: path.resolve(__dirname, './_admin/src/js/index.jsx'),
+	entry: {
+		index: [
+			'webpack-dev-server/client?http://127.0.0.1:3001',//入口路径
+			'webpack/hot/only-dev-server',
+			'./src/index.jsx'
+		]
+	},
 
-	//https://segmentfault.com/q/1010000002607794
-
-    entry: {
-		main: path.resolve(__dirname, './src/index.jsx'),
-		//"_admin/admin": './_admin/src/js/index.jsx',
-		//"_login/login": './_login/src/js/index.jsx',
-        common: ['react','antd']
-    },
 	output: {
 		path: path.resolve(__dirname, './dist'),
-        publicPath: "",
-        hash: true,
-		filename: 'js/[name].entry.js'
+		publicPath: 'http://127.0.0.1:3001/dist/',//热加载地址
+		hash: true,
+		filename: 'index.js'
+	},
+	// 语言规范解释器，babel6开始插件化了
+	babel: {
+		presets: ['es2015', 'stage-0', 'react']
 	},
 	resolve: {
 		extensions: ['', '.js', '.jsx']
 	},
+
 	module: {
 		loaders: [
 			{
@@ -48,30 +60,22 @@ module.exports = {
 			}
 		]
 	},
-    plugins: [
-        new ExtractTextPlugin("css/[name].css", {allChunks: true}),
-        new HtmlWebpackPlugin({                        //根据模板插入css/js等生成最终HTML
-            //favicon:'./src/img/favicon.ico', //favicon路径
-            filename: './index.html',    //生成的html存放路径，相对于 path
-            template:'./src/template/index.html',    //html模板路径
-            inject: 'body', //js插入的位置，true/'head'/'body'/false
+	plugins: [
+		new webpack.HotModuleReplacementPlugin(),
+		new ExtractTextPlugin("css/[name].css", {allChunks: true}),
+		new HtmlWebpackPlugin({                        //根据模板插入css/js等生成最终HTML
+			filename: './index.html',    //生成的html存放路径，相对于 path
+			template:'./src/template/index.html',    //html模板路径
+			inject:'body',    //允许插件修改哪些内容，包括head与body
             hash: true, //为静态资源生成hash值
-            chunks: ['main', 'common'],//需要引入的chunk，不配置就会引入所有页面的资源
-            minify:{    //压缩HTML文件
-                removeComments:true,    //移除HTML中的注释
-                collapseWhitespace:false    //删除空白符与换行符
-            }
-        }),
+		}),
         // 压缩
         new webpack.optimize.UglifyJsPlugin({
             compress: {
                 warnings: false
             }
         }),
-        new webpack.optimize.CommonsChunkPlugin('common',  'js/common.entry.js')
-    ]
-
-
+	]
 
 };
 
