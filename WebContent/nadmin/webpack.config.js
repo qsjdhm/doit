@@ -69,7 +69,14 @@ module.exports = {
 			inject:'body',    //允许插件修改哪些内容，包括head与body
             hash: true, //为静态资源生成hash值
 		}),
+        // 压缩
+        //new webpack.optimize.UglifyJsPlugin({
+        //    compress: {
+        //        warnings: false
+        //    }
+        //}),
 	]
+
 };
 
 
