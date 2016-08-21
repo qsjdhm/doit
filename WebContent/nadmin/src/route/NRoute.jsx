@@ -10,7 +10,7 @@ import routes from './nroutes';
 
 import MainPage          from '../containers/MainPage';
 import HomePage          from '../containers/HomePage';
-import NotFound          from '../containers/NotFound';
+//import NotFound          from '../containers/NotFound';
 
 import DelNotePage       from '../containers/note/DelNotePage';
 import EditNotePage      from '../containers/note/EditNotePage';
@@ -24,16 +24,31 @@ const rootRoute = {
         component: MainPage,
         indexRoute: { component:  HomePage },
         childRoutes: [
-            require('./routes/Calendar/index')
+			{
+				path: 'calendar',
+				getComponent(nextState, cb) {
+					require.ensure([], (require) => {
+						cb(null, require('./routes/Calendar/components/Calendar'))
+					})
+				}
+			},
+			{
+				path: 'calendar2',
+				getComponent(nextState, cb) {
+					require.ensure([], (require) => {
+						cb(null, require('./routes/Calendar2/components/Calendar2'))
+					})
+				}
+			}
         ]
     } ]
 };
 
 
 
-if (0) {
-    rootRoute.childRoutes[0].component = NotFound;
-}
+//if (0) {
+//    rootRoute.childRoutes[0].component = NotFound;
+//}
 
 
 
@@ -53,7 +68,7 @@ export default class NRoute extends React.Component {
 
 	render() {
 		return (
-            <Router history={withExampleBasename(hashHistory, __dirname)} routes={rootRoute} />
+			<Router history={withExampleBasename(hashHistory, __dirname)} routes={rootRoute} />
 		);
 	}
 };
