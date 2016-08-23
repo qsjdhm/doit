@@ -207,7 +207,7 @@ export default class EditNotePage extends React.Component {
 
 
 	render() {
-
+		console.info(this.props);
 		return (
 			<div>
 				<MenuComponent openSubMenu={this.props.route.sort} selectedMenu={this.props.route.bpath} />

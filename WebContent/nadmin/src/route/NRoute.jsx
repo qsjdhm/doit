@@ -21,22 +21,35 @@ const rootRoute = {
     //path: `${global.XSMART.host}/x-smart/ircexanalyze/dist/`,{pageMenu: MenuPage, pageContent:}
     path: '/',
     childRoutes: [ {
-        component: MainPage,
-        indexRoute: { component:  HomePage },
+		bpath:"#/",
+		name:"首页",
+		component: MainPage,
+        indexRoute: { component:  HomePage,bpath:"#/",name:"首页"  },
         childRoutes: [
+			//{
+			//	path: 'calendar',
+			//	getComponent(nextState, cb) {
+			//		require.ensure([], (require) => {
+			//			cb(null, require('./routes/Calendar/components/Calendar'))
+			//		})
+			//	}
+			//},
+			//{
+			//	path: 'calendar2',
+			//	getComponent(nextState, cb) {
+			//		require.ensure([], (require) => {
+			//			cb(null, require('./routes/Calendar2/components/Calendar2'))
+			//		})
+			//	}
+			//},
 			{
-				path: 'calendar',
+				path: 'editNote',
+				sort:"Note",
+				name:"编辑笔记",
+				bpath:"#/delNote",
 				getComponent(nextState, cb) {
 					require.ensure([], (require) => {
-						cb(null, require('./routes/Calendar/components/Calendar'))
-					})
-				}
-			},
-			{
-				path: 'calendar2',
-				getComponent(nextState, cb) {
-					require.ensure([], (require) => {
-						cb(null, require('./routes/Calendar2/components/Calendar2'))
+						cb(null, require('../containers/note/EditNotePage').default)
 					})
 				}
 			}

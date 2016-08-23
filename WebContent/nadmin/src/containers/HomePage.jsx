@@ -17,6 +17,7 @@ import CardComponent       from '../components/card/js/CardComponent';
 export default class HomePage extends React.Component {
     constructor(props) {
         super(props);
+		console.info(this.props);
     }
 
     render() {
