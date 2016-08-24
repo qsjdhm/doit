@@ -113,7 +113,7 @@ export default class DelNotePage extends React.Component {
 		this.settingState("no", "no", "no", true, "no", true);
 		const selectStr = this.state.selectedRowKeys.join(";");
 		// 删除文章
-		this.delArticleList(selectStr);
+		this.delNoteList(selectStr);
 	}
 
 

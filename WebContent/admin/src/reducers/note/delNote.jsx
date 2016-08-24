@@ -8,8 +8,10 @@ import {
 	SET_NOTE_COUNT,
 	SET_SELECTED_PAGE,
 	SET_NOTE_LIST,
-    SET_SELECTED_ROW_KEYS
-} from '../../actions/note/editNote';
+    SET_SELECTED_ROW_KEYS,
+	SET_HAS_SELECTED,
+	SET_LOADING
+} from '../../actions/note/delNote';
 
 
 export default combineReducers({
@@ -62,5 +64,16 @@ export default combineReducers({
             return data;
         }
     }),
-
+	// 设置当前表格是否有选中
+	hasSelected : cr(false, {
+		[SET_HAS_SELECTED](state, {data}){
+			return data;
+		}
+	}),
+	// 删除按钮是否等待
+	loading : cr(false, {
+		[SET_LOADING](state, {data}){
+			return data;
+		}
+	}),
 });

@@ -22,10 +22,10 @@ export default class TableComponent extends React.Component {
 
 
 	// 这个经常用于重新载入组件之后想重置一些数据时触发
-	componentWillReceiveProps () {
+	componentWillReceiveProps (nextProps) {
 		if(this.state.selectedRowKeys) {
 			this.setState({
-				selectedRowKeys: []
+				selectedRowKeys: nextProps.selectedRowKeys
 			});
 		} else {
 			this.setState({
@@ -34,6 +34,7 @@ export default class TableComponent extends React.Component {
 		}
 
 	}
+
 
 	// checkbox选中事件
 	onSelectChange(value) {

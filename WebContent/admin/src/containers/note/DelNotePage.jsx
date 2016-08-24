@@ -10,20 +10,13 @@ import {
     getSortList,
     selectedSortChange,
     selectedPageChange,
-    delNoteList
-
-    //getNote,
-    //modelVisibleChange,
-    //modelSaveSortIdChange,
-    //modelSaveSortNameChange,
-    //modelSaveTitleChange,
-    //modelSaveContentChange,
-    //modelSaveTagChange,
-    //updateNote
+	hasSelectedChange,
+	selectedRowKeysChange,
+    delNoteList,
+	loadingChange
 } from '../../actions/note/delNote';
 
-
-import { Modal, Input, Popconfirm, Button, message, Row, Col } from 'antd';
+import { Popconfirm, Button, message, Row, Col } from 'antd';
 
 import MenuComponent       from '../../components/menu/js/MenuComponent';
 import SearchComponent     from '../../components/search/js/SearchComponent';
@@ -33,11 +26,10 @@ import SelectComponent     from '../../components/select/js/SelectComponent';
 import TableComponent      from '../../components/table/js/TableComponent';
 import PaginationComponent from '../../components/pagination/js/PaginationComponent';
 import fetchComponent      from '../../components/fetch/js/fetchComponent';
-import TagComponent        from '../../components/tag/js/TagComponent';
 
 import '../../css/note.less';
 
-export default class EditNotePage extends React.Component {
+export default class DelNotePage extends React.Component {
     constructor (props) {
         super(props);
     }
@@ -128,8 +120,9 @@ export default class EditNotePage extends React.Component {
                 tableData={this.props.noteList}
                 selectedRowKeys={this.props.selectedRowKeys}
                 checkboxSelected={this.checkboxSelected.bind(this)}
-                checkboxSelected={false}
+				expandedRowRender={false}
                 scroll={scroll}/>
+
         }
     }
 
@@ -139,81 +132,20 @@ export default class EditNotePage extends React.Component {
     }
 
     // 选中笔记
-    checkboxSelected(selectedRowKeys) {
+    checkboxSelected (selectedRowKeys) {
+		console.info(selectedRowKeys);
         const hasSelected = selectedRowKeys.length > 0;
-        this.settingState("no", "no", "no", "no", selectedRowKeys, hasSelected);
+		this.props.dispatch(hasSelectedChange(hasSelected));
+		this.props.dispatch(selectedRowKeysChange(selectedRowKeys));
     }
 
-    handleOk () {
-        // 富文本特殊不能实时变化数据，所以就在这里设置一次
-        const content = UE.getEditor("mContent").getContent();
-        this.props.dispatch(modelSaveContentChange(content));
-        this.props.dispatch(updateNote());
-    }
-
-    handleCancel () {
-        this.props.dispatch(modelVisibleChange(false));
-    }
-
-    // 渲染弹出层的分类
-    renderModelSortList () {
-        if(this.props.sortList.length !== 0 && this.props.modelDefaultSortId !== '') {
-            return <SelectComponent
-                defaultValue={this.props.modelDefaultSortId}
-                data={this.props.sortList}
-                selected={this.modelSortChangeHandler.bind(this)}/>
-        }
-    }
-
-    modelSortChangeHandler (sortId) {
-        let nowSort = {
-            sortId   : sortId,
-            sortName : ""
-        };
-        console.info(sortId);
-        const sorts = this.props.sortList;
-        for(let sort of sorts){
-            if(sort.id === sortId) {
-                nowSort.sortName = sort.name;
-                break;
-            }
-        }
-
-        this.props.dispatch(modelSaveSortIdChange(nowSort.sortId));
-        this.props.dispatch(modelSaveSortNameChange(nowSort.sortName));
-    }
-
-    modelTitleChangeHandler (e) {
-        this.props.dispatch(modelSaveTitleChange(e.target.value));
-    }
-
-    // 渲染弹出层的富文本
-    renderModelUeditor () {
-        if(this.props.modelSaveContent !== '') {
-            return <UeditorComponent
-                value={this.props.modelSaveContent}
-                id='mContent'
-                width='805'
-                height='280'
-            />
-        }
-    }
-
-    // 渲染弹出层的标签
-    renderModelTag () {
-        if(this.props.tagList.length !== 0 && this.props.modelDefaultTag !== '') {
-            return  <TagComponent
-                width={806}
-                data={this.props.tagList}
-                defaultValue={this.props.modelDefaultTag}
-                selected={this.modelTagChangeHandler.bind(this)}
-            />
-        }
-    }
-
-    modelTagChangeHandler (tag) {
-        this.props.dispatch(modelSaveTagChange(tag.join(",")));
-    }
+	// 删除
+	deleteClick () {
+		this.props.dispatch(loadingChange(true));
+		const selectStr = this.props.selectedRowKeys.join(";");
+		// 删除文章
+		this.props.dispatch(delNoteList(selectStr));
+	}
 
 
     render() {
@@ -241,24 +173,24 @@ export default class EditNotePage extends React.Component {
                                 data={this.props.routes}
                             />
                         </div>
-                        <div id="page" className="page edit-note-page">
+                        <div id="page" className="page del-note-page">
                             { this.renderSortSelect() }
+							<div className="del-button">
+								<span>{this.props.hasSelected ? `选择了 ${this.props.selectedRowKeys.length} 篇笔记` : ''}</span>
+								<Popconfirm title="确定要删除选中的笔记吗？" placement="topRight" onConfirm={this.deleteClick.bind(this)}>
+									<Button type="primary"
+											disabled={!this.props.hasSelected}
+											loading={this.props.loading}
+											icon="delete"
+											size="large">
+										删除笔记
+									</Button>
+								</Popconfirm>
+							</div>
                             { this.renderTableList() }
                             { this.renderPaginationList() }
                         </div>
 
-                        <Modal title="修改笔记详细信息"
-                               width="840"
-                               style={{ top: 20 }}
-                               visible={this.props.modelVisible}
-                               onOk={this.handleOk.bind(this)}
-                               onCancel={this.handleCancel.bind(this)}>
-
-                            { this.renderModelSortList() }
-                            <Input value={this.props.modelSaveTitle} onChange={this.modelTitleChangeHandler.bind(this)}  style={{ width: 430 }} size="large" placeholder=""/>
-                            { this.renderModelUeditor() }
-                            { this.renderModelTag() }
-                        </Modal>
                     </div>
                     <div className="ant-layout-footer">
                         52DOIT 版权所有 © 2016 由不拽注定被甩~技术支持

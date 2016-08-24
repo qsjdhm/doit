@@ -12,7 +12,8 @@ export const SET_NOTE_COUNT = 'SET_NOTE_COUNT';
 export const SET_SELECTED_PAGE = 'SET_SELECTED_PAGE';
 export const SET_NOTE_LIST = 'SET_NOTE_LIST';
 export const SET_SELECTED_ROW_KEYS = 'SET_SELECTED_ROW_KEYS';
-
+export const SET_HAS_SELECTED = 'SET_HAS_SELECTED';
+export const SET_LOADING = 'SET_LOADING';
 
 const setSortList = cac(SET_SORT_LIST, 'data');
 const setTagList = cac(SET_TAG_LIST, 'data');
@@ -21,7 +22,8 @@ const setNoteCount = cac(SET_NOTE_COUNT, 'data');
 const setSelectedPage = cac(SET_SELECTED_PAGE, 'data');
 const setNoteList = cac(SET_NOTE_LIST, 'data');
 const setSelectedRowKeys = cac(SET_SELECTED_ROW_KEYS, 'data');
-
+const setHasSelected = cac(SET_HAS_SELECTED, 'data');
+const setLoading = cac(SET_LOADING, 'data');
 
 
 // 获取笔记分类列表
@@ -105,24 +107,44 @@ export function getNoteList () {
 	}
 }
 
-// 删除笔记
-export function delNoteList (selectStr) {
-    return (dispatch, getState) => {
-        const url = "/doit/noteAction/delNote";
-        const method = "POST";
-        const body = {
-            "selectId" : selectStr
-        };
-        const errInfo = "删除笔记列表连接出错！";
-        fetchComponent.send(this, url, method, body, errInfo, function(data){
-            message.success(data.msg+"！", 3);
-            dispatch(getNoteList());
-        });
-    }
-
+// 是否有选中笔记切换事件
+export function hasSelectedChange (has) {
+	return (dispatch, getState) => {
+		dispatch(setHasSelected(has));
+	}
 }
 
+// 选中笔记切换事件
+export function selectedRowKeysChange (selectList) {
+	return (dispatch, getState) => {
+		dispatch(setSelectedRowKeys(selectList));
+	}
+}
 
+// 设置删除按钮的等待事件
+export function loadingChange (loading) {
+	return (dispatch, getState) => {
+		dispatch(setLoading(loading));
+	}
+}
 
+// 删除笔记
+export function delNoteList (selectStr) {
+	return (dispatch, getState) => {
+		const url = "/doit/noteAction/delNote";
+		const method = "POST";
+		const body = {
+			"selectId" : selectStr
+		};
+		const errInfo = "删除笔记列表连接出错！";
+		fetchComponent.send(this, url, method, body, errInfo, function(data){
+			message.success(data.msg+"！", 3);
+			dispatch(getNoteList());
+			dispatch(loadingChange(false));
+			dispatch(setSelectedRowKeys([]));
+			dispatch(setHasSelected(false));
+		});
+	}
+}
 
 
