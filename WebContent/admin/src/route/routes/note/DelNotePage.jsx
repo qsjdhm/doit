@@ -1,5 +1,5 @@
 
-// 删除文章路由
+// 删除笔记路由
 module.exports = {
     path: 'delNote',
     sort: 'Note',

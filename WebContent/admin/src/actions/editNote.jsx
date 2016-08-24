@@ -4,6 +4,7 @@ import fetchComponent      from '../components/fetch/js/fetchComponent';
 import { cac }             from '../utils/index';
 import { message }         from 'antd';
 
+// 页面所使用的事件
 export const SET_SORT_LIST = 'SET_SORT_LIST';
 export const SET_TAG_LIST = 'SET_TAG_LIST';
 export const SET_SELECTED_SORT = 'SET_SELECTED_SORT';
@@ -11,19 +12,20 @@ export const SET_NOTE_COUNT = 'SET_NOTE_COUNT';
 export const SET_SELECTED_PAGE = 'SET_SELECTED_PAGE';
 export const SET_NOTE_LIST = 'SET_NOTE_LIST';
 
+// 给弹出层中的组件设置默认数据的事件
 export const SET_MODEL_VISIBLE = 'SET_MODEL_VISIBLE';
 export const SET_MODEL_DEFAULT_SORT_ID = 'SET_MODEL_DEFAULT_SORT_ID';
 export const SET_MODEL_DEFAULT_TITLE = 'SET_MODEL_DEFAULT_TITLE';
 export const SET_MODEL_DEFAULT_CONTENT = 'SET_MODEL_DEFAULT_CONTENT';
 export const SET_MODEL_DEFAULT_TAG = 'SET_MODEL_DEFAULT_TAG';
 
+// 弹出层中的组件切换数据保存到后台的事件
 export const SET_MODEL_SAVE_ID = 'SET_MODEL_SAVE_ID';
 export const SET_MODEL_SAVE_SORT_ID = 'SET_MODEL_SAVE_SORT_ID';
 export const SET_MODEL_SAVE_SORT_NAME = 'SET_MODEL_SAVE_SORT_NAME';
 export const SET_MODEL_SAVE_TITLE = 'SET_MODEL_SAVE_TITLE';
 export const SET_MODEL_SAVE_CONTENT = 'SET_MODEL_SAVE_CONTENT';
 export const SET_MODEL_SAVE_TAG = 'SET_MODEL_SAVE_TAG';
-
 
 
 const setSortList = cac(SET_SORT_LIST, 'data');
@@ -47,6 +49,7 @@ const setModelSaveContent = cac(SET_MODEL_SAVE_CONTENT, 'data');
 const setModelSaveTag = cac(SET_MODEL_SAVE_TAG, 'data');
 
 
+// 获取笔记分类列表
 export function getSortList () {
     return (dispatch, getState) => {
         const url = '/doit/sortAction/byTypeGetSort';
@@ -63,6 +66,7 @@ export function getSortList () {
     }
 }
 
+// 分类切换事件
 export function selectedSortChange (sortId) {
 	return (dispatch, getState) => {
 		dispatch(setSelectedSort(sortId));
@@ -70,6 +74,7 @@ export function selectedSortChange (sortId) {
 	}
 }
 
+// 获取标签列表
 export function getTagList () {
 	return (dispatch, getState) => {
 		const url = "/doit/sortAction/byTypeGetSort";
@@ -84,7 +89,7 @@ export function getTagList () {
 	}
 }
 
-
+// 获取笔记总数
 export function getNoteCount () {
 	return (dispatch, getState) => {
 		const url = "/doit/noteAction/getNoteCount";
@@ -100,6 +105,7 @@ export function getNoteCount () {
 	}
 }
 
+// 分页切换事件
 export function selectedPageChange (pageId) {
 	return (dispatch, getState) => {
 		dispatch(setSelectedPage(pageId));
@@ -107,6 +113,7 @@ export function selectedPageChange (pageId) {
 	}
 }
 
+// 获取笔记列表
 export function getNoteList () {
 	return (dispatch, getState) => {
 		const url = "/doit/noteAction/getNoteList";
@@ -123,6 +130,7 @@ export function getNoteList () {
 	}
 }
 
+// 获取单个笔记
 export function getNote (noteId) {
 	return (dispatch, getState) => {
 		const url = "/doit/noteAction/getNote";
@@ -133,11 +141,13 @@ export function getNote (noteId) {
 		const errInfo = "请求笔记信息连接出错！";
 		fetchComponent.send(this, url, method, body, errInfo, function(data){
 			dispatch(modelVisibleChange(true));
+            // 给弹出层的组件设置初始化数据
 			dispatch(setModelDefaultSortId(data.sortId));
             dispatch(setModelDefaultTitle(data.title));
             dispatch(setModelDefaultContent(data.content));
             dispatch(setModelDefaultTag(data.tag.split(",")));
 
+            // 设置弹出层的组件的保存数据
             dispatch(setModelSaveId(data.id));
 			dispatch(modelSaveSortIdChange(data.sortId));
 			dispatch(modelSaveSortNameChange(data.sortName));
@@ -148,18 +158,21 @@ export function getNote (noteId) {
 	}
 }
 
+// 设置弹出层是否显示事件
 export function modelVisibleChange (visible) {
 	return (dispatch, getState) => {
 		dispatch(setModelVisible(visible));
 	}
 }
 
+// 设置弹出层中分类ID改变事件
 export function modelSaveSortIdChange (sortId) {
 	return (dispatch, getState) => {
 		dispatch(setModelSaveSortId(sortId));
 	}
 }
 
+// 设置弹出层中分类NAME改变事件
 export function modelSaveSortNameChange (sortName) {
 	return (dispatch, getState) => {
 		console.info(sortName);
@@ -167,24 +180,28 @@ export function modelSaveSortNameChange (sortName) {
 	}
 }
 
+// 设置弹出层中笔记名称改变事件
 export function modelSaveTitleChange (title) {
     return (dispatch, getState) => {
         dispatch(setModelSaveTitle(title));
     }
 }
 
+// 设置弹出层中笔记内容改变事件
 export function modelSaveContentChange (content) {
     return (dispatch, getState) => {
         dispatch(setModelSaveContent(content));
     }
 }
 
+// 设置弹出层中笔记标签改变事件
 export function modelSaveTagChange (tag) {
     return (dispatch, getState) => {
         dispatch(setModelSaveTag(tag));
     }
 }
 
+// 更新笔记
 export function updateNote () {
 	return (dispatch, getState) => {
 

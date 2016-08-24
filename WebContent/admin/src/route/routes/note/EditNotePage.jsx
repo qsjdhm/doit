@@ -1,5 +1,5 @@
 
-// 编辑文章路由
+// 编辑笔记路由
 module.exports = {
     path: 'editNote',
     sort: 'Note',

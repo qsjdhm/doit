@@ -1,11 +1,13 @@
 
 import note from './note';
-import editNote from './editNote';
+import editArticle from './article/editArticle';
+import editNote from './note/editNote';
 import { combineReducers } from 'redux';
 
 const reducers = {
 	note,
-    editNote
+    editNote,
+    editArticle
 };
 
 module.exports = combineReducers(reducers);

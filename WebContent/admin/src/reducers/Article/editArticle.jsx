@@ -1,5 +1,5 @@
 import {combineReducers} from 'redux';
-import {cr} from '../utils/index';
+import {cr} from '../../utils/index';
 import {
     SET_SORT_LIST,
 	SET_TAG_LIST,
@@ -20,7 +20,7 @@ import {
     SET_MODEL_SAVE_TITLE,
     SET_MODEL_SAVE_CONTENT,
     SET_MODEL_SAVE_TAG
-} from '../actions/editNote';
+} from '../../actions/editNote';
 
 
 export default combineReducers({
