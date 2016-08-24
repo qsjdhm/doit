@@ -12,7 +12,7 @@ import NotFound          from '../containers/NotFound';
 
 import DelNotePage       from '../containers/note/DelNotePage';
 import EditNotePage      from '../containers/note/EditNotePage';
-
+import DelBookPage      from '../containers/book/DelBookPage';
 
 export default class MRoute extends React.Component {
 	constructor(props) {
@@ -26,6 +26,8 @@ export default class MRoute extends React.Component {
 					<IndexRoute name="首页"  bpath="#/"                                     component={HomePage}/>
                     <Route name="删除笔记"   sort="Note"       bpath="#/delNote"          path="delNote"       component={DelNotePage}/>
                     <Route name="编辑笔记"   sort="Note"       bpath="#/editNote"         path="editNote"       component={EditNotePage}/>
+
+                    <Route name="删除图书"   sort="Book"       bpath="#/delBook"         path="delBook"       component={DelBookPage}/>
                 </Route>
 				<Route path="*" component={NotFound}/>
 			</Router>
