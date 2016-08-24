@@ -18,7 +18,7 @@ import {
     modelSaveContentChange,
     modelSaveTagChange,
 	updateNote
-} from '../../actions/editNote';
+} from '../../actions/note/editNote';
 
 
 import { Modal, Input, Popconfirm, Button, message, Row, Col } from 'antd';
@@ -132,10 +132,7 @@ export default class EditNotePage extends React.Component {
         // 富文本特殊不能实时变化数据，所以就在这里设置一次
         const content = UE.getEditor("mContent").getContent();
         this.props.dispatch(modelSaveContentChange(content));
-
 		this.props.dispatch(updateNote());
-
-		//this.props.dispatch(modelVisibleChange(false));
 	}
 
 	handleCancel () {
@@ -179,9 +176,9 @@ export default class EditNotePage extends React.Component {
         if(this.props.modelSaveContent !== '') {
             return <UeditorComponent
                 value={this.props.modelSaveContent}
-                id="mContent"
-                width="805"
-                height="280"
+                id='mContent'
+                width='805'
+                height='280'
             />
         }
     }
@@ -204,7 +201,6 @@ export default class EditNotePage extends React.Component {
 
 
 	render() {
-		console.info(this.props);
 		return (
 			<div>
 				<MenuComponent openSubMenu={this.props.route.sort} selectedMenu={this.props.route.bpath} />

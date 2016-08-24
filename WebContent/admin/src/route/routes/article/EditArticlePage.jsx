@@ -1,5 +1,5 @@
 
-// 编辑笔记路由
+// 编辑文章路由
 module.exports = {
     path: 'editArticle',
     sort: 'Article',

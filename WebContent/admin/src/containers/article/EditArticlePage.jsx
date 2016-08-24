@@ -10,15 +10,15 @@ import {
     getSortList,
     selectedSortChange,
     selectedPageChange,
-    getNote,
+    getArticle,
     modelVisibleChange,
     modelSaveSortIdChange,
     modelSaveSortNameChange,
     modelSaveTitleChange,
     modelSaveContentChange,
     modelSaveTagChange,
-    updateNote
-} from '../../actions/editNote';
+    updateArticle
+} from '../../actions/article/editArticle';
 
 
 import { Modal, Input, Popconfirm, Button, message, Row, Col } from 'antd';
@@ -34,7 +34,7 @@ import fetchComponent      from '../../components/fetch/js/fetchComponent';
 import UeditorComponent    from '../../components/ueditor/js/UeditorComponent';
 import TagComponent        from '../../components/tag/js/TagComponent';
 
-import '../../css/note.less';
+import '../../css/article.less';
 
 export default class EditArticlePage extends React.Component {
     constructor (props) {
@@ -42,12 +42,12 @@ export default class EditArticlePage extends React.Component {
     }
 
     componentWillMount () {
-        // 获取笔记的分类列表
+        // 获取文章的分类列表
         this.props.dispatch( getSortList() );
     }
 
 
-    // 渲染笔记分类下拉框
+    // 渲染文章分类下拉框
     renderSortSelect () {
         if( this.props.sortList.length !== 0 ) {
             return <SelectComponent
@@ -63,9 +63,9 @@ export default class EditArticlePage extends React.Component {
 
     // 渲染分页条
     renderPaginationList() {
-        if(this.props.noteCount.length !== 0) {
+        if(this.props.articleCount.length !== 0) {
             return <PaginationComponent
-                count={this.props.noteCount}
+                count={this.props.articleCount}
                 pageSize={10}
                 pageed={this.paginationClickHandler.bind(this)}/>
         }
@@ -77,7 +77,7 @@ export default class EditArticlePage extends React.Component {
 
     // 渲染数据表格
     renderTableList() {
-        if (this.props.noteList.length !== 0){
+        if (this.props.articleList.length !== 0){
             const self = this;
             const totalWidth = document.getElementById("page").offsetWidth - 25;
             const idWidth        = totalWidth * 0.0749;
@@ -115,7 +115,7 @@ export default class EditArticlePage extends React.Component {
 
             return <TableComponent
                 tableColumns={tableColumns}
-                tableData={this.props.noteList}
+                tableData={this.props.articleList}
                 expandedRowRender={expandedRowRender}
                 selectedRowKeys={false}
                 rowSelection={null}
@@ -125,17 +125,14 @@ export default class EditArticlePage extends React.Component {
     }
 
     operationClick (index, item) {
-        this.props.dispatch(getNote(item.Article_ID));
+        this.props.dispatch(getArticle(item.Article_ID));
     }
 
     handleOk () {
         // 富文本特殊不能实时变化数据，所以就在这里设置一次
         const content = UE.getEditor("mContent").getContent();
         this.props.dispatch(modelSaveContentChange(content));
-
-        this.props.dispatch(updateNote());
-
-        //this.props.dispatch(modelVisibleChange(false));
+        this.props.dispatch(updateArticle());
     }
 
     handleCancel () {
@@ -179,9 +176,9 @@ export default class EditArticlePage extends React.Component {
         if(this.props.modelSaveContent !== '') {
             return <UeditorComponent
                 value={this.props.modelSaveContent}
-                id="mContent"
-                width="805"
-                height="280"
+                id='mContent'
+                width='805'
+                height='280'
             />
         }
     }
@@ -204,7 +201,6 @@ export default class EditArticlePage extends React.Component {
 
 
     render() {
-        console.info(this.props);
         return (
             <div>
                 <MenuComponent openSubMenu={this.props.route.sort} selectedMenu={this.props.route.bpath} />
@@ -229,13 +225,13 @@ export default class EditArticlePage extends React.Component {
                                 data={this.props.routes}
                             />
                         </div>
-                        <div id="page" className="page edit-note-page">
+                        <div id="page" className="page edit-article-page">
                             { this.renderSortSelect() }
                             { this.renderTableList() }
                             { this.renderPaginationList() }
                         </div>
 
-                        <Modal title="修改笔记详细信息"
+                        <Modal title="修改文章详细信息"
                                width="840"
                                style={{ top: 20 }}
                                visible={this.props.modelVisible}
@@ -261,7 +257,7 @@ export default class EditArticlePage extends React.Component {
 
 
 function mapStateToProps ( state ) {
-    return Object.assign({}, state.editNote);
+    return Object.assign({}, state.editArticle);
 }
 
 export default connect( mapStateToProps )( EditArticlePage );

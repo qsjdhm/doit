@@ -4,9 +4,9 @@ import {
     SET_SORT_LIST,
 	SET_TAG_LIST,
 	SET_SELECTED_SORT,
-	SET_NOTE_COUNT,
+	SET_ARTICLE_COUNT,
 	SET_SELECTED_PAGE,
-	SET_NOTE_LIST,
+	SET_ARTICLE_LIST,
 
 	SET_MODEL_VISIBLE,
     SET_MODEL_DEFAULT_SORT_ID,
@@ -20,7 +20,7 @@ import {
     SET_MODEL_SAVE_TITLE,
     SET_MODEL_SAVE_CONTENT,
     SET_MODEL_SAVE_TAG
-} from '../../actions/editNote';
+} from '../../actions/article/editArticle';
 
 
 export default combineReducers({
@@ -49,22 +49,22 @@ export default combineReducers({
         [SET_SELECTED_SORT](state, {data}){return data}
     }),
     // 设置笔记总数
-    noteCount: cr(0, {
-        [SET_NOTE_COUNT](state, {data}){return data}
+    articleCount: cr(0, {
+        [SET_ARTICLE_COUNT](state, {data}){return data}
     }),
     // 设置当前选中的页数
     selectedPage: cr(1, {
         [SET_SELECTED_PAGE](state, {data}){return data}
     }),
     // 设置笔记列表
-    noteList: cr([], {
-        [SET_NOTE_LIST](state, {data}){
-			let noteArray = [];
+    articleList: cr([], {
+        [SET_ARTICLE_LIST](state, {data}){
+			let articleArray = [];
 			for( let item of data ){
 				item.key = item.Article_ID;
-				noteArray.push(item);
+                articleArray.push(item);
 			}
-			return noteArray;
+			return articleArray;
 		}
     }),
 

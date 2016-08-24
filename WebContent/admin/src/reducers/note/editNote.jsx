@@ -23,7 +23,7 @@ import {
     SET_MODEL_SAVE_TITLE,
     SET_MODEL_SAVE_CONTENT,
     SET_MODEL_SAVE_TAG
-} from '../../actions/editNote';
+} from '../../actions/note/editNote';
 
 
 export default combineReducers({

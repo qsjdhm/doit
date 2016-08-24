@@ -1,7 +1,7 @@
 /* Populated by react-webpack-redux:action */
 
-import fetchComponent      from '../components/fetch/js/fetchComponent';
-import { cac }             from '../utils/index';
+import fetchComponent      from '../../components/fetch/js/fetchComponent';
+import { cac }             from '../../utils/index';
 import { message }         from 'antd';
 
 // 页面所使用的事件
