@@ -8,13 +8,14 @@ import { connect } from 'react-redux';
 
 import {
     getSortList,
-    selectedSortChange,
-    selectedPageChange,
-	hasSelectedChange,
-	selectedRowKeysChange,
-    delNoteList,
-	loadingChange
-} from '../../actions/note/delNote';
+    selectedSortIdChange,
+    selectedSortNameChange,
+    titleChange,
+    contentChange,
+    selectedTagChange,
+    addNote,
+    loadingChange
+} from '../../actions/note/addNote';
 
 import { Input, Button, notification, message, Row, Col } from 'antd';
 
@@ -53,102 +54,47 @@ export default class AddNotePage extends React.Component {
     }
 
     sortChangeHandler (sortId) {
-        this.props.dispatch(selectedSortChange(sortId));
+        let nowSort = {
+            sortId   : sortId,
+            sortName : ""
+        };
+        const sorts = this.props.sortList;
+        for(let sort of sorts){
+            if(sort.id === sortId) {
+                nowSort.sortName = sort.name;
+                break;
+            }
+        }
+
+        this.props.dispatch(selectedSortIdChange(nowSort.sortId));
+        this.props.dispatch(selectedSortNameChange(nowSort.sortName));
     }
 
-    // 渲染分页条
-    renderPaginationList() {
-        if(this.props.noteCount.length !== 0) {
-            return <PaginationComponent
-                count={this.props.noteCount}
-                pageSize={10}
-                pageed={this.paginationClickHandler.bind(this)}/>
+
+    titleChangeHandler (e) {
+        this.props.dispatch(titleChange(e.target.value));
+    }
+
+    // 渲染笔记标签下拉框
+    renderTag () {
+        if( this.props.tagList.length !== 0 ) {
+            return <TagComponent
+                width={820}
+                data={this.props.tagList}
+                selected={this.tagChangeHandler.bind(this)}
+            />
         }
     }
 
-    paginationClickHandler(pageId) {
-        this.props.dispatch(selectedPageChange(pageId));
+    tagChangeHandler (tag) {
+        this.props.dispatch(selectedTagChange(tag));
     }
 
-    // 渲染数据表格
-    renderTableList() {
-        if (this.props.noteList.length !== 0){
-            const self = this;
-            const totalWidth = document.getElementById("page").offsetWidth - 25;
-            const idWidth        = totalWidth * 0.0749;
-            const titleWidth     = totalWidth * 0.3465;
-            const sortWidth      = totalWidth * 0.1737;
-            const recomWidth     = totalWidth * 0.0637;
-            const readWidth      = totalWidth * 0.0637;
-            const dateWidth      = totalWidth * 0.1766;
-            const operationWidth = totalWidth * 0.0656;
-
-            let tableColumns = [
-                { title: 'ID', width: idWidth, dataIndex: 'Article_ID', key: 'Article_ID' },
-                { title: '名称', width: titleWidth, dataIndex: 'Article_Title', key: 'Article_Title' },
-                { title: '分类', width: sortWidth, dataIndex: 'Sort_Name', key: 'Sort_Name' },
-                { title: '推荐量', width: recomWidth, dataIndex: 'Recommend_Num', key: 'Recommend_Num' },
-                { title: '点击量', width: readWidth, dataIndex: 'Read_Num', key: 'Read_Num' },
-                { title: '时间', width: dateWidth, dataIndex: 'Article_Date', key: 'Article_Date' }
-                //, { title: '操作', width: operationWidth, dataIndex: '', key: 'operation', render: (index, item) => <a href='javascript:void(0)' onClick={self.openEditModel.bind(null, index, item)}>修改</a> },
-            ];
-
-
-            // 设置表格操作列配置
-            tableColumns.push({
-                title: '操作',
-                width: operationWidth,
-                dataIndex: 'operation',
-                key: 'operation',
-                render(index, item) {
-                    return (
-                        <Popconfirm
-                            title="确定要删除当前笔记吗？"
-                            placement="topRight"
-                            onConfirm={self.operationClick.bind(self, index, item)}>
-
-                            <a href='javascript:void(0)'>删除</a>
-                        </Popconfirm>
-                    );
-                }
-            });
-
-
-            // 表格的配置
-            const scroll = { y: 350, x: totalWidth };
-
-            return <TableComponent
-                tableColumns={tableColumns}
-                tableData={this.props.noteList}
-                selectedRowKeys={this.props.selectedRowKeys}
-                checkboxSelected={this.checkboxSelected.bind(this)}
-				expandedRowRender={false}
-                scroll={scroll}/>
-
-        }
+    submitClickHandler () {
+        const content = UE.getEditor("content").getContent();
+        this.props.dispatch(contentChange(content));
+        this.props.dispatch(addNote());
     }
-
-    operationClick (index, item) {
-        // 删除笔记
-        this.props.dispatch(delNoteList(item.Article_ID.toString()));
-    }
-
-    // 选中笔记
-    checkboxSelected (selectedRowKeys) {
-		console.info(selectedRowKeys);
-        const hasSelected = selectedRowKeys.length > 0;
-		this.props.dispatch(hasSelectedChange(hasSelected));
-		this.props.dispatch(selectedRowKeysChange(selectedRowKeys));
-    }
-
-	// 删除
-	deleteClick () {
-		this.props.dispatch(loadingChange(true));
-		const selectStr = this.props.selectedRowKeys.join(";");
-		// 删除文章
-		this.props.dispatch(delNoteList(selectStr));
-	}
-
 
     render() {
         return (
@@ -175,23 +121,25 @@ export default class AddNotePage extends React.Component {
                                 data={this.props.routes}
                             />
                         </div>
-                        <div id="page" className="page del-note-page">
+                        <div id="page" className="page add-note-page">
                             { this.renderSortSelect() }
-							<div className="del-button">
-								<span>{this.props.hasSelected ? `选择了 ${this.props.selectedRowKeys.length} 篇笔记` : ''}</span>
-								<Popconfirm title="确定要删除选中的笔记吗？" placement="topRight" onConfirm={this.deleteClick.bind(this)}>
-									<Button type="primary"
-											disabled={!this.props.hasSelected}
-											loading={this.props.loading}
-											icon="delete"
-											size="large">
-										删除笔记
-									</Button>
-								</Popconfirm>
-							</div>
-                            { this.renderTableList() }
-                            { this.renderPaginationList() }
+                            <Input onChange={this.titleChangeHandler.bind(this)} style={{ width: 470 }} size="large" placeholder="笔记名称"/>
+                            <UeditorComponent
+                                id="content"
+                                width="820"
+                                height="400"
+                            />
+                            { this.renderTag() }
+                            <Button
+                                onClick={this.submitClickHandler.bind(this)}
+                                loading={this.props.loading}
+                                type="primary"
+                                icon="cloud-upload-o"
+                                size="large">
+                                提交笔记
+                            </Button>
                         </div>
+
 
                     </div>
                     <div className="ant-layout-footer">

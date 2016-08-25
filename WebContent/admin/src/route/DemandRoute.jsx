@@ -27,7 +27,7 @@ const rootRoute = {
             childRoutes: [
                 require('./routes/article/EditArticlePage'),
                 require('./routes/article/DelArticlePage'),
-                //require('./routes/note/AddNotePage'),
+                require('./routes/note/AddNotePage'),
                 require('./routes/note/EditNotePage'),
                 require('./routes/note/DelNotePage')
 

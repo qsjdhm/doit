@@ -62,8 +62,6 @@ class SelectComponent extends React.Component {
 				<Select.Option key={item.id} value={item.id}>{item.name}</Select.Option>
 			);
 		});
-        console.info(111);
-        console.info(defaultValue);
 		this.setState({
 			dom: <Select
 				size="large"

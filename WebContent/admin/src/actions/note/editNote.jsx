@@ -204,8 +204,6 @@ export function modelSaveTagChange (tag) {
 // 更新笔记
 export function updateNote () {
 	return (dispatch, getState) => {
-
-		console.info(getState().editNote);
 		const url = "/doit/noteAction/updateNote";
 		const method = "POST";
 		const body = {
