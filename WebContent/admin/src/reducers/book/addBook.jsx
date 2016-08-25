@@ -3,14 +3,14 @@ import {cr} from '../../utils/index';
 import {
     // 页面所使用的数据
     SET_SORT_LIST,
-	SET_TAG_LIST,
     SET_SELECTED_SORT_ID,
     SET_SELECTED_SORT_NAME,
     SET_TITLE,
-    SET_CONTENT,
-    SET_SELECTED_TAG,
+    SET_HEIGHT,
+    SET_COVER,
+    SET_PATH,
 	SET_LOADING
-} from '../../actions/article/addArticle';
+} from '../../actions/book/addBook';
 
 
 export default combineReducers({
@@ -24,16 +24,6 @@ export default combineReducers({
             return sortArray;
         }
     }),
-	// 设置所有文章的标签列表
-	tagList: cr([], {
-		[SET_TAG_LIST](state, {data}){
-            let tagArray = [];
-            for(let item of data){
-                tagArray.push( {'id' : item.Sort_ID, 'name' : item.Sort_Name} );
-            }
-            return tagArray;
-        }
-	}),
     // 设置当前选中的分类ID
     selectedSortId: cr('', {
         [SET_SELECTED_SORT_ID](state, {data}){return data}
@@ -42,17 +32,21 @@ export default combineReducers({
     selectedSortName: cr('', {
         [SET_SELECTED_SORT_NAME](state, {data}){return data}
     }),
-    // 设置文章标题
+    // 设置图书标题
     title: cr('', {
         [SET_TITLE](state, {data}){return data}
     }),
-    // 设置文章内容
-    content: cr('', {
-        [SET_CONTENT](state, {data}){return data}
+    // 设置图书高度
+    height: cr('', {
+        [SET_HEIGHT](state, {data}){return data}
     }),
-    // 设置文章选中的标签
-    selectedTag: cr([], {
-        [SET_SELECTED_TAG](state, {data}){return data}
+    // 设置图书封面
+    cover: cr('', {
+        [SET_COVER](state, {data}){return data}
+    }),
+    // 设置图书下载路径
+    path: cr('', {
+        [SET_PATH](state, {data}){return data}
     }),
     // 新增按钮是否等待
     loading: cr(false, {

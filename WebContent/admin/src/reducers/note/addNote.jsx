@@ -54,7 +54,7 @@ export default combineReducers({
     selectedTag: cr([], {
         [SET_SELECTED_TAG](state, {data}){return data}
     }),
-    // 删除按钮是否等待
+    // 新增按钮是否等待
     loading: cr(false, {
         [SET_LOADING](state, {data}){return data;}
     })

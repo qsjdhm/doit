@@ -30,7 +30,9 @@ const rootRoute = {
                 require('./routes/article/DelArticlePage'),
                 require('./routes/note/AddNotePage'),
                 require('./routes/note/EditNotePage'),
-                require('./routes/note/DelNotePage')
+                require('./routes/note/DelNotePage'),
+                require('./routes/book/AddBookPage'),
+                require('./routes/book/DelBookPage'),
 
             ]
         },{

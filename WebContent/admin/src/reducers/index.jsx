@@ -7,6 +7,9 @@ import addNote             from './note/addNote';
 import editNote            from './note/editNote';
 import delNote             from './note/delNote';
 
+import addBook             from './book/addBook';
+import delBook             from './book/delBook';
+
 import { combineReducers } from 'redux';
 
 const reducers = {
@@ -16,7 +19,10 @@ const reducers = {
 
     addNote,
     editNote,
-    delNote
+    delNote,
+
+    addBook,
+    delBook
 };
 
 module.exports = combineReducers(reducers);

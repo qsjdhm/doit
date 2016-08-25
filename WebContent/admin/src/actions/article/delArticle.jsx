@@ -72,7 +72,7 @@ export function getArticleCount () {
 		const url = "/doit/articleAction/getArticleCount";
 		const method = "POST";
 		const body = {
-			"sort" : getState().editArticle.selectedSort
+			"sort" : getState().delArticle.selectedSort
 		};
 		const errInfo = "请求文章总个数连接出错！";
 		fetchComponent.send(this, url, method, body, errInfo, function(data){
@@ -96,8 +96,8 @@ export function getArticleList () {
 		const url = "/doit/articleAction/getArticleList";
 		const method = "POST";
 		const body = {
-			"sort" : getState().editArticle.selectedSort,
-			"page" : getState().editArticle.selectedPage,
+			"sort" : getState().delArticle.selectedSort,
+			"page" : getState().delArticle.selectedPage,
 			"size" : 10
 		};
 		const errInfo = "请求文章列表连接出错！";

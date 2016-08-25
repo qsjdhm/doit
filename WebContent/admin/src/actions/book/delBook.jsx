@@ -6,37 +6,34 @@ import { message }         from 'antd';
 
 // 页面所使用的事件
 export const SET_SORT_LIST = 'SET_SORT_LIST';
-export const SET_TAG_LIST = 'SET_TAG_LIST';
 export const SET_SELECTED_SORT = 'SET_SELECTED_SORT';
-export const SET_NOTE_COUNT = 'SET_NOTE_COUNT';
+export const SET_BOOK_COUNT = 'SET_BOOK_COUNT';
 export const SET_SELECTED_PAGE = 'SET_SELECTED_PAGE';
-export const SET_NOTE_LIST = 'SET_NOTE_LIST';
+export const SET_BOOK_LIST = 'SET_BOOK_LIST';
 export const SET_SELECTED_ROW_KEYS = 'SET_SELECTED_ROW_KEYS';
 export const SET_HAS_SELECTED = 'SET_HAS_SELECTED';
 export const SET_LOADING = 'SET_LOADING';
 
 const setSortList = cac(SET_SORT_LIST, 'data');
-const setTagList = cac(SET_TAG_LIST, 'data');
 const setSelectedSort = cac(SET_SELECTED_SORT, 'data');
-const setNoteCount = cac(SET_NOTE_COUNT, 'data');
+const setBookCount = cac(SET_BOOK_COUNT, 'data');
 const setSelectedPage = cac(SET_SELECTED_PAGE, 'data');
-const setNoteList = cac(SET_NOTE_LIST, 'data');
+const setBookList = cac(SET_BOOK_LIST, 'data');
 const setSelectedRowKeys = cac(SET_SELECTED_ROW_KEYS, 'data');
 const setHasSelected = cac(SET_HAS_SELECTED, 'data');
 const setLoading = cac(SET_LOADING, 'data');
 
 
-// 获取笔记分类列表
+// 获取图书分类列表
 export function getSortList () {
     return (dispatch, getState) => {
         const url = '/doit/sortAction/byTypeGetSort';
         const method = 'POST';
         const body = {
-            'type' : 'note'
+            'type' : 'book'
         };
-        const errInfo = '请求笔记分类连接出错！';
+        const errInfo = '请求图书分类连接出错！';
         fetchComponent.send(this, url, method, body, errInfo, function(data){
-			dispatch(getTagList());
 			dispatch(setSortList(data.data));
 			dispatch(selectedSortChange(data.data[0].Sort_ID));
         });
@@ -47,36 +44,21 @@ export function getSortList () {
 export function selectedSortChange (sortId) {
 	return (dispatch, getState) => {
 		dispatch(setSelectedSort(sortId));
-		dispatch(getNoteCount());
+		dispatch(getBookCount());
 	}
 }
 
-// 获取标签列表
-export function getTagList () {
+// 获取图书总数
+export function getBookCount () {
 	return (dispatch, getState) => {
-		const url = "/doit/sortAction/byTypeGetSort";
+		const url = "/doit/bookAction/getBookCount";
 		const method = "POST";
 		const body = {
-			"type" : "tag"
+			"sort" : getState().delBook.selectedSort
 		};
-		const errInfo = "请求笔记标签连接出错！";
+		const errInfo = "请求图书总个数连接出错！";
 		fetchComponent.send(this, url, method, body, errInfo, function(data){
-			dispatch(setTagList(data.data));
-		});
-	}
-}
-
-// 获取笔记总数
-export function getNoteCount () {
-	return (dispatch, getState) => {
-		const url = "/doit/noteAction/getNoteCount";
-		const method = "POST";
-		const body = {
-			"sort" : getState().delNote.selectedSort
-		};
-		const errInfo = "请求笔记总个数连接出错！";
-		fetchComponent.send(this, url, method, body, errInfo, function(data){
-			dispatch(setNoteCount(data.data));
+			dispatch(setBookCount(data.data));
 			dispatch(selectedPageChange(1));
 		});
 	}
@@ -86,35 +68,35 @@ export function getNoteCount () {
 export function selectedPageChange (pageId) {
 	return (dispatch, getState) => {
 		dispatch(setSelectedPage(pageId));
-		dispatch(getNoteList());
+		dispatch(getBookList());
 	}
 }
 
-// 获取笔记列表
-export function getNoteList () {
+// 获取图书列表
+export function getBookList () {
 	return (dispatch, getState) => {
-		const url = "/doit/noteAction/getNoteList";
+		const url = "/doit/bookAction/getBookList";
 		const method = "POST";
 		const body = {
-			"sort" : getState().delNote.selectedSort,
-			"page" : getState().delNote.selectedPage,
+			"sort" : getState().delBook.selectedSort,
+			"page" : getState().delBook.selectedPage,
 			"size" : 10
 		};
-		const errInfo = "请求笔记列表连接出错！";
+		const errInfo = "请求图书列表连接出错！";
 		fetchComponent.send(this, url, method, body, errInfo, function(data){
-			dispatch(setNoteList(data.data));
+			dispatch(setBookList(data.data));
 		});
 	}
 }
 
-// 是否有选中笔记切换事件
+// 是否有选中图书切换事件
 export function hasSelectedChange (has) {
 	return (dispatch, getState) => {
 		dispatch(setHasSelected(has));
 	}
 }
 
-// 选中笔记切换事件
+// 选中图书切换事件
 export function selectedRowKeysChange (selectList) {
 	return (dispatch, getState) => {
 		dispatch(setSelectedRowKeys(selectList));
@@ -128,18 +110,18 @@ export function loadingChange (loading) {
 	}
 }
 
-// 删除笔记
-export function delNoteList (selectStr) {
+// 删除图书
+export function delBookList (selectStr) {
 	return (dispatch, getState) => {
-		const url = "/doit/noteAction/delNote";
+		const url = "/doit/bookAction/delBook";
 		const method = "POST";
 		const body = {
 			"selectId" : selectStr
 		};
-		const errInfo = "删除笔记列表连接出错！";
+		const errInfo = "删除图书列表连接出错！";
 		fetchComponent.send(this, url, method, body, errInfo, function(data){
 			message.success(data.msg+"！", 3);
-			dispatch(getNoteList());
+			dispatch(getBookList());
 			dispatch(loadingChange(false));
 			dispatch(setSelectedRowKeys([]));
 			dispatch(setHasSelected(false));
