@@ -25,6 +25,7 @@ const rootRoute = {
                 component:  HomePage
             },
             childRoutes: [
+                require('./routes/article/AddArticlePage'),
                 require('./routes/article/EditArticlePage'),
                 require('./routes/article/DelArticlePage'),
                 require('./routes/note/AddNotePage'),

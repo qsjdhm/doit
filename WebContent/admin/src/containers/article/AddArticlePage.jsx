@@ -13,9 +13,9 @@ import {
     titleChange,
     contentChange,
     selectedTagChange,
-    addNote,
+    addArticle,
     loadingChange
-} from '../../actions/note/addNote';
+} from '../../actions/article/addArticle';
 
 import { Input, Button, notification, message, Row, Col } from 'antd';
 
@@ -30,20 +30,20 @@ import fetchComponent      from '../../components/fetch/js/fetchComponent';
 
 
 
-import '../../css/note.less';
+import '../../css/article.less';
 
-export default class AddNotePage extends React.Component {
+export default class AddArticlePage extends React.Component {
     constructor (props) {
         super(props);
     }
 
     componentWillMount () {
-        // 获取笔记的分类列表
+        // 获取文章的分类列表
         this.props.dispatch( getSortList() );
     }
 
 
-    // 渲染笔记分类下拉框
+    // 渲染文章分类下拉框
     renderSortSelect () {
         if( this.props.sortList.length !== 0 ) {
             return <SelectComponent
@@ -75,7 +75,7 @@ export default class AddNotePage extends React.Component {
         this.props.dispatch(titleChange(e.target.value));
     }
 
-    // 渲染笔记标签下拉框
+    // 渲染文章标签下拉框
     renderTag () {
         if( this.props.tagList.length !== 0 ) {
             return <TagComponent
@@ -93,7 +93,7 @@ export default class AddNotePage extends React.Component {
     submitClickHandler () {
         const content = UE.getEditor("content").getContent();
         this.props.dispatch(contentChange(content));
-        this.props.dispatch(addNote());
+        this.props.dispatch(addArticle());
     }
 
     render() {
@@ -121,9 +121,9 @@ export default class AddNotePage extends React.Component {
                                 data={this.props.routes}
                             />
                         </div>
-                        <div id="page" className="page add-note-page">
+                        <div id="page" className="page add-article-page">
                             { this.renderSortSelect() }
-                            <Input onChange={this.titleChangeHandler.bind(this)} style={{ width: 470 }} size="large" placeholder="笔记名称"/>
+                            <Input onChange={this.titleChangeHandler.bind(this)} style={{ width: 470 }} size="large" placeholder="文章名称"/>
                             <UeditorComponent
                                 id="content"
                                 width="820"
@@ -136,7 +136,7 @@ export default class AddNotePage extends React.Component {
                                 type="primary"
                                 icon="cloud-upload-o"
                                 size="large">
-                                提交笔记
+                                提交文章
                             </Button>
                         </div>
 
@@ -155,10 +155,10 @@ export default class AddNotePage extends React.Component {
 
 
 function mapStateToProps ( state ) {
-    return Object.assign({}, state.addNote);
+    return Object.assign({}, state.addArticle);
 }
 
-export default connect( mapStateToProps )( AddNotePage );
+export default connect( mapStateToProps )( AddArticlePage );
 
 
 
