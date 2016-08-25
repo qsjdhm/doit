@@ -44,7 +44,7 @@ export default class TagComponent extends React.Component {
                         size="large"
                         defaultValue={self.props.defaultValue}
                         style={{ width: self.props.width - 23 }}
-                        placeholder="请选择选项"
+                        placeholder="请选择备选标签"
                         optionFilterProp="children"
                         notFoundContent="无法找到"
                         onChange={self.handleChange}>
