@@ -4,7 +4,7 @@
 
 import React             from 'react';
 import ReactDOM          from 'react-dom';
-import { Router, Route, IndexRoute, hashHistory,browserHistory } from 'react-router';
+import { Router, Route, IndexRoute, hashHistory } from 'react-router';
 import useBasename       from 'history/lib/useBasename'
 import MainPage          from '../containers/MainPage';
 import HomePage          from '../containers/HomePage';
@@ -26,9 +26,10 @@ const rootRoute = {
             },
             childRoutes: [
                 require('./routes/article/EditArticlePage'),
-                require('./routes/note/DelNotePage'),
+                require('./routes/article/DelArticlePage'),
+                //require('./routes/note/AddNotePage'),
                 require('./routes/note/EditNotePage'),
-                require('./routes/book/DelBookPage')
+                require('./routes/note/DelNotePage')
 
             ]
         },{

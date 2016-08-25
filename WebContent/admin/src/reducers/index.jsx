@@ -1,15 +1,15 @@
 
-import note from './note';
-import editArticle from './article/editArticle';
-import editNote from './note/editNote';
-import delNote from './note/delNote';
+import editArticle         from './article/editArticle';
+import delArticle          from './article/delArticle';
+import editNote            from './note/editNote';
+import delNote             from './note/delNote';
 import { combineReducers } from 'redux';
 
 const reducers = {
-	note,
+    editArticle,
+    delArticle,
     editNote,
-	delNote,
-    editArticle
+    delNote
 };
 
 module.exports = combineReducers(reducers);

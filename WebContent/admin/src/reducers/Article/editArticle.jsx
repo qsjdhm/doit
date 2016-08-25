@@ -34,7 +34,7 @@ export default combineReducers({
             return sortArray;
         }
     }),
-	// 设置所有笔记的标签列表
+	// 设置所有文章的标签列表
 	tagList: cr([], {
 		[SET_TAG_LIST](state, {data}){
             let tagArray = [];
@@ -48,7 +48,7 @@ export default combineReducers({
     selectedSort: cr('', {
         [SET_SELECTED_SORT](state, {data}){return data}
     }),
-    // 设置笔记总数
+    // 设置文章总数
     articleCount: cr(0, {
         [SET_ARTICLE_COUNT](state, {data}){return data}
     }),
@@ -56,7 +56,7 @@ export default combineReducers({
     selectedPage: cr(1, {
         [SET_SELECTED_PAGE](state, {data}){return data}
     }),
-    // 设置笔记列表
+    // 设置文章列表
     articleList: cr([], {
         [SET_ARTICLE_LIST](state, {data}){
 			let articleArray = [];
@@ -72,24 +72,24 @@ export default combineReducers({
     modelVisible: cr(false, {
         [SET_MODEL_VISIBLE](state, {data}){return data}
     }),
-    // 设置弹出层中默认的笔记分类
+    // 设置弹出层中默认的文章分类
     modelDefaultSortId: cr('', {
         [SET_MODEL_DEFAULT_SORT_ID](state, {data}){return data}
     }),
-    // 设置弹出层中默认的笔记名称
+    // 设置弹出层中默认的文章名称
     modelDefaultTitle: cr('', {
         [SET_MODEL_DEFAULT_TITLE](state, {data}){return data}
     }),
-    // 设置弹出层中默认的笔记内容
+    // 设置弹出层中默认的文章内容
     modelDefaultContent: cr('', {
         [SET_MODEL_DEFAULT_CONTENT](state, {data}){return data}
     }),
-    // 设置弹出层中默认的笔记标签
+    // 设置弹出层中默认的文章标签
     modelDefaultTag: cr('', {
         [SET_MODEL_DEFAULT_TAG](state, {data}){return data}
     }),
 
-    // 设置弹出层中用于保存给后台的笔记ID
+    // 设置弹出层中用于保存给后台的文章ID
     modelSaveId: cr(0, {
         [SET_MODEL_SAVE_ID](state, {data}){return data}
     }),

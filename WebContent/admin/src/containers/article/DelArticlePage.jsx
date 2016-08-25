@@ -12,9 +12,9 @@ import {
     selectedPageChange,
 	hasSelectedChange,
 	selectedRowKeysChange,
-    delNoteList,
+    delArticleList,
 	loadingChange
-} from '../../actions/note/delNote';
+} from '../../actions/article/delArticle';
 
 import { Popconfirm, Button, message, Row, Col } from 'antd';
 
@@ -27,20 +27,20 @@ import TableComponent      from '../../components/table/js/TableComponent';
 import PaginationComponent from '../../components/pagination/js/PaginationComponent';
 import fetchComponent      from '../../components/fetch/js/fetchComponent';
 
-import '../../css/note.less';
+import '../../css/article.less';
 
-export default class DelNotePage extends React.Component {
+export default class DelArticlePage extends React.Component {
     constructor (props) {
         super(props);
     }
 
     componentWillMount () {
-        // 获取笔记的分类列表
+        // 获取文章的分类列表
         this.props.dispatch( getSortList() );
     }
 
 
-    // 渲染笔记分类下拉框
+    // 渲染文章分类下拉框
     renderSortSelect () {
         if( this.props.sortList.length !== 0 ) {
             return <SelectComponent
@@ -56,9 +56,9 @@ export default class DelNotePage extends React.Component {
 
     // 渲染分页条
     renderPaginationList() {
-        if(this.props.noteCount.length !== 0) {
+        if(this.props.articleCount.length !== 0) {
             return <PaginationComponent
-                count={this.props.noteCount}
+                count={this.props.articleCount}
                 pageSize={10}
                 pageed={this.paginationClickHandler.bind(this)}/>
         }
@@ -70,8 +70,9 @@ export default class DelNotePage extends React.Component {
 
     // 渲染数据表格
     renderTableList() {
-        if (this.props.noteList.length !== 0){
+        if (this.props.articleList.length !== 0){
             const self = this;
+
             const totalWidth = document.getElementById("page").offsetWidth - 25;
             const idWidth        = totalWidth * 0.0749;
             const titleWidth     = totalWidth * 0.3465;
@@ -101,7 +102,7 @@ export default class DelNotePage extends React.Component {
                 render(index, item) {
                     return (
                         <Popconfirm
-                            title="确定要删除当前笔记吗？"
+                            title="确定要删除当前文章吗？"
                             placement="topRight"
                             onConfirm={self.operationClickHandler.bind(self, index, item)}>
 
@@ -117,7 +118,7 @@ export default class DelNotePage extends React.Component {
 
             return <TableComponent
                 tableColumns={tableColumns}
-                tableData={this.props.noteList}
+                tableData={this.props.articleList}
                 selectedRowKeys={this.props.selectedRowKeys}
                 checkboxSelected={this.checkboxSelectedHandler.bind(this)}
 				expandedRowRender={false}
@@ -127,11 +128,11 @@ export default class DelNotePage extends React.Component {
     }
 
     operationClickHandler (index, item) {
-        // 删除笔记
-        this.props.dispatch(delNoteList(item.Article_ID.toString()));
+        // 删除文章
+        this.props.dispatch(delArticleList(item.Article_ID.toString()));
     }
 
-    // 选中笔记
+    // 选中文章
     checkboxSelectedHandler (selectedRowKeys) {
         const hasSelected = selectedRowKeys.length > 0;
 		this.props.dispatch(hasSelectedChange(hasSelected));
@@ -143,7 +144,7 @@ export default class DelNotePage extends React.Component {
 		this.props.dispatch(loadingChange(true));
 		const selectStr = this.props.selectedRowKeys.join(";");
 		// 删除文章
-		this.props.dispatch(delNoteList(selectStr));
+		this.props.dispatch(delArticleList(selectStr));
 	}
 
 
@@ -172,17 +173,17 @@ export default class DelNotePage extends React.Component {
                                 data={this.props.routes}
                             />
                         </div>
-                        <div id="page" className="page del-note-page">
+                        <div id="page" className="page del-article-page">
                             { this.renderSortSelect() }
 							<div className="del-button">
-								<span>{this.props.hasSelected ? `选择了 ${this.props.selectedRowKeys.length} 篇笔记` : ''}</span>
-								<Popconfirm title="确定要删除选中的笔记吗？" placement="topRight" onConfirm={this.deleteClickHandler.bind(this)}>
+								<span>{this.props.hasSelected ? `选择了 ${this.props.selectedRowKeys.length} 篇文章` : ''}</span>
+								<Popconfirm title="确定要删除选中的文章吗？" placement="topRight" onConfirm={this.deleteClickHandler.bind(this)}>
 									<Button type="primary"
 											disabled={!this.props.hasSelected}
 											loading={this.props.loading}
 											icon="delete"
 											size="large">
-										删除笔记
+										删除文章
 									</Button>
 								</Popconfirm>
 							</div>
@@ -204,10 +205,10 @@ export default class DelNotePage extends React.Component {
 
 
 function mapStateToProps ( state ) {
-    return Object.assign({}, state.delNote);
+    return Object.assign({}, state.delArticle);
 }
 
-export default connect( mapStateToProps )( DelNotePage );
+export default connect( mapStateToProps )( DelArticlePage );
 
 
 

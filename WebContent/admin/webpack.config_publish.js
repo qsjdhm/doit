@@ -5,9 +5,6 @@ var path = require('path');
 var nodeModulesPath = path.resolve(__dirname, 'node_modules');
 var ueditorPath = path.resolve(__dirname, './ueditor1.6.1');
 module.exports = {
-
-	//https://segmentfault.com/q/1010000002607794
-
     entry: {
 		main: path.resolve(__dirname, './src/index.jsx'),
 		//"_admin/admin": './_admin/src/js/index.jsx',
@@ -70,9 +67,6 @@ module.exports = {
         }),
         new webpack.optimize.CommonsChunkPlugin('common',  'js/common.entry.js')
     ]
-
-
-
 };
 
 

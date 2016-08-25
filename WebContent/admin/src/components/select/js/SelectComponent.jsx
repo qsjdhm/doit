@@ -6,7 +6,6 @@ import React from 'react';
 import { Select } from 'antd';
 import 'antd/dist/antd.css';
 import '../css/select.less';
-import { sortSelectChange } from '../../../actions/note';
 
 class SelectComponent extends React.Component {
     constructor(props) {
@@ -30,7 +29,7 @@ class SelectComponent extends React.Component {
 				dom: false
 			});
 
-			let {data, defaultValue} = this.props;
+			let {data, defaultValue} = nextProps;
 			const optionItems = data.map(function(item){
 				return (
 					<Select.Option key={item.id} value={item.id}>{item.name}</Select.Option>
@@ -42,7 +41,7 @@ class SelectComponent extends React.Component {
 				self.setState({
 					dom: <Select
 						size="large"
-						defaultValue={self.props.defaultValue}
+						defaultValue={defaultValue}
 						style={{ width: 200 }}
 						placeholder="请选择选项"
 						optionFilterProp="children"
@@ -63,7 +62,8 @@ class SelectComponent extends React.Component {
 				<Select.Option key={item.id} value={item.id}>{item.name}</Select.Option>
 			);
 		});
-
+        console.info(111);
+        console.info(defaultValue);
 		this.setState({
 			dom: <Select
 				size="large"

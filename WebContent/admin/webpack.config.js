@@ -4,15 +4,9 @@ var ExtractTextPlugin = require('extract-text-webpack-plugin');
 var path = require('path');
 var nodeModulesPath = path.resolve(__dirname, 'node_modules');
 module.exports = {
-    //entry: {
-    //    page1: path.resolve(__dirname, './src/js/index.jsx'),
-    //        //支持数组形式，将加载数组中的所有模块，但以最后一个模块作为输出
-    //    page2: path.resolve(__dirname, './src/js/hello.jsx')
-    //},
     devtool: 'inline-source-map' ,
     devServer: true,
     hotComponents: true,
-    //entry: path.resolve(__dirname, './_admin/src/js/index.jsx'),
     entry: {
         index: [
             'webpack-dev-server/client?http://127.0.0.1:3001',//入口路径
@@ -68,15 +62,8 @@ module.exports = {
             template:'./src/template/index.html',    //html模板路径
             inject:'body',    //允许插件修改哪些内容，包括head与body
             hash: true, //为静态资源生成hash值
-        }),
-        // 压缩
-        //new webpack.optimize.UglifyJsPlugin({
-        //    compress: {
-        //        warnings: false
-        //    }
-        //}),
+        })
     ]
-
 };
 
 

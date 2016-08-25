@@ -16,20 +16,22 @@ import {
 	loadingChange
 } from '../../actions/note/delNote';
 
-import { Popconfirm, Button, message, Row, Col } from 'antd';
+import { Input, Button, notification, message, Row, Col } from 'antd';
 
 import MenuComponent       from '../../components/menu/js/MenuComponent';
 import SearchComponent     from '../../components/search/js/SearchComponent';
 import ToolBarComponent    from '../../components/toolbar/js/ToolBarComponent';
 import BreadcrumbComponent from '../../components/breadcrumb/js/BreadcrumbComponent';
 import SelectComponent     from '../../components/select/js/SelectComponent';
-import TableComponent      from '../../components/table/js/TableComponent';
-import PaginationComponent from '../../components/pagination/js/PaginationComponent';
+import UeditorComponent    from '../../components/ueditor/js/UeditorComponent';
+import TagComponent        from '../../components/tag/js/TagComponent';
 import fetchComponent      from '../../components/fetch/js/fetchComponent';
+
+
 
 import '../../css/note.less';
 
-export default class DelNotePage extends React.Component {
+export default class AddNotePage extends React.Component {
     constructor (props) {
         super(props);
     }
@@ -103,7 +105,7 @@ export default class DelNotePage extends React.Component {
                         <Popconfirm
                             title="确定要删除当前笔记吗？"
                             placement="topRight"
-                            onConfirm={self.operationClickHandler.bind(self, index, item)}>
+                            onConfirm={self.operationClick.bind(self, index, item)}>
 
                             <a href='javascript:void(0)'>删除</a>
                         </Popconfirm>
@@ -119,27 +121,28 @@ export default class DelNotePage extends React.Component {
                 tableColumns={tableColumns}
                 tableData={this.props.noteList}
                 selectedRowKeys={this.props.selectedRowKeys}
-                checkboxSelected={this.checkboxSelectedHandler.bind(this)}
+                checkboxSelected={this.checkboxSelected.bind(this)}
 				expandedRowRender={false}
                 scroll={scroll}/>
 
         }
     }
 
-    operationClickHandler (index, item) {
+    operationClick (index, item) {
         // 删除笔记
         this.props.dispatch(delNoteList(item.Article_ID.toString()));
     }
 
     // 选中笔记
-    checkboxSelectedHandler (selectedRowKeys) {
+    checkboxSelected (selectedRowKeys) {
+		console.info(selectedRowKeys);
         const hasSelected = selectedRowKeys.length > 0;
 		this.props.dispatch(hasSelectedChange(hasSelected));
 		this.props.dispatch(selectedRowKeysChange(selectedRowKeys));
     }
 
 	// 删除
-	deleteClickHandler () {
+	deleteClick () {
 		this.props.dispatch(loadingChange(true));
 		const selectStr = this.props.selectedRowKeys.join(";");
 		// 删除文章
@@ -176,7 +179,7 @@ export default class DelNotePage extends React.Component {
                             { this.renderSortSelect() }
 							<div className="del-button">
 								<span>{this.props.hasSelected ? `选择了 ${this.props.selectedRowKeys.length} 篇笔记` : ''}</span>
-								<Popconfirm title="确定要删除选中的笔记吗？" placement="topRight" onConfirm={this.deleteClickHandler.bind(this)}>
+								<Popconfirm title="确定要删除选中的笔记吗？" placement="topRight" onConfirm={this.deleteClick.bind(this)}>
 									<Button type="primary"
 											disabled={!this.props.hasSelected}
 											loading={this.props.loading}
@@ -207,7 +210,7 @@ function mapStateToProps ( state ) {
     return Object.assign({}, state.delNote);
 }
 
-export default connect( mapStateToProps )( DelNotePage );
+export default connect( mapStateToProps )( AddNotePage );
 
 
 

@@ -49,7 +49,7 @@ const setModelSaveContent = cac(SET_MODEL_SAVE_CONTENT, 'data');
 const setModelSaveTag = cac(SET_MODEL_SAVE_TAG, 'data');
 
 
-// 获取笔记分类列表
+// 获取文章分类列表
 export function getSortList () {
     return (dispatch, getState) => {
         const url = '/doit/sortAction/byTypeGetSort';
@@ -57,7 +57,7 @@ export function getSortList () {
         const body = {
             'type' : 'article'
         };
-        const errInfo = '请求笔记分类连接出错！';
+        const errInfo = '请求文章分类连接出错！';
         fetchComponent.send(this, url, method, body, errInfo, function(data){
 			dispatch(getTagList());
 			dispatch(setSortList(data.data));
@@ -82,14 +82,14 @@ export function getTagList () {
 		const body = {
 			"type" : "tag"
 		};
-		const errInfo = "请求笔记标签连接出错！";
+		const errInfo = "请求文章标签连接出错！";
 		fetchComponent.send(this, url, method, body, errInfo, function(data){
 			dispatch(setTagList(data.data));
 		});
 	}
 }
 
-// 获取笔记总数
+// 获取文章总数
 export function getArticleCount () {
 	return (dispatch, getState) => {
 		const url = "/doit/articleAction/getArticleCount";
@@ -97,7 +97,7 @@ export function getArticleCount () {
 		const body = {
 			"sort" : getState().editArticle.selectedSort
 		};
-		const errInfo = "请求笔记总个数连接出错！";
+		const errInfo = "请求文章总个数连接出错！";
 		fetchComponent.send(this, url, method, body, errInfo, function(data){
 			dispatch(setArticleCount(data.data));
 			dispatch(selectedPageChange(1));
@@ -113,7 +113,7 @@ export function selectedPageChange (pageId) {
 	}
 }
 
-// 获取笔记列表
+// 获取文章列表
 export function getArticleList () {
 	return (dispatch, getState) => {
 		const url = "/doit/articleAction/getArticleList";
@@ -123,14 +123,14 @@ export function getArticleList () {
 			"page" : getState().editArticle.selectedPage,
 			"size" : 10
 		};
-		const errInfo = "请求笔记列表连接出错！";
+		const errInfo = "请求文章列表连接出错！";
 		fetchComponent.send(this, url, method, body, errInfo, function(data){
 			dispatch(setArticleList(data.data));
 		});
 	}
 }
 
-// 获取单个笔记
+// 获取单个文章
 export function getArticle (articleId) {
 	return (dispatch, getState) => {
 		const url = "/doit/articleAction/getArticle";
@@ -138,7 +138,7 @@ export function getArticle (articleId) {
 		const body = {
 			"selectId" : articleId
 		};
-		const errInfo = "请求笔记信息连接出错！";
+		const errInfo = "请求文章信息连接出错！";
 		fetchComponent.send(this, url, method, body, errInfo, function(data){
 			dispatch(modelVisibleChange(true));
             // 给弹出层的组件设置初始化数据
@@ -180,28 +180,28 @@ export function modelSaveSortNameChange (sortName) {
 	}
 }
 
-// 设置弹出层中笔记名称改变事件
+// 设置弹出层中文章名称改变事件
 export function modelSaveTitleChange (title) {
     return (dispatch, getState) => {
         dispatch(setModelSaveTitle(title));
     }
 }
 
-// 设置弹出层中笔记内容改变事件
+// 设置弹出层中文章内容改变事件
 export function modelSaveContentChange (content) {
     return (dispatch, getState) => {
         dispatch(setModelSaveContent(content));
     }
 }
 
-// 设置弹出层中笔记标签改变事件
+// 设置弹出层中文章标签改变事件
 export function modelSaveTagChange (tag) {
     return (dispatch, getState) => {
         dispatch(setModelSaveTag(tag));
     }
 }
 
-// 更新笔记
+// 更新文章
 export function updateArticle () {
 	return (dispatch, getState) => {
 
@@ -216,7 +216,7 @@ export function updateArticle () {
 			"content"  : getState().editArticle.modelSaveContent,
 			"tags"     : encodeURI(encodeURI(getState().editArticle.modelSaveTag))
 		};
-		const errInfo = "修改笔记连接出错！";
+		const errInfo = "修改文章连接出错！";
 		fetchComponent.send(self, url, method, body, errInfo, function(data){
 			message.success(data.msg+"！", 3);
 			dispatch(getArticleList());
