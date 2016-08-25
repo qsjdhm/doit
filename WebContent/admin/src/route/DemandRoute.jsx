@@ -28,12 +28,14 @@ const rootRoute = {
                 require('./routes/article/AddArticlePage'),
                 require('./routes/article/EditArticlePage'),
                 require('./routes/article/DelArticlePage'),
+
                 require('./routes/note/AddNotePage'),
                 require('./routes/note/EditNotePage'),
                 require('./routes/note/DelNotePage'),
-                require('./routes/book/AddBookPage'),
-                require('./routes/book/DelBookPage'),
 
+                require('./routes/book/AddBookPage'),
+                require('./routes/book/EditBookPage'),
+                require('./routes/book/DelBookPage'),
             ]
         },{
             path: '*',
