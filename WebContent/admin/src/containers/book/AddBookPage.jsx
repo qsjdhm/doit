@@ -70,13 +70,13 @@ export default class AddBookPage extends React.Component {
     }
 
     // 上传成功的回调方法
-    uploaderSuccessHandler(info) {
+    uploaderSuccessHandler (info) {
         message.success(`${info.file.name} 上传成功。`);
         this.props.dispatch(coverChange(info.file.response));
     }
 
     // 上传失败的回调方法
-    uploaderErrorHandler(info) {
+    uploaderErrorHandler (info) {
         message.error(`${info.file.name} 上传失败。`);
     }
 

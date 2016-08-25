@@ -120,7 +120,7 @@ export function getBookList () {
 // 获取单个图书
 export function getBook (bookId) {
 	return (dispatch, getState) => {
-		const url = "/doit/noteAction/getBook";
+		const url = "/doit/bookAction/getBook";
 		const method = "POST";
 		const body = {
 			"selectId" : bookId
@@ -128,9 +128,10 @@ export function getBook (bookId) {
 		const errInfo = "请求图书信息连接出错！";
 		fetchComponent.send(this, url, method, body, errInfo, function(data){
 			dispatch(modelVisibleChange(true));
+
             // 给弹出层的组件设置初始化数据
 			dispatch(setModelDefaultSortId(data.sortId));
-            dispatch(setModelDefaultTitle(data.title));
+            dispatch(setModelDefaultTitle(data.name));
             dispatch(setModelDefaultHeight(data.height));
             dispatch(setModelDefaultPath(data.link));
 
@@ -138,7 +139,7 @@ export function getBook (bookId) {
             dispatch(setModelSaveId(data.id));
 			dispatch(modelSaveSortIdChange(data.sortId));
 			dispatch(modelSaveSortNameChange(data.sortName));
-            dispatch(modelSaveTitleChange(data.title));
+            dispatch(modelSaveTitleChange(data.name));
             dispatch(modelSaveHeightChange(data.height));
             dispatch(modelSavePathChange(data.link));
 		});
@@ -197,21 +198,22 @@ export function modelSavePathChange (path) {
 // 更新图书
 export function updateBook () {
 	return (dispatch, getState) => {
-		//const url = "/doit/noteAction/updateNote";
-		//const method = "POST";
-		//const body = {
-		//	"id"       : getState().editNote.modelSaveId,
-		//	"sortId"   : getState().editNote.modelSaveSortId,
-		//	"sortName" : encodeURI(encodeURI(getState().editNote.modelSaveSortName)),
-		//	"title"    : encodeURI(encodeURI(getState().editNote.modelSaveTitle)),
-		//	"content"  : getState().editNote.modelSaveContent,
-		//	"tags"     : encodeURI(encodeURI(getState().editNote.modelSaveTag))
-		//};
-		//const errInfo = "修改笔记连接出错！";
-		//fetchComponent.send(self, url, method, body, errInfo, function(data){
-		//	message.success(data.msg+"！", 3);
-		//	dispatch(getNoteList());
-		//	dispatch(setModelVisible(false));
-		//});
+		const url = "/doit/bookAction/updateBook";
+		const method = "POST";
+		const body = {
+			"id"       : getState().editBook.modelSaveId,
+			"sortId"   : getState().editBook.modelSaveSortId,
+			"sortName" : encodeURI(encodeURI(getState().editBook.modelSaveSortName)),
+			"name"     : encodeURI(encodeURI(getState().editBook.modelSaveTitle)),
+			"height"   : getState().editBook.modelSaveHeight,
+			"cover"    : getState().editBook.modelSaveCover,
+			"link"     : getState().editBook.modelSavePath
+		};
+		const errInfo = "修改图书连接出错！";
+		fetchComponent.send(self, url, method, body, errInfo, function(data){
+			message.success(data.msg+"！", 3);
+			dispatch(getBookList());
+			dispatch(setModelVisible(false));
+		});
 	}
 }

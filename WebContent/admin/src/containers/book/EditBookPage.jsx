@@ -124,79 +124,87 @@ export default class EditBookPage extends React.Component {
 		this.props.dispatch(getBook(item.Book_ID));
 	}
 
-    //handleOk () {
-    //    // 富文本特殊不能实时变化数据，所以就在这里设置一次
-    //    const content = UE.getEditor("mContent").getContent();
-    //    this.props.dispatch(modelSaveContentChange(content));
-		//this.props.dispatch(updateNote());
-    //}
-    //
-    //handleCancel () {
-		//this.props.dispatch(modelVisibleChange(false));
-    //}
-    //
-    //// 渲染弹出层的分类
-    //renderModelSortList () {
-		//if(this.props.sortList.length !== 0 && this.props.modelDefaultSortId !== '') {
-		//	return <SelectComponent
-		//		defaultValue={this.props.modelDefaultSortId}
-		//		data={this.props.sortList}
-		//		selected={this.modelSortChangeHandler.bind(this)}/>
-		//}
-    //}
-    //
-    //modelSortChangeHandler (sortId) {
-		//let nowSort = {
-		//	sortId   : sortId,
-		//	sortName : ""
-		//};
-		//console.info(sortId);
-		//const sorts = this.props.sortList;
-		//for(let sort of sorts){
-		//	if(sort.id === sortId) {
-		//		nowSort.sortName = sort.name;
-		//		break;
-		//	}
-		//}
-    //
-		//this.props.dispatch(modelSaveSortIdChange(nowSort.sortId));
-		//this.props.dispatch(modelSaveSortNameChange(nowSort.sortName));
-    //}
-    //
-    //modelTitleChangeHandler (e) {
-    //    this.props.dispatch(modelSaveTitleChange(e.target.value));
-    //}
-    //
-    //// 渲染弹出层的富文本
-    //renderModelUeditor () {
-    //    if(this.props.modelSaveContent !== '') {
-    //        return <UeditorComponent
-    //            value={this.props.modelSaveContent}
-    //            id='mContent'
-    //            width='805'
-    //            height='280'
-    //        />
-    //    }
-    //}
-    //
-    //// 渲染弹出层的标签
-    //renderModelTag () {
-    //    if(this.props.tagList.length !== 0 && this.props.modelDefaultTag !== '') {
-    //        return  <TagComponent
-    //            width={806}
-    //            data={this.props.tagList}
-    //            defaultValue={this.props.modelDefaultTag}
-    //            selected={this.modelTagChangeHandler.bind(this)}
-    //        />
-    //    }
-    //}
-    //
-    //modelTagChangeHandler (tag) {
-    //    this.props.dispatch(modelSaveTagChange(tag.join(",")));
-    //}
+    handleOk () {
+		this.props.dispatch(updateBook());
+    }
+
+    handleCancel () {
+		this.props.dispatch(modelVisibleChange(false));
+    }
+
+    // 渲染弹出层的分类
+    renderModelSortList () {
+		if(this.props.sortList.length !== 0 && this.props.modelDefaultSortId !== '') {
+			return <SelectComponent
+				defaultValue={this.props.modelDefaultSortId}
+				data={this.props.sortList}
+				selected={this.modelSortChangeHandler.bind(this)}/>
+		}
+    }
+
+    modelSortChangeHandler (sortId) {
+		let nowSort = {
+			sortId   : sortId,
+			sortName : ""
+		};
+		console.info(sortId);
+		const sorts = this.props.sortList;
+		for(let sort of sorts){
+			if(sort.id === sortId) {
+				nowSort.sortName = sort.name;
+				break;
+			}
+		}
+
+		this.props.dispatch(modelSaveSortIdChange(nowSort.sortId));
+		this.props.dispatch(modelSaveSortNameChange(nowSort.sortName));
+    }
+
+	// 上传成功的回调方法
+	uploaderSuccessHandler (info) {
+		message.success(`${info.file.name} 上传成功。`);
+		this.props.dispatch(modelSaveCoverChange(info.file.response));
+	}
+
+	// 上传失败的回调方法
+	uploaderErrorHandler (info) {
+		message.error(`${info.file.name} 上传失败。`);
+	}
+
+    modelTitleChangeHandler (e) {
+        this.props.dispatch(modelSaveTitleChange(e.target.value));
+    }
+
+	modelHeightChangeHandler (e) {
+		this.props.dispatch(modelSaveHeightChange(e.target.value));
+	}
+
+	modelPathChangeHandler (e) {
+		this.props.dispatch(modelSavePathChange(e.target.value));
+	}
 
 
 	render() {
+		const self = this;
+		const FormItem = Form.Item;
+		const updateProps = {                // 图书路径
+			name: 'file',
+			action: '/doit/UniversalUploadAction',
+			headers: {
+				authorization: 'authorization-text',
+			},
+			onChange(info) {
+				if (info.file.status !== 'uploading') {
+					console.log(info.file, info.fileList);
+				}
+				if (info.file.status === 'done') {
+					self.uploaderSuccessHandler(info);
+				} else if (info.file.status === 'error') {
+					self.uploaderErrorHandler(info);
+				}
+			}
+		};
+
 		return (
 			<div>
 				<MenuComponent openSubMenu={this.props.route.sort} selectedMenu={this.props.route.bpath} />
@@ -226,7 +234,37 @@ export default class EditBookPage extends React.Component {
 							{ this.renderTableList() }
 							{ this.renderPaginationList() }
                         </div>
-
+						<Modal title="修改图书详细信息"
+							   visible={this.props.modelVisible}
+							   onOk={this.handleOk.bind(this)}
+							   onCancel={this.handleCancel.bind(this)}>
+							<Form horizontal>
+								<FormItem
+									label="图书封面">
+									<Upload {...updateProps}>
+										<Button className="uploader-btn" type="ghost">
+											<Icon type="upload" /> 点击上传
+										</Button>
+									</Upload>
+								</FormItem>
+								<FormItem
+									label="图书分类">
+									{ this.renderModelSortList() }
+								</FormItem>
+								<FormItem
+									label="图书名称">
+									<Input value={this.props.modelSaveTitle} onChange={this.modelTitleChangeHandler.bind(this)} placeholder="" size="large"/>
+								</FormItem>
+								<FormItem
+									label="图书高度">
+									<Input value={this.props.modelSaveHeight} onChange={this.modelHeightChangeHandler.bind(this)} placeholder="" size="large"/>
+								</FormItem>
+								<FormItem
+									label="下载路径">
+									<Input value={this.props.modelSavePath} onChange={this.modelPathChangeHandler.bind(this)} type="textarea" rows="3" placeholder="" size="large"/>
+								</FormItem>
+							</Form>
+						</Modal>
 					</div>
 					<div className="ant-layout-footer">
 						52DOIT 版权所有 © 2016 由不拽注定被甩~技术支持
