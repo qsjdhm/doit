@@ -11,6 +11,8 @@ import addBook             from './book/addBook';
 import editBook            from './book/editBook';
 import delBook             from './book/delBook';
 
+import delComment          from './comment/delComment';
+
 import { combineReducers } from 'redux';
 
 const reducers = {
@@ -24,7 +26,9 @@ const reducers = {
 
     addBook,
     editBook,
-    delBook
+    delBook,
+
+    delComment
 };
 
 module.exports = combineReducers(reducers);
