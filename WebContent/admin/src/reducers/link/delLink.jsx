@@ -2,33 +2,33 @@ import {combineReducers} from 'redux';
 import {cr} from '../../utils/index';
 import {
     // 页面所使用的数据
-	SET_COMMENT_COUNT,
+	SET_LINK_COUNT,
 	SET_SELECTED_PAGE,
-	SET_COMMENT_LIST,
+	SET_LINK_LIST,
     SET_SELECTED_ROW_KEYS,
 	SET_HAS_SELECTED,
 	SET_LOADING
-} from '../../actions/comment/delComment';
+} from '../../actions/link/delLink';
 
 
 export default combineReducers({
     // 设置评论总数
-    commentCount: cr(0, {
-        [SET_COMMENT_COUNT](state, {data}){return data}
+    linkCount: cr(0, {
+        [SET_LINK_COUNT](state, {data}){return data}
     }),
     // 设置当前选中的页数
     selectedPage: cr(1, {
         [SET_SELECTED_PAGE](state, {data}){return data}
     }),
     // 设置评论列表
-    commentList: cr([], {
-        [SET_COMMENT_LIST](state, {data}){
-			let commentArray = [];
+    linkList: cr([], {
+        [SET_LINK_LIST](state, {data}){
+			let linkArray = [];
 			for( let item of data ){
-				item.key = item.Comment_ID;
-                commentArray.push(item);
+				item.key = item.Link_ID;
+                linkArray.push(item);
 			}
-			return commentArray;
+			return linkArray;
 		}
     }),
     // 设置当前选中评论的key

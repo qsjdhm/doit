@@ -37,7 +37,16 @@ const rootRoute = {
                 require('./routes/book/EditBookPage'),
                 require('./routes/book/DelBookPage'),
 
+                require('./routes/comment/EditCommentPage'),
                 require('./routes/comment/DelCommentPage'),
+
+                require('./routes/link/AddLinkPage'),
+                require('./routes/link/EditLinkPage'),
+                require('./routes/link/DelLinkPage'),
+
+                require('./routes/user/AddUserPage'),
+                require('./routes/user/EditUserPage'),
+                require('./routes/user/DelUserPage'),
             ]
         },{
             path: '*',
