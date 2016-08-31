@@ -44,6 +44,11 @@ const rootRoute = {
                 require('./routes/link/EditLinkPage'),
                 require('./routes/link/DelLinkPage'),
 
+                require('./routes/sort/AddSortPage'),
+                require('./routes/sort/EditSortPage'),
+                require('./routes/sort/DelSortPage'),
+
+
                 require('./routes/user/AddUserPage'),
                 require('./routes/user/EditUserPage'),
                 require('./routes/user/DelUserPage'),

@@ -18,6 +18,10 @@ import addLink             from './link/addLink';
 import editLink            from './link/editLink';
 import delLink             from './link/delLink';
 
+import addSort             from './sort/addSort';
+import editSort            from './sort/editSort';
+import delSort             from './sort/delSort';
+
 import addUser             from './user/addUser';
 import editUser            from './user/editUser';
 import delUser             from './user/delUser';
@@ -43,6 +47,10 @@ const reducers = {
     addLink,
     editLink,
     delLink,
+
+    addSort,
+    editSort,
+    delSort,
 
     addUser,
     editUser,
