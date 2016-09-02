@@ -36,7 +36,7 @@ public class AdminFilter extends OncePerRequestFilter {
 		System.out.println(request.getRequestURL());
 		 
 		// 如果是后台管理页面需要过滤
-		if (url.indexOf("_admin/") != -1) {
+		if (url.indexOf("admin/") != -1) {
 			// 是否过滤
 			boolean doFilter = true;
 			for (String s : notFilter) {
@@ -56,7 +56,7 @@ public class AdminFilter extends OncePerRequestFilter {
 				if (null == sessionUser) {
 					System.out.println(sessionUser);
 					response.setCharacterEncoding("UTF-8");
-					response.sendRedirect("/doit/_login/#/");
+					response.sendRedirect("/doit/login/dist/#/");
 				} else {
 					// 如果session中存在登录者实体，则继续
 					filterChain.doFilter(request, response);

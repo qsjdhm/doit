@@ -48,6 +48,9 @@ const rootRoute = {
                 require('./routes/sort/EditSortPage'),
                 require('./routes/sort/DelSortPage'),
 
+                require('./routes/recom/ArticleRecomPage'),
+                require('./routes/recom/NoteRecomPage'),
+                require('./routes/recom/BookRecomPage'),
 
                 require('./routes/user/AddUserPage'),
                 require('./routes/user/EditUserPage'),

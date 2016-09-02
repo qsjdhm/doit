@@ -22,6 +22,10 @@ import addSort             from './sort/addSort';
 import editSort            from './sort/editSort';
 import delSort             from './sort/delSort';
 
+import articleRecom        from './recom/articleRecom';
+import noteRecom           from './recom/noteRecom';
+import bookRecom           from './recom/bookRecom';
+
 import addUser             from './user/addUser';
 import editUser            from './user/editUser';
 import delUser             from './user/delUser';
@@ -51,6 +55,10 @@ const reducers = {
     addSort,
     editSort,
     delSort,
+
+    articleRecom,
+    noteRecom,
+    bookRecom,
 
     addUser,
     editUser,

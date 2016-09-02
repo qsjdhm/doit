@@ -17,7 +17,7 @@ export default combineReducers ( {
     } ),
     password : cr( '', {
         [CHANGE_PASSWORD]( state, { value } ){ return value; }
-    } ),
+    } )
 } );
 
 
