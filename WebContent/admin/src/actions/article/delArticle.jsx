@@ -29,7 +29,8 @@ const setLoading = cac(SET_LOADING, 'data');
 // 获取文章分类列表
 export function getSortList () {
     return (dispatch, getState) => {
-        const url = '/doit/sortAction/byTypeGetSort';
+        console.info(ENV.baseUrl);
+        const url = ENV.baseUrl + '/sortAction/byTypeGetSort';
         const method = 'POST';
         const body = {
             'type' : 'article'
