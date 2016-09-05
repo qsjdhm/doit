@@ -23,7 +23,7 @@ const setLoading = cac(SET_LOADING, 'data');
 // 获取外链总数
 export function getLinkCount () {
 	return (dispatch, getState) => {
-		const url = "/doit/linkAction/getLinkCount";
+		const url = ENV.baseUrl + "/linkAction/getLinkCount";
 		const method = "POST";
 		const body = {};
 		const errInfo = "请求外链总个数连接出错！";
@@ -45,7 +45,7 @@ export function selectedPageChange (pageId) {
 // 获取外链列表
 export function getLinkList () {
 	return (dispatch, getState) => {
-		const url = "/doit/linkAction/getLinkList";
+		const url = ENV.baseUrl + "/linkAction/getLinkList";
 		const method = "POST";
 		const body = {
 			"page" : getState().delLink.selectedPage,
@@ -82,7 +82,7 @@ export function loadingChange (loading) {
 // 删除外链
 export function delLinkList (selectStr) {
 	return (dispatch, getState) => {
-		const url = "/doit/linkAction/delLink";
+		const url = ENV.baseUrl + "/linkAction/delLink";
 		const method = "POST";
 		const body = {
 			"selectId" : selectStr

@@ -29,8 +29,7 @@ const setLoading = cac(SET_LOADING, 'data');
 // 获取文章分类列表
 export function getSortList () {
     return (dispatch, getState) => {
-        console.info(ENV.baseUrl);
-        const url = ENV.baseUrl + '/sortAction/byTypeGetSort';
+        const url = ENV.baseUrl + "/sortAction/byTypeGetSort";
         const method = 'POST';
         const body = {
             'type' : 'article'
@@ -55,7 +54,7 @@ export function selectedSortChange (sortId) {
 // 获取标签列表
 export function getTagList () {
 	return (dispatch, getState) => {
-		const url = "/doit/sortAction/byTypeGetSort";
+		const url = ENV.baseUrl + "/sortAction/byTypeGetSort";
 		const method = "POST";
 		const body = {
 			"type" : "tag"
@@ -70,7 +69,7 @@ export function getTagList () {
 // 获取文章总数
 export function getArticleCount () {
 	return (dispatch, getState) => {
-		const url = "/doit/articleAction/getArticleCount";
+		const url = ENV.baseUrl + "/articleAction/getArticleCount";
 		const method = "POST";
 		const body = {
 			"sort" : getState().delArticle.selectedSort
@@ -94,7 +93,7 @@ export function selectedPageChange (pageId) {
 // 获取文章列表
 export function getArticleList () {
 	return (dispatch, getState) => {
-		const url = "/doit/articleAction/getArticleList";
+		const url = ENV.baseUrl + "/articleAction/getArticleList";
 		const method = "POST";
 		const body = {
 			"sort" : getState().delArticle.selectedSort,
@@ -132,7 +131,7 @@ export function loadingChange (loading) {
 // 删除文章
 export function delArticleList (selectStr) {
 	return (dispatch, getState) => {
-		const url = "/doit/articleAction/delArticle";
+		const url = ENV.baseUrl + "/articleAction/delArticle";
 		const method = "POST";
 		const body = {
 			"selectId" : selectStr

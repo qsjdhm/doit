@@ -54,7 +54,7 @@ const setModelSavePath = cac(SET_MODEL_SAVE_PATH, 'data');
 // 获取笔记分类列表
 export function getSortList () {
     return (dispatch, getState) => {
-        const url = '/doit/sortAction/byTypeGetSort';
+        const url = ENV.baseUrl + "/sortAction/byTypeGetSort";
         const method = 'POST';
         const body = {
             'type' : 'book'
@@ -79,7 +79,7 @@ export function selectedSortIdChange (sortId) {
 // 获取图书总数
 export function getBookCount () {
 	return (dispatch, getState) => {
-		const url = "/doit/bookAction/getBookCount";
+		const url = ENV.baseUrl + "/bookAction/getBookCount";
 		const method = "POST";
 		const body = {
 			"sort" : getState().editBook.selectedSortId
@@ -103,7 +103,7 @@ export function selectedPageChange (pageId) {
 // 获取图书列表
 export function getBookList () {
 	return (dispatch, getState) => {
-		const url = "/doit/bookAction/getBookList";
+		const url = ENV.baseUrl + "/bookAction/getBookList";
 		const method = "POST";
 		const body = {
 			"sort" : getState().editBook.selectedSortId,
@@ -120,7 +120,7 @@ export function getBookList () {
 // 获取单个图书
 export function getBook (bookId) {
 	return (dispatch, getState) => {
-		const url = "/doit/bookAction/getBook";
+		const url = ENV.baseUrl + "/bookAction/getBook";
 		const method = "POST";
 		const body = {
 			"selectId" : bookId
@@ -198,7 +198,7 @@ export function modelSavePathChange (path) {
 // 更新图书
 export function updateBook () {
 	return (dispatch, getState) => {
-		const url = "/doit/bookAction/updateBook";
+		const url = ENV.baseUrl + "/bookAction/updateBook";
 		const method = "POST";
 		const body = {
 			"id"       : getState().editBook.modelSaveId,

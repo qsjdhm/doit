@@ -23,7 +23,7 @@ const setLoading = cac(SET_LOADING, 'data');
 // 获取评论总数
 export function getCommentCount () {
 	return (dispatch, getState) => {
-		const url = "/doit/commentAction/getCommentCount";
+		const url = ENV.baseUrl + "/commentAction/getCommentCount";
 		const method = "POST";
 		const body = {};
 		const errInfo = "请求评论总个数连接出错！";
@@ -45,7 +45,7 @@ export function selectedPageChange (pageId) {
 // 获取评论列表
 export function getCommentList () {
 	return (dispatch, getState) => {
-		const url = "/doit/commentAction/getCommentList";
+		const url = ENV.baseUrl + "/commentAction/getCommentList";
 		const method = "POST";
 		const body = {
 			"page" : getState().delComment.selectedPage,
@@ -82,7 +82,7 @@ export function loadingChange (loading) {
 // 删除评论
 export function delCommentList (selectStr) {
 	return (dispatch, getState) => {
-		const url = "/doit/commentAction/delComment";
+		const url = ENV.baseUrl + "/commentAction/delComment";
 		const method = "POST";
 		const body = {
 			"selectId" : selectStr

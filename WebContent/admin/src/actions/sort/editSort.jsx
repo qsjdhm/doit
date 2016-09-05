@@ -48,7 +48,7 @@ export function selectedSortIdChange (sortId) {
 // 获取分类总数
 export function getSortCount () {
 	return (dispatch, getState) => {
-		const url = "/doit/sortAction/getSortCount";
+		const url = ENV.baseUrl + "/sortAction/getSortCount";
 		const method = "POST";
 		const body = {
 			"fSort" : getState().editSort.selectedSortId
@@ -72,7 +72,7 @@ export function selectedPageChange (pageId) {
 // 获取分类列表
 export function getSortList () {
 	return (dispatch, getState) => {
-		const url = "/doit/sortAction/getSortList";
+		const url = ENV.baseUrl + "/sortAction/getSortList";
 		const method = "POST";
 		const body = {
 			"fSort" : getState().editSort.selectedSortId,
@@ -89,7 +89,7 @@ export function getSortList () {
 // 获取单个分类
 export function getSort (sortId) {
 	return (dispatch, getState) => {
-		const url = "/doit/sortAction/getSort";
+		const url = ENV.baseUrl + "/sortAction/getSort";
 		const method = "POST";
 		const body = {
 			"selectId" : sortId
@@ -135,7 +135,7 @@ export function modelSaveNameChange (name) {
 // 更新分类
 export function updateSort () {
 	return (dispatch, getState) => {
-		const url = "/doit/sortAction/updateSort";
+		const url = ENV.baseUrl + "/sortAction/updateSort";
 		const method = "POST";
 		const body = {
 			"id"       : getState().editSort.modelSaveId,

@@ -29,7 +29,7 @@ const setLoading = cac(SET_LOADING, 'data');
 // 获取笔记分类列表
 export function getSortList () {
     return (dispatch, getState) => {
-        const url = '/doit/sortAction/byTypeGetSort';
+        const url = ENV.baseUrl + "/sortAction/byTypeGetSort";
         const method = 'POST';
         const body = {
             'type' : 'note'
@@ -54,7 +54,7 @@ export function selectedSortChange (sortId) {
 // 获取标签列表
 export function getTagList () {
 	return (dispatch, getState) => {
-		const url = "/doit/sortAction/byTypeGetSort";
+		const url = ENV.baseUrl + "/sortAction/byTypeGetSort";
 		const method = "POST";
 		const body = {
 			"type" : "tag"
@@ -69,7 +69,7 @@ export function getTagList () {
 // 获取笔记总数
 export function getNoteCount () {
 	return (dispatch, getState) => {
-		const url = "/doit/noteAction/getNoteCount";
+		const url = ENV.baseUrl + "/noteAction/getNoteCount";
 		const method = "POST";
 		const body = {
 			"sort" : getState().delNote.selectedSort
@@ -93,7 +93,7 @@ export function selectedPageChange (pageId) {
 // 获取笔记列表
 export function getNoteList () {
 	return (dispatch, getState) => {
-		const url = "/doit/noteAction/getNoteList";
+		const url = ENV.baseUrl + "/noteAction/getNoteList";
 		const method = "POST";
 		const body = {
 			"sort" : getState().delNote.selectedSort,
@@ -131,7 +131,7 @@ export function loadingChange (loading) {
 // 删除笔记
 export function delNoteList (selectStr) {
 	return (dispatch, getState) => {
-		const url = "/doit/noteAction/delNote";
+		const url = ENV.baseUrl + "/noteAction/delNote";
 		const method = "POST";
 		const body = {
 			"selectId" : selectStr

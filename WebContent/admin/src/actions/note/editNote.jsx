@@ -52,7 +52,7 @@ const setModelSaveTag = cac(SET_MODEL_SAVE_TAG, 'data');
 // 获取笔记分类列表
 export function getSortList () {
     return (dispatch, getState) => {
-        const url = '/doit/sortAction/byTypeGetSort';
+        const url = ENV.baseUrl + "/sortAction/byTypeGetSort";
         const method = 'POST';
         const body = {
             'type' : 'note'
@@ -77,7 +77,7 @@ export function selectedSortChange (sortId) {
 // 获取标签列表
 export function getTagList () {
 	return (dispatch, getState) => {
-		const url = "/doit/sortAction/byTypeGetSort";
+		const url = ENV.baseUrl + "/sortAction/byTypeGetSort";
 		const method = "POST";
 		const body = {
 			"type" : "tag"
@@ -92,7 +92,7 @@ export function getTagList () {
 // 获取笔记总数
 export function getNoteCount () {
 	return (dispatch, getState) => {
-		const url = "/doit/noteAction/getNoteCount";
+		const url = ENV.baseUrl + "/noteAction/getNoteCount";
 		const method = "POST";
 		const body = {
 			"sort" : getState().editNote.selectedSort
@@ -116,7 +116,7 @@ export function selectedPageChange (pageId) {
 // 获取笔记列表
 export function getNoteList () {
 	return (dispatch, getState) => {
-		const url = "/doit/noteAction/getNoteList";
+		const url = ENV.baseUrl + "/noteAction/getNoteList";
 		const method = "POST";
 		const body = {
 			"sort" : getState().editNote.selectedSort,
@@ -133,7 +133,7 @@ export function getNoteList () {
 // 获取单个笔记
 export function getNote (noteId) {
 	return (dispatch, getState) => {
-		const url = "/doit/noteAction/getNote";
+		const url = ENV.baseUrl + "/noteAction/getNote";
 		const method = "POST";
 		const body = {
 			"selectId" : noteId
@@ -204,7 +204,7 @@ export function modelSaveTagChange (tag) {
 // 更新笔记
 export function updateNote () {
 	return (dispatch, getState) => {
-		const url = "/doit/noteAction/updateNote";
+		const url = ENV.baseUrl + "/noteAction/updateNote";
 		const method = "POST";
 		const body = {
 			"id"       : getState().editNote.modelSaveId,

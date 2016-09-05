@@ -27,7 +27,7 @@ const setLoading = cac(SET_LOADING, 'data');
 // 获取图书分类列表
 export function getSortList () {
     return (dispatch, getState) => {
-        const url = '/doit/sortAction/byTypeGetSort';
+        const url = ENV.baseUrl + "/sortAction/byTypeGetSort";
         const method = 'POST';
         const body = {
             'type' : 'book'
@@ -51,7 +51,7 @@ export function selectedSortChange (sortId) {
 // 获取图书总数
 export function getBookCount () {
 	return (dispatch, getState) => {
-		const url = "/doit/bookAction/getBookCount";
+		const url = ENV.baseUrl + "/bookAction/getBookCount";
 		const method = "POST";
 		const body = {
 			"sort" : getState().delBook.selectedSort
@@ -75,7 +75,7 @@ export function selectedPageChange (pageId) {
 // 获取图书列表
 export function getBookList () {
 	return (dispatch, getState) => {
-		const url = "/doit/bookAction/getBookList";
+		const url = ENV.baseUrl + "/bookAction/getBookList";
 		const method = "POST";
 		const body = {
 			"sort" : getState().delBook.selectedSort,
@@ -113,7 +113,7 @@ export function loadingChange (loading) {
 // 删除图书
 export function delBookList (selectStr) {
 	return (dispatch, getState) => {
-		const url = "/doit/bookAction/delBook";
+		const url = ENV.baseUrl + "/bookAction/delBook";
 		const method = "POST";
 		const body = {
 			"selectId" : selectStr

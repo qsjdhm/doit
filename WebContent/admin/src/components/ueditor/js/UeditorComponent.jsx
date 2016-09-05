@@ -18,13 +18,10 @@ export default class TUeditorComponent extends React.Component {
 
     componentWillReceiveProps (nextProps) {
         if (nextProps.value !== this.props.value) {
-            console.info(1111111111111);
-
             const self = this;
             setTimeout(function(){
                 self.state.dom.setContent(self.props.value);
             },0);
-
         }
     }
 
@@ -49,9 +46,6 @@ export default class TUeditorComponent extends React.Component {
             dom : editor
         });
     }
-
-
-
 
     render() {
         return (

@@ -40,7 +40,7 @@ const setModelSaveRead = cac(SET_MODEL_SAVE_READ, 'data');
 // 获取文章分类列表
 export function getSortList () {
     return (dispatch, getState) => {
-        const url = '/doit/sortAction/byTypeGetSort';
+        const url = ENV.baseUrl + "/sortAction/byTypeGetSort";
         const method = 'POST';
         const body = {
             'type' : 'article'
@@ -64,7 +64,7 @@ export function selectedSortChange (sortId) {
 // 获取文章总数
 export function getArticleCount () {
 	return (dispatch, getState) => {
-		const url = "/doit/articleAction/getArticleCount";
+		const url = ENV.baseUrl + "/articleAction/getArticleCount";
 		const method = "POST";
 		const body = {
 			"sort" : getState().articleRecom.selectedSort
@@ -88,7 +88,7 @@ export function selectedPageChange (pageId) {
 // 获取文章列表
 export function getArticleList () {
 	return (dispatch, getState) => {
-		const url = "/doit/articleAction/getArticleList";
+		const url = ENV.baseUrl + "/articleAction/getArticleList";
 		const method = "POST";
 		const body = {
 			"sort" : getState().articleRecom.selectedSort,
@@ -105,7 +105,7 @@ export function getArticleList () {
 // 获取单个文章
 export function getArticle (articleId) {
 	return (dispatch, getState) => {
-		const url = "/doit/recommendAction/getArticle";
+		const url = ENV.baseUrl + "/recommendAction/getArticle";
 		const method = "POST";
 		const body = {
 			"selectId" : articleId
@@ -150,7 +150,7 @@ export function modelSaveReadChange (readNum) {
 // 更新文章
 export function updateArticle () {
 	return (dispatch, getState) => {
-		const url = "/doit/recommendAction/recommendArticle";
+		const url = ENV.baseUrl + "/recommendAction/recommendArticle";
 		const method = "POST";
 		const body = {
 			"id"           : getState().articleRecom.modelSaveId,

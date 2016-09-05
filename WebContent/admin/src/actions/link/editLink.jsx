@@ -38,7 +38,7 @@ const setModelSaveUrl = cac(SET_MODEL_SAVE_URL, 'data');
 // 获取外链总数
 export function getLinkCount () {
     return (dispatch, getState) => {
-        const url = "/doit/linkAction/getLinkCount";
+        const url = ENV.baseUrl + "/linkAction/getLinkCount";
         const method = "POST";
         const body = {};
         const errInfo = "请求外链总个数连接出错！";
@@ -60,7 +60,7 @@ export function selectedPageChange (pageId) {
 // 获取外链列表
 export function getLinkList () {
     return (dispatch, getState) => {
-        const url = "/doit/linkAction/getLinkList";
+        const url = ENV.baseUrl + "/linkAction/getLinkList";
         const method = "POST";
         const body = {
             "page" : getState().editLink.selectedPage,
@@ -76,7 +76,7 @@ export function getLinkList () {
 // 获取单个外链
 export function getLink (linkId) {
 	return (dispatch, getState) => {
-		const url = "/doit/linkAction/getLink";
+		const url = ENV.baseUrl + "/linkAction/getLink";
 		const method = "POST";
 		const body = {
 			"selectId" : linkId
@@ -121,7 +121,7 @@ export function modelSaveUrlChange (url) {
 // 更新外链
 export function updateLink () {
 	return (dispatch, getState) => {
-		const url = "/doit/linkAction/updateLink";
+		const url = ENV.baseUrl + "/linkAction/updateLink";
 		const method = "POST";
 		const body = {
 			"id"   : getState().editLink.modelSaveId,

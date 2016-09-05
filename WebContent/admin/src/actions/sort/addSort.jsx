@@ -33,7 +33,7 @@ export function nameChange (name) {
 export function addSort () {
     return (dispatch, getState) => {
         dispatch(loadingChange(true));
-        const url = "/doit/sortAction/addSort";
+        const url = ENV.baseUrl + "/sortAction/addSort";
         const method = "POST";
         const body = {
             "fSortId"  : getState().addSort.selectedSortId,

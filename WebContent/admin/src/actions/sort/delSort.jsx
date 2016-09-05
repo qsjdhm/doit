@@ -34,7 +34,7 @@ export function selectedSortIdChange (sortId) {
 // 获取图书总数
 export function getSortCount () {
 	return (dispatch, getState) => {
-        const url = "/doit/sortAction/getSortCount";
+        const url = ENV.baseUrl + "/sortAction/getSortCount";
         const method = "POST";
         const body = {
             "fSort" : getState().delSort.selectedSortId
@@ -58,7 +58,7 @@ export function selectedPageChange (pageId) {
 // 获取图书列表
 export function getSortList () {
 	return (dispatch, getState) => {
-        const url = "/doit/sortAction/getSortList";
+        const url = ENV.baseUrl + "/sortAction/getSortList";
         const method = "POST";
         const body = {
             "fSort" : getState().delSort.selectedSortId,
@@ -96,7 +96,7 @@ export function loadingChange (loading) {
 // 删除图书
 export function delSortList (selectStr) {
 	return (dispatch, getState) => {
-		const url = "/doit/sortAction/delSort";
+		const url = ENV.baseUrl + "/sortAction/delSort";
 		const method = "POST";
 		const body = {
 			"selectId" : selectStr

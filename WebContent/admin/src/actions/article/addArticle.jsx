@@ -27,7 +27,7 @@ const setLoading = cac(SET_LOADING, 'data');
 // 获取文章分类列表
 export function getSortList () {
     return (dispatch, getState) => {
-        const url = '/doit/sortAction/byTypeGetSort';
+        const url = ENV.baseUrl + "/sortAction/byTypeGetSort";
         const method = 'POST';
         const body = {
             'type' : 'article'
@@ -45,7 +45,7 @@ export function getSortList () {
 // 获取标签列表
 export function getTagList () {
     return (dispatch, getState) => {
-        const url = "/doit/sortAction/byTypeGetSort";
+        const url = ENV.baseUrl + "/sortAction/byTypeGetSort";
         const method = "POST";
         const body = {
             "type" : "tag"
@@ -96,7 +96,7 @@ export function selectedTagChange (tag) {
 export function addArticle () {
     return (dispatch, getState) => {
         dispatch(loadingChange(true));
-        const url = "/doit/articleAction/addArticle";
+        const url = ENV.baseUrl + "/articleAction/addArticle";
         const method = "POST";
         const body = {
             "sortId"   : getState().addArticle.selectedSortId,

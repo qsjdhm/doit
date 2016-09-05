@@ -38,7 +38,7 @@ const setModelSaveContent = cac(SET_MODEL_SAVE_CONTENT, 'data');
 // 获取评论总数
 export function getCommentCount () {
     return (dispatch, getState) => {
-        const url = "/doit/commentAction/getCommentCount";
+        const url = ENV.baseUrl + "/commentAction/getCommentCount";
         const method = "POST";
         const body = {};
         const errInfo = "请求评论总个数连接出错！";
@@ -60,7 +60,7 @@ export function selectedPageChange (pageId) {
 // 获取评论列表
 export function getCommentList () {
     return (dispatch, getState) => {
-        const url = "/doit/commentAction/getCommentList";
+        const url = ENV.baseUrl + "/commentAction/getCommentList";
         const method = "POST";
         const body = {
             "page" : getState().editComment.selectedPage,
@@ -76,7 +76,7 @@ export function getCommentList () {
 // 获取单个评论
 export function getComment (commentId) {
 	return (dispatch, getState) => {
-		const url = "/doit/commentAction/getComment";
+		const url = ENV.baseUrl + "/commentAction/getComment";
 		const method = "POST";
 		const body = {
 			"selectId" : commentId
@@ -121,7 +121,7 @@ export function modelSaveContentChange (content) {
 // 更新评论
 export function updateComment () {
 	return (dispatch, getState) => {
-		const url = "/doit/commentAction/updateComment";
+		const url = ENV.baseUrl + "/commentAction/updateComment";
 		const method = "POST";
 		const body = {
 			"id"       : getState().editComment.modelSaveId,

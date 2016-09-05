@@ -32,7 +32,7 @@ export function urlChange (url) {
 export function addLink () {
     return (dispatch, getState) => {
         dispatch(loadingChange(true));
-        const url = "/doit/linkAction/addLink";
+        const url = ENV.baseUrl + "/linkAction/addLink";
         const method = "POST";
         const body = {
             "name" : encodeURI(encodeURI(getState().addLink.name)),

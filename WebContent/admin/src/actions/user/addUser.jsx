@@ -41,7 +41,7 @@ export function emailChange (email) {
 export function addUser () {
     return (dispatch, getState) => {
         dispatch(loadingChange(true));
-        const url = "/doit/userAction/addUser";
+        const url = ENV.baseUrl + "/userAction/addUser";
         const method = "POST";
         const body = {
             "name"      : encodeURI(encodeURI(getState().addUser.name)),

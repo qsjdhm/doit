@@ -27,7 +27,7 @@ const setLoading = cac(SET_LOADING, 'data');
 // 获取图书分类列表
 export function getSortList () {
     return (dispatch, getState) => {
-        const url = '/doit/sortAction/byTypeGetSort';
+        const url = ENV.baseUrl + "/sortAction/byTypeGetSort";
         const method = 'POST';
         const body = {
             'type' : 'book'
@@ -87,7 +87,7 @@ export function pathChange (path) {
 export function addBook () {
     return (dispatch, getState) => {
         dispatch(loadingChange(true));
-        const url = "/doit/bookAction/addBook";
+        const url = ENV.baseUrl + "/bookAction/addBook";
         const method = "POST";
         const body = {
             "name"     : encodeURI(encodeURI(getState().addBook.title)),

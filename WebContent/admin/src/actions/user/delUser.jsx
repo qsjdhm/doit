@@ -23,7 +23,7 @@ const setLoading = cac(SET_LOADING, 'data');
 // 获取用户总数
 export function getUserCount () {
 	return (dispatch, getState) => {
-		const url = "/doit/userAction/getUserCount";
+		const url = ENV.baseUrl + "/userAction/getUserCount";
 		const method = "POST";
 		const body = {};
 		const errInfo = "请求用户总个数连接出错！";
@@ -45,7 +45,7 @@ export function selectedPageChange (pageId) {
 // 获取用户列表
 export function getUserList () {
 	return (dispatch, getState) => {
-		const url = "/doit/userAction/getUserList";
+		const url = ENV.baseUrl + "/userAction/getUserList";
 		const method = "POST";
 		const body = {
 			"page" : getState().delUser.selectedPage,
@@ -82,7 +82,7 @@ export function loadingChange (loading) {
 // 删除用户
 export function delUserList (selectStr) {
 	return (dispatch, getState) => {
-		const url = "/doit/userAction/delUser";
+		const url = ENV.baseUrl + "/userAction/delUser";
 		const method = "POST";
 		const body = {
 			"selectId" : selectStr

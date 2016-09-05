@@ -42,7 +42,7 @@ const setModelSaveEmail = cac(SET_MODEL_SAVE_EMAIL, 'data');
 // 获取用户总数
 export function getUserCount () {
     return (dispatch, getState) => {
-        const url = "/doit/userAction/getUserCount";
+        const url = ENV.baseUrl + "/userAction/getUserCount";
         const method = "POST";
         const body = {};
         const errInfo = "请求用户总个数连接出错！";
@@ -64,7 +64,7 @@ export function selectedPageChange (pageId) {
 // 获取用户列表
 export function getUserList () {
     return (dispatch, getState) => {
-        const url = "/doit/userAction/getUserList";
+        const url = ENV.baseUrl + "/userAction/getUserList";
         const method = "POST";
         const body = {
             "page" : getState().editUser.selectedPage,
@@ -80,7 +80,7 @@ export function getUserList () {
 // 获取单个用户
 export function getUser (userId) {
 	return (dispatch, getState) => {
-		const url = "/doit/userAction/getUser";
+		const url = ENV.baseUrl + "/userAction/getUser";
 		const method = "POST";
 		const body = {
 			"selectId" : userId
@@ -132,7 +132,7 @@ export function modelSaveEmailChange (email) {
 // 更新外链
 export function updateUser () {
 	return (dispatch, getState) => {
-		const url = "/doit/userAction/updateUser";
+		const url = ENV.baseUrl + "/userAction/updateUser";
 		const method = "POST";
 		const body = {
 			"id"       : getState().editUser.modelSaveId,
