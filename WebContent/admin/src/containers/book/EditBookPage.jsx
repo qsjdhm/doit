@@ -189,7 +189,7 @@ export default class EditBookPage extends React.Component {
 		const FormItem = Form.Item;
 		const updateProps = {                // 图书路径
 			name: 'file',
-			action: '/doit/UniversalUploadAction',
+			action: ENV.baseUrl + "/UniversalUploadAction",
 			headers: {
 				authorization: 'authorization-text',
 			},
