@@ -11,6 +11,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.util.List;
+import com.doit.util.ENV;
 
 /**
  * 生成页面所需要的html代码工具类
@@ -31,9 +32,9 @@ public class GenerateHtml {
 				for(int j=0; j<tags.length; j++){
 					String tag = URLEncoder.encode(URLEncoder.encode(tags[j],"utf-8"));
 					if(j==0){
-						tagsHtml += "<a title='"+tags[j]+"' rel='tag' href='/doit/search/"+tag+"/0/2/search' style='font-size:13px;'>"+tags[j]+"</a>";
+						tagsHtml += "<a title='"+tags[j]+"' rel='tag' href='"+new ENV().baseUrl+"/search/"+tag+"/0/2/search' style='font-size:13px;'>"+tags[j]+"</a>";
 					}else{
-						tagsHtml += " , <a title='"+tags[j]+"' rel='tag' href='/doit/search/"+tag+"/0/2/search' style='font-size:13px;'>"+tags[j]+"</a>";
+						tagsHtml += " , <a title='"+tags[j]+"' rel='tag' href='"+new ENV().baseUrl+"/search/"+tag+"/0/2/search' style='font-size:13px;'>"+tags[j]+"</a>";
 					}
 				}
 				
@@ -51,7 +52,7 @@ public class GenerateHtml {
 				String item = "";
 				item += "<div id='item"+article.getArticle_ID()+"' class='ui stacked segment'>";
 				item += "	<h2 class='article_title'>";
-				item += "		<a href='/doit/show/"+article.getArticle_ID()+"' style='font-size:24px;'>"+article.getArticle_Title()+"</a>";
+				item += "		<a href='"+new ENV().baseUrl+"/show/"+article.getArticle_ID()+"' style='font-size:24px;'>"+article.getArticle_Title()+"</a>";
 				item += "	</h2>";
 				item += "	<h2></h2>";
 				item += "	<div class='article_date'>";
@@ -60,7 +61,7 @@ public class GenerateHtml {
 				item += 		tagsHtml;
 				item += "	</div>";
 				item += "	<div class='row'>";
-				item += "		<a class='thumbnail' href='/doit/show/"+article.getArticle_ID()+"' style='float:left;width:240px;oveflow:hidden;'>";
+				item += "		<a class='thumbnail' href='"+new ENV().baseUrl+"/show/"+article.getArticle_ID()+"' style='float:left;width:240px;oveflow:hidden;'>";
 				item += "			<img src='"+article.getArticle_Cover()+"' style='height: 175px; width: 100%; display: block;' data-src='holder.js/100%x175'>";
 				item += "		</a>";
 				item += "		<span id='artContent"+article.getArticle_ID()+"' class='sDiv article_content'>"+contentHtml+"</span>";
@@ -89,12 +90,12 @@ public class GenerateHtml {
 					String prevCoverHtml = "";
 					String nowCoverHtml = "";
 					if(prevArticle.getArticle_Cover()==""){
-						prevCoverHtml = "/doit/common/images/cover_default.png";
+						prevCoverHtml = ""+new ENV().baseUrl+"/common/images/cover_default.png";
 					}else{
 						prevCoverHtml = prevArticle.getArticle_Cover();
 					}
 					if(nowArticle.getArticle_Cover()==""){
-						nowCoverHtml = "/doit/common/images/cover_default.png";
+						nowCoverHtml = ""+new ENV().baseUrl+"common/images/cover_default.png";
 					}else{
 						nowCoverHtml = nowArticle.getArticle_Cover();
 					}
@@ -103,7 +104,7 @@ public class GenerateHtml {
 					String rowItem = "";
 					rowItem += "<div class='row'>";
 					rowItem += "	<div class='col-md-6'>";
-					rowItem += "		<a class='works_item' href='/doit/show/"+prevArticle.getArticle_ID()+"'>";
+					rowItem += "		<a class='works_item' href='"+new ENV().baseUrl+"/show/"+prevArticle.getArticle_ID()+"'>";
 					rowItem += "			<div class='works_pic'>";
 					rowItem += "				<img class='img-responsive' xsalt='Responsive image' src='"+prevCoverHtml+"' />";     
 					rowItem += "			</div>";
@@ -122,7 +123,7 @@ public class GenerateHtml {
 					rowItem += "		</a>";
 					rowItem += "	</div>";
 					rowItem += "	<div class='col-md-6'>";
-					rowItem += "		<a class='works_item' href='/doit/show/"+nowArticle.getArticle_ID()+"'>";
+					rowItem += "		<a class='works_item' href='"+new ENV().baseUrl+"/show/"+nowArticle.getArticle_ID()+"'>";
 					rowItem += "			<div class='works_pic'>";
 					rowItem += "				<img class='img-responsive' xsalt='Responsive image' src='"+nowCoverHtml+"' />";     
 					rowItem += "			</div>";
@@ -150,7 +151,7 @@ public class GenerateHtml {
 						// 获取封面
 						String nowCoverHtml = "";
 						if(nowArticle.getArticle_Cover()==""){
-							nowCoverHtml = "/doit/common/images/cover_default.png";
+							nowCoverHtml = new ENV().baseUrl+"/common/images/cover_default.png";
 						}else{
 							nowCoverHtml = nowArticle.getArticle_Cover();
 						}
@@ -159,7 +160,7 @@ public class GenerateHtml {
 						String rowItem = "";
 						rowItem += "<div class='row'>";
 						rowItem += "	<div class='col-md-6'>";
-						rowItem += "		<a class='works_item' href='/doit/show/"+nowArticle.getArticle_ID()+"'>";
+						rowItem += "		<a class='works_item' href='"+new ENV().baseUrl+"/show/"+nowArticle.getArticle_ID()+"'>";
 						rowItem += "			<div class='works_pic'>";
 						rowItem += "				<img class='img-responsive' xsalt='Responsive image' src='"+nowCoverHtml+"' />";     
 						rowItem += "			</div>";
@@ -193,7 +194,7 @@ public class GenerateHtml {
 		int size = sudokuSorts.size();
 		for(int i=0; i<size; i++){
 			TSort sort = sudokuSorts.get(i);
-			String item = "<li><a href='/doit/search/"+URLEncoder.encode(URLEncoder.encode(sort.getSort_Name(),"utf-8"))+"/0/2/search'>"+sort.getSort_Name()+"</a></li>";
+			String item = "<li><a href='"+new ENV().baseUrl+"/search/"+URLEncoder.encode(URLEncoder.encode(sort.getSort_Name(),"utf-8"))+"/0/2/search'>"+sort.getSort_Name()+"</a></li>";
 			listHtml += item;
 		}
 		return listHtml;
@@ -212,7 +213,7 @@ public class GenerateHtml {
 			String item = "";
 			item += "<p>";
 			item += "	<span>●</span>";
-			item += "	<a href='/doit/show/"+article.getArticle_ID()+"'>"+article.getArticle_Title()+"</a>";
+			item += "	<a href='"+new ENV().baseUrl+"/show/"+article.getArticle_ID()+"'>"+article.getArticle_Title()+"</a>";
 			item += "</p>";
 			
 			listHtml += item;
@@ -233,7 +234,7 @@ public class GenerateHtml {
 			String item = "";
 			item += "<p>";
 			item += "	<span>●</span>";
-			item += "	<a href='/doit/show/"+article.getArticle_ID()+"'>"+article.getArticle_Title()+"</a>";
+			item += "	<a href='"+new ENV().baseUrl+"/show/"+article.getArticle_ID()+"'>"+article.getArticle_Title()+"</a>";
 			item += "</p>";
 			
 			listHtml += item;
@@ -297,7 +298,7 @@ public class GenerateHtml {
 		for(int i=0; i<size; i++){
 			TSort sort = sorts.get(i);
 			String item = "";
-			item += "<a href='/doit/search/"+URLEncoder.encode(URLEncoder.encode(sort.getSort_Name(),"utf-8"))+"/0/2/search' class='tagadelic level1' rel='tag' title='"+sort.getSort_Name()+"'>"+sort.getSort_Name()+"</a>";
+			item += "<a href='"+new ENV().baseUrl+"/search/"+URLEncoder.encode(URLEncoder.encode(sort.getSort_Name(),"utf-8"))+"/0/2/search' class='tagadelic level1' rel='tag' title='"+sort.getSort_Name()+"'>"+sort.getSort_Name()+"</a>";
 			sortHtml += item;
 		}
 		return sortHtml;
@@ -317,16 +318,16 @@ public class GenerateHtml {
 				String item = "";
 				item += "<p>";
 				item += "	<span>"+comment.getComment_Person_Name()+"</span><br/>";
-				item += "	<span>对 : </span><a href='/doit/me' target='_blank'>"+comment.getComment_ArticleTitle()+"</a><br/>";
-				item += "	<span>评论 : </span><a href='/doit/show' target='_blank'>"+comment.getComment_Content()+"</a>";
+				item += "	<span>对 : </span><a href='"+new ENV().baseUrl+"/me' target='_blank'>"+comment.getComment_ArticleTitle()+"</a><br/>";
+				item += "	<span>评论 : </span><a href='"+new ENV().baseUrl+"/show' target='_blank'>"+comment.getComment_Content()+"</a>";
 				item += "</p>";
 				sortHtml += item;
 			}else{
 				String item = "";
 				item += "<p>";
 				item += "	<span>"+comment.getComment_Person_Name()+"</span><br/>";
-				item += "	<span>对 : </span><a href='/doit/show/"+comment.getComment_ArticleID()+"' target='_blank'>"+comment.getComment_ArticleTitle()+"</a><br/>";
-				item += "	<span>评论 : </span><a href='/doit/show/"+comment.getComment_ArticleID()+"' target='_blank'>"+comment.getComment_Content()+"</a>";
+				item += "	<span>对 : </span><a href='"+new ENV().baseUrl+"/show/"+comment.getComment_ArticleID()+"' target='_blank'>"+comment.getComment_ArticleTitle()+"</a><br/>";
+				item += "	<span>评论 : </span><a href='"+new ENV().baseUrl+"/show/"+comment.getComment_ArticleID()+"' target='_blank'>"+comment.getComment_Content()+"</a>";
 				item += "</p>";
 				sortHtml += item;
 			}
@@ -376,16 +377,16 @@ public class GenerateHtml {
 			for(int j=0; j<tags.length; j++){
 				String tag = URLEncoder.encode(URLEncoder.encode(tags[j],"utf-8"));
 				if(j==0){
-					tagsHtml += "<a title='"+tags[j]+"' rel='tag' href='/doit/search/"+tag+"/0/2/search' style='font-size:13px;'>"+tags[j]+"</a>";
+					tagsHtml += "<a title='"+tags[j]+"' rel='tag' href='"+new ENV().baseUrl+"/search/"+tag+"/0/2/search' style='font-size:13px;'>"+tags[j]+"</a>";
 				}else{
-					tagsHtml += " , <a title='"+tags[j]+"' rel='tag' href='/doit/search/"+tag+"/0/2/search' style='font-size:13px;'>"+tags[j]+"</a>";
+					tagsHtml += " , <a title='"+tags[j]+"' rel='tag' href='"+new ENV().baseUrl+"/search/"+tag+"/0/2/search' style='font-size:13px;'>"+tags[j]+"</a>";
 				}
 			}
 			
 			String item = "";
 			item += "<div id='item"+article.getArticle_ID()+"' class='ui stacked segment'>";
 			item += "	<h2 class='article_title'>";
-			item += "		<a href='/doit/show/"+article.getArticle_ID()+"' style='font-size:24px;'>"+article.getArticle_Title()+"</a>";
+			item += "		<a href='"+new ENV().baseUrl+"/show/"+article.getArticle_ID()+"' style='font-size:24px;'>"+article.getArticle_Title()+"</a>";
 			item += "	</h2>";
 			item += "	<div class='article_date'>";
 			item += "		<span property='dc:date dc:created' content='2013-11-10T12:30:01+08:00' datatype='xsd:dateTime' rel='sioc:has_creator' style='margin-right:20px;'>	发布时间 : "+article.getArticle_Date()+" </span>";
@@ -452,9 +453,9 @@ public class GenerateHtml {
 		for(int j=0; j<tags.length; j++){
 			String tag = URLEncoder.encode(URLEncoder.encode(tags[j],"utf-8"));
 			if(j==0){
-				tagsHtml += "<a title='"+tags[j]+"' rel='tag' href='/doit/search/"+tag+"/0/2/search'>"+tags[j]+"</a>";
+				tagsHtml += "<a title='"+tags[j]+"' rel='tag' href='"+new ENV().baseUrl+"/search/"+tag+"/0/2/search'>"+tags[j]+"</a>";
 			}else{
-				tagsHtml += " , <a title='"+tags[j]+"' rel='tag' href='/doit/search/"+tag+"/0/2/search'>"+tags[j]+"</a>";
+				tagsHtml += " , <a title='"+tags[j]+"' rel='tag' href='"+new ENV().baseUrl+"/search/"+tag+"/0/2/search'>"+tags[j]+"</a>";
 			}
 		}
 		
@@ -468,7 +469,7 @@ public class GenerateHtml {
 		if(article.getArticle_ID()==null){
 			prevHtml += "<i class='hand link left icon' style='font-size: 18px;'></i><span>第一篇了, 亲~</span>";
 		}else{
-			prevHtml += "<a href='/doit/show/"+article.getArticle_ID()+"'><i class='hand link left icon' style='font-size: 18px;'></i>"+article.getArticle_Title()+"</a>";
+			prevHtml += "<a href='"+new ENV().baseUrl+"/show/"+article.getArticle_ID()+"'><i class='hand link left icon' style='font-size: 18px;'></i>"+article.getArticle_Title()+"</a>";
 		}
 		
 		return prevHtml;
@@ -481,7 +482,7 @@ public class GenerateHtml {
 		if(article.getArticle_ID()==null){
 			nextHtml += "<span>坐等站主更新~</span><i class='hand link right icon' style='font-size: 18px;'></i>";
 		}else{
-			nextHtml += "<a href='/doit/show/"+article.getArticle_ID()+"'>"+article.getArticle_Title()+"<i class='hand link right icon' style='font-size: 18px;'></i></a>";
+			nextHtml += "<a href='"+new ENV().baseUrl+"/show/"+article.getArticle_ID()+"'>"+article.getArticle_Title()+"<i class='hand link right icon' style='font-size: 18px;'></i></a>";
 		}
 		
 		return nextHtml;

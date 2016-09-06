@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
+import com.doit.util.ENV;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -101,7 +102,7 @@ public class UniversalUploadAction extends HttpServlet {
         System.out.println(File.separator+savePathd+name + extName);
         
         //response.getWriter().print(File.separator + savePathd + name + extName);
-        response.getWriter().print("/doit/admin/uploads/" + name + extName);
+        response.getWriter().print(new ENV().baseUrl+"/admin/uploads/" + name + extName);
 	}
 
 }

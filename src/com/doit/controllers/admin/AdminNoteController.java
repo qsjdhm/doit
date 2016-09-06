@@ -5,6 +5,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import com.doit.util.ENV;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -285,10 +286,10 @@ public class AdminNoteController {
 			// 获取第一个图片作为封面
 			cover = coverImages.get(0);
 			// 处理服务器和本地的前缀的差异
-			cover = "/doit"+cover.substring(cover.indexOf("/plugins"), cover.length());
+			cover = new ENV().baseUrl+cover.substring(cover.indexOf("/plugins"), cover.length());
 			System.out.println(cover);
 		}else{
-			cover = "/doit/common/images/cover_default.png";
+			cover = new ENV().baseUrl+"/common/images/cover_default.png";
 		}
 		
 		// 1.添加笔记数据
@@ -420,10 +421,10 @@ public class AdminNoteController {
 			// 获取第一个图片作为封面
 			cover = coverImages.get(0);
 			// 处理服务器和本地的前缀的差异
-			cover = "/doit"+cover.substring(cover.indexOf("/plugins"), cover.length());
+			cover = new ENV().baseUrl+cover.substring(cover.indexOf("/plugins"), cover.length());
 			System.out.println(cover);
 		}else{
-			cover = "/doit/common/images/cover_default.png";
+			cover = new ENV().baseUrl+"/common/images/cover_default.png";
 		}
 		
 		// 1.修改笔记数据

@@ -15,6 +15,7 @@ import org.springframework.web.util.WebUtils;
 
 import com.doit.util.OperateLoginUser;
 import com.doit.util.OperateString;
+import com.doit.util.ENV;
 
 /**
  * 后台管理过滤器
@@ -56,7 +57,7 @@ public class AdminFilter extends OncePerRequestFilter {
 				if (null == sessionUser) {
 					System.out.println(sessionUser);
 					response.setCharacterEncoding("UTF-8");
-					response.sendRedirect("/doit/login/dist/#/");
+					response.sendRedirect(new ENV().baseUrl + "/login/dist/#/");
 				} else {
 					// 如果session中存在登录者实体，则继续
 					filterChain.doFilter(request, response);

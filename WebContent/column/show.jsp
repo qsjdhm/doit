@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+    <%@page import="com.doit.util.ENV" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -13,20 +14,20 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 	<!-- 响应式声明结束 -->
 	
-	<link rel= "shortcut icon" href="/doit/common/images/icon.png" />
+	<link rel= "shortcut icon" href="<%=new ENV().baseUrl %>/common/images/icon.png" />
 	
 	<title>${articleTitleHtml} | do IT</title>
 	
-	<link rel="stylesheet" type="text/css" href="/doit/plugins/bootstrap-ui/css/bootstrap_show.min.css" />
-	<link rel="stylesheet" type="text/css" href="/doit/plugins/semantic-ui/packaged/css/semantic.min.css" />
-	<link rel="stylesheet" type="text/css" href="/doit/plugins/scrollup-master/css/themes/image.css" />
-	<link rel="stylesheet" type="text/css" href="/doit/plugins/syntaxhighlighter_3.0.83/styles/shCoreDefault.css" />
-	<link rel="stylesheet" href="/doit/common/css/common.css" type="text/css" />	
-	<link rel="stylesheet" href="/doit/plugins/search/css/zySearch.css" type="text/css" />
-	<link rel="stylesheet" href="/doit/plugins/comment/css/zyComment.css" type="text/css" />
+	<link rel="stylesheet" type="text/css" href="<%=new ENV().baseUrl %>/plugins/bootstrap-ui/css/bootstrap_show.min.css" />
+	<link rel="stylesheet" type="text/css" href="<%=new ENV().baseUrl %>/plugins/semantic-ui/packaged/css/semantic.min.css" />
+	<link rel="stylesheet" type="text/css" href="<%=new ENV().baseUrl %>/plugins/scrollup-master/css/themes/image.css" />
+	<link rel="stylesheet" type="text/css" href="<%=new ENV().baseUrl %>/plugins/syntaxhighlighter_3.0.83/styles/shCoreDefault.css" />
+	<link rel="stylesheet" href="<%=new ENV().baseUrl %>/common/css/common.css" type="text/css" />	
+	<link rel="stylesheet" href="<%=new ENV().baseUrl %>/plugins/search/css/zySearch.css" type="text/css" />
+	<link rel="stylesheet" href="<%=new ENV().baseUrl %>/plugins/comment/css/zyComment.css" type="text/css" />
 	<!-- 提示所使用的css -->
-	<link rel="stylesheet" href="/doit/plugins/tip/toastr.css" type="text/css" />
-	<link rel="stylesheet" href="/doit/css/show.css" type="text/css" />
+	<link rel="stylesheet" href="<%=new ENV().baseUrl %>/plugins/tip/toastr.css" type="text/css" />
+	<link rel="stylesheet" href="<%=new ENV().baseUrl %>/css/show.css" type="text/css" />
 </head>
 <body>
     
@@ -34,7 +35,7 @@
 		<!-- 版头 -->
 		<div class="row pageTitle">
 			<span class="logo">
-				<a rel="home" title="Just do IT" href="/doit/home/0/home">
+				<a rel="home" title="Just do IT" href="<%=new ENV().baseUrl %>/home/0/home">
 					<b class="bclass">Just do IT</b>
 				</a>
 				<i>专注于web前端开发，专注于用户体验</i> 
@@ -60,14 +61,14 @@
 					</div>
 					<nav class="collapse navbar-collapse bs-navbar-collapse" role="navigation">
 						<ul class="nav navbar-nav">
-							<li><a href="/doit/home/0/home">首页</a></li>
-							<li><a href="/doit/front/0/front">前端</a></li>
-				      		<li><a href="/doit/java/0/java">JAVA</a></li>
-				      		<li><a href="/doit/mobile/0/mobile">移动端</a></li>
-				      		<li><a href="/doit/note/${noteFirstSortID}/0/note">笔记</a></li>
-				      		<li><a href="/doit/works/0/works">个人作品</a></li>
-				      		<li><a href="/doit/book/3/0/book">读书乐趣</a></li>
-				      		<li><a href="/doit/me">关于我</a></li>
+							<li><a href="<%=new ENV().baseUrl %>/home/0/home">首页</a></li>
+							<li><a href="<%=new ENV().baseUrl %>/front/0/front">前端</a></li>
+				      		<li><a href="<%=new ENV().baseUrl %>/java/0/java">JAVA</a></li>
+				      		<li><a href="<%=new ENV().baseUrl %>/mobile/0/mobile">移动端</a></li>
+				      		<li><a href="<%=new ENV().baseUrl %>/note/${noteFirstSortID}/0/note">笔记</a></li>
+				      		<li><a href="<%=new ENV().baseUrl %>/works/0/works">个人作品</a></li>
+				      		<li><a href="<%=new ENV().baseUrl %>/book/3/0/book">读书乐趣</a></li>
+				      		<li><a href="<%=new ENV().baseUrl %>/me">关于我</a></li>
 						</ul>
 					</nav>
 				</div>
@@ -116,13 +117,13 @@
 				
 				<!-- 艺术图片 -->
 				<div class="boxDiv">
-					<img src="/doit/common/images/grace.png" class="img-responsive " xsalt="Responsive image"></img>
+					<img src="<%=new ENV().baseUrl %>/common/images/grace.png" class="img-responsive " xsalt="Responsive image"></img>
 				</div>
 				
 				<!-- 热门文章 -->
 				<div class="ui segment ">
 				  	<h3 class="ui left floated header">热门文章</h3>
-				  	<h3 class="ui right floated header"><a style="color:#333;" href="/doit/more/0/more">更多</a></h3>
+				  	<h3 class="ui right floated header"><a style="color:#333;" href="<%=new ENV().baseUrl %>/more/0/more">更多</a></h3>
 				  	<div class="ui clearing divider"></div>
 				  	<div id="articleRecom" class="ui animated list">
 				  		${topArticleHtml}
@@ -132,7 +133,7 @@
 				<!-- 经典笔记 -->
 				<div class="ui segment">
 				  	<h3 class="ui left floated header">经典笔记</h3>
-				  	<h3 class="ui right floated header"><a style="color:#333;" href="/doit/note/${noteFirstSortID}/0/note">更多</a></h3>
+				  	<h3 class="ui right floated header"><a style="color:#333;" href="<%=new ENV().baseUrl %>/note/${noteFirstSortID}/0/note">更多</a></h3>
 				  	<div class="ui clearing divider"></div>
 				  	<div class="codeRecom ui animated list">
 				  		${topNoteHtml}
@@ -142,7 +143,7 @@
 				<!-- 精品书籍 -->
 				<div class="ui segment">
 				  	<h3 class="ui left floated header">精品书籍</h3>
-				  	<h3 class="ui right floated header"><a style="color:#333;" href="/doit/book/3/0/book">更多</a></h3>
+				  	<h3 class="ui right floated header"><a style="color:#333;" href="<%=new ENV().baseUrl %>/book/3/0/book">更多</a></h3>
 				  	<div class="ui clearing divider"></div>
 				  	<div class="ui animated list">
 				  	</div>
@@ -193,18 +194,18 @@
 	<input type="hidden" id="idHiddenInput" value="${articleID}" />
     <input type="hidden" id="titleHiddenInput" value="${articleTitleHtml}" />
     
-	<script type="text/javascript" src="/doit/common/js/jquery-1.7.2.min.js"></script>
-	<script type="text/javascript" src="/doit/plugins/bootstrap-ui/js/bootstrap.min.js"></script> 
-	<script type="text/javascript" src="/doit/plugins/scrollup-master/src/jquery.scrollUp.js"></script>
-	<script type="text/javascript" src="/doit/plugins/ueditor1.6.1/third-party/SyntaxHighlighter/shCore.js"></script> 
-	<script type="text/javascript" src="/doit/plugins/syntaxhighlighter_3.0.83/scripts/shBrushJScript.js"></script>
-	<script type="text/javascript" src="/doit/plugins/search/js/zySearch-doit.js"></script>
-	<script type="text/javascript" src="/doit/plugins/comment/js/zyComment.js"></script>
+	<script type="text/javascript" src="<%=new ENV().baseUrl %>/common/js/jquery-1.7.2.min.js"></script>
+	<script type="text/javascript" src="<%=new ENV().baseUrl %>/plugins/bootstrap-ui/js/bootstrap.min.js"></script> 
+	<script type="text/javascript" src="<%=new ENV().baseUrl %>/plugins/scrollup-master/src/jquery.scrollUp.js"></script>
+	<script type="text/javascript" src="<%=new ENV().baseUrl %>/plugins/ueditor1.6.1/third-party/SyntaxHighlighter/shCore.js"></script> 
+	<script type="text/javascript" src="<%=new ENV().baseUrl %>/plugins/syntaxhighlighter_3.0.83/scripts/shBrushJScript.js"></script>
+	<script type="text/javascript" src="<%=new ENV().baseUrl %>/plugins/search/js/zySearch-doit.js"></script>
+	<script type="text/javascript" src="<%=new ENV().baseUrl %>/plugins/comment/js/zyComment.js"></script>
 	<!-- 提示所使用的js -->
-	<script type="text/javascript" src="/doit/plugins/tip/toastr.js"></script>
-	<script type="text/javascript" src="/doit/plugins/tip/glimpse.min.js"></script>
-	<script type="text/javascript" src="/doit/plugins/tip/glimpse.toastr.js"></script>
-	<script type="text/javascript" src="/doit/js/show.js"></script>
+	<script type="text/javascript" src="<%=new ENV().baseUrl %>/plugins/tip/toastr.js"></script>
+	<script type="text/javascript" src="<%=new ENV().baseUrl %>/plugins/tip/glimpse.min.js"></script>
+	<script type="text/javascript" src="<%=new ENV().baseUrl %>/plugins/tip/glimpse.toastr.js"></script>
+	<script type="text/javascript" src="<%=new ENV().baseUrl %>/js/show.js"></script>
 		
 	<!-- 百度分享 -->
 	<script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"16"},"slide":{"type":"slide","bdImg":"8","bdPos":"right","bdTop":"135.5"}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script>
