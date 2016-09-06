@@ -3,6 +3,7 @@ var HtmlWebpackPlugin = require('html-webpack-plugin');
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
 var path = require('path');
 var nodeModulesPath = path.resolve(__dirname, 'node_modules');
+
 module.exports = {
     devtool: 'inline-source-map' ,
     devServer: true,
@@ -50,7 +51,7 @@ module.exports = {
             },{
                 test: /\.(gif|jpg|png|woff|svg|eot|ttf)\??.*$/,
                 // 超过limit的图片会让 url-loader处理
-                loader: 'url-loader?limit=1&name=img/[hash:8].[name].[ext]'
+                loader: 'url-loader?limit=1&name=i/[name].[ext]'
             }
         ]
     },
@@ -59,7 +60,7 @@ module.exports = {
         new ExtractTextPlugin("css/[name].css", {allChunks: true}),
         new HtmlWebpackPlugin({                        //根据模板插入css/js等生成最终HTML
             filename: './index.html',    //生成的html存放路径，相对于 path
-            template:'./src/template/index.html',    //html模板路径
+            template:'./src/template/dev_index.html',    //html模板路径
             inject:'body',    //允许插件修改哪些内容，包括head与body
             hash: true, //为静态资源生成hash值
         }),

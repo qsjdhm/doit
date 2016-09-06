@@ -41,7 +41,7 @@ module.exports = {
 			},{
 				test: /\.(gif|jpg|png|woff|svg|eot|ttf)\??.*$/,
 				// 超过limit的图片会让 url-loader处理
-				loader: 'url-loader?limit=1&name=img/[hash:8].[name].[ext]'
+				loader: 'url-loader?limit=1&name=i/[name].[ext]'
 			}
 		]
 	},
@@ -50,7 +50,7 @@ module.exports = {
         new HtmlWebpackPlugin({                        //根据模板插入css/js等生成最终HTML
             //favicon:'./src/img/favicon.ico', //favicon路径
             filename: './index.html',    //生成的html存放路径，相对于 path
-            template:'./src/template/index.html',    //html模板路径
+            template:'./src/template/pro_index.html',    //html模板路径
             inject: 'body', //js插入的位置，true/'head'/'body'/false
             hash: true, //为静态资源生成hash值
             chunks: ['main', 'common'],//需要引入的chunk，不配置就会引入所有页面的资源
