@@ -14,7 +14,7 @@ export const changePassword = cac( CHANGE_PASSWORD, "value" );
 
 export function loginSystem () {
 	return ( dispatch, getState ) => {
-        const url = "/doit/loginAction";
+        const url = ENV.baseUrl + "/loginAction";
         const method = "POST";
         const body = {
             "name"     : getState().login.username,
@@ -23,7 +23,7 @@ export function loginSystem () {
         const errInfo = "登录连接出错！";
         fetchComponent.send(this, url, method, body, errInfo, function(cbData){
             if(cbData.success === "1"){
-                window.location.href = "/doit/admin/dist/#/";
+                window.location.href = ENV.baseUrl + "/admin/dist/#/";
             } else {
                 message.error(cbData.msg);
             }

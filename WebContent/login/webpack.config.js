@@ -62,7 +62,16 @@ module.exports = {
             template:'./src/template/index.html',    //html模板路径
             inject:'body',    //允许插件修改哪些内容，包括head与body
             hash: true, //为静态资源生成hash值
-        })
+        }),
+        new webpack.DefinePlugin({
+            "process.env": {
+                NODE_ENV: JSON.stringify("development")
+            }
+        }),
+        // 配置全局变量（不同环境加载不同配置文件）
+        new webpack.ProvidePlugin({
+            ENV: path.resolve(__dirname, "config/development")
+        }),
     ]
 };
 

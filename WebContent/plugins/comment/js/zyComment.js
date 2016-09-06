@@ -59,7 +59,7 @@
 					var item = '';
 					item += '<div id="comment'+v.id+'" class="comment">';
 					item += '	<a class="avatar">';
-					item += '		<img src="/doit/plugins/comment/images/foot.png">';
+					item += '		<img src="./images/foot.png">';
 					item += '	</a>';
 					item += '	<div class="content '+topStyle+'">';
 					item += '		<a class="author"> '+v.userName+' </a>';
@@ -342,7 +342,7 @@
 				var item = '';
 				item += '<div id="comment'+param.id+'" class="comment">';
 				item += '	<a class="avatar">';
-				item += '		<img src="/doit/plugins/comment/images/foot.png">';
+				item += '		<img src="./images/foot.png">';
 				item += '	</a>';
 				item += '	<div class="content '+topStyle+'">';
 				item += '		<a class="author"> '+param.name+' </a>';
