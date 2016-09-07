@@ -3,6 +3,7 @@
 import fetchComponent      from '../../components/fetch/js/fetchComponent';
 import { cac }             from '../../utils/index';
 import { message }         from 'antd';
+import jQuery              from 'jquery';
 
 // 页面所使用的事件
 export const SET_SORT_LIST = 'SET_SORT_LIST';
@@ -96,19 +97,21 @@ export function selectedTagChange (tag) {
 export function addNote () {
     return (dispatch, getState) => {
         dispatch(loadingChange(true));
-        const url = ENV.baseUrl + "/noteAction/addNote";
-        const method = "POST";
-        const body = {
-            "sortId"   : getState().addNote.selectedSortId,
-            "sortName" : encodeURI(encodeURI(getState().addNote.selectedSortName)),
-            "title"    : encodeURI(encodeURI(getState().addNote.title)),
-            "content"  : getState().addNote.content,
-            "tags"     : encodeURI(encodeURI(getState().addNote.selectedTag.join(",")))
-        };
-        const errInfo = "新增笔记连接出错！";
-        fetchComponent.send(self, url, method, body, errInfo, function(data){
-            message.success(data.msg+"！", 3);
-            dispatch(loadingChange(false));
+        jQuery.ajax({
+            url: ENV.baseUrl + "/noteAction/addNote",
+            type: "POST",
+            data: {
+                "sortId"   : getState().addNote.selectedSortId,
+                "sortName" : encodeURI(encodeURI(getState().addNote.selectedSortName)),
+                "title"    : encodeURI(encodeURI(getState().addNote.title)),
+                "content"  : getState().addNote.content,
+                "tags"     : encodeURI(encodeURI(getState().addNote.selectedTag.join(",")))
+            },
+            dataType: "json",
+            success: (data)=>{
+                message.success(data.msg+"！", 3);
+                dispatch(loadingChange(false));
+            }
         });
     }
 }

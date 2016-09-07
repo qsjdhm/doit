@@ -7,7 +7,7 @@ var ueditorPath = path.resolve(__dirname, './ueditor1.6.1');
 module.exports = {
     entry: {
 		main: path.resolve(__dirname, './src/index.jsx'),
-        common: ['react','antd']
+        common: ['react','antd','jquery']
     },
 	output: {
 		path: path.resolve(__dirname, './dist'),

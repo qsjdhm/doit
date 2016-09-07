@@ -3,6 +3,7 @@
 import fetchComponent      from '../../components/fetch/js/fetchComponent';
 import { cac }             from '../../utils/index';
 import { message }         from 'antd';
+import jQuery              from 'jquery';
 
 // 页面所使用的事件
 export const SET_SORT_LIST = 'SET_SORT_LIST';
@@ -204,23 +205,23 @@ export function modelSaveTagChange (tag) {
 // 更新文章
 export function updateArticle () {
 	return (dispatch, getState) => {
-
-		console.info(getState().editArticle);
-		const url = ENV.baseUrl + "/articleAction/updateArticle";
-		const method = "POST";
-		const body = {
-			"id"       : getState().editArticle.modelSaveId,
-			"sortId"   : getState().editArticle.modelSaveSortId,
-			"sortName" : encodeURI(encodeURI(getState().editArticle.modelSaveSortName)),
-			"title"    : encodeURI(encodeURI(getState().editArticle.modelSaveTitle)),
-			"content"  : getState().editArticle.modelSaveContent,
-			"tags"     : encodeURI(encodeURI(getState().editArticle.modelSaveTag))
-		};
-		const errInfo = "修改文章连接出错！";
-		fetchComponent.send(self, url, method, body, errInfo, function(data){
-			message.success(data.msg+"！", 3);
-			dispatch(getArticleList());
-			dispatch(setModelVisible(false));
-		});
+        jQuery.ajax({
+            url: ENV.baseUrl + "/articleAction/updateArticle",
+            type: "POST",
+            data: {
+                "id"       : getState().editArticle.modelSaveId,
+                "sortId"   : getState().editArticle.modelSaveSortId,
+                "sortName" : encodeURI(encodeURI(getState().editArticle.modelSaveSortName)),
+                "title"    : encodeURI(encodeURI(getState().editArticle.modelSaveTitle)),
+                "content"  : getState().editArticle.modelSaveContent,
+                "tags"     : encodeURI(encodeURI(getState().editArticle.modelSaveTag))
+            },
+            dataType: "json",
+            success: (data)=>{
+                message.success(data.msg+"！", 3);
+                dispatch(getArticleList());
+                dispatch(setModelVisible(false));
+            }
+        });
 	}
 }

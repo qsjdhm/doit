@@ -3,6 +3,7 @@
 import fetchComponent      from '../../components/fetch/js/fetchComponent';
 import { cac }             from '../../utils/index';
 import { message }         from 'antd';
+import jQuery              from 'jquery';
 
 // 页面所使用的事件
 export const SET_SORT_LIST = 'SET_SORT_LIST';
@@ -96,19 +97,21 @@ export function selectedTagChange (tag) {
 export function addArticle () {
     return (dispatch, getState) => {
         dispatch(loadingChange(true));
-        const url = ENV.baseUrl + "/articleAction/addArticle";
-        const method = "POST";
-        const body = {
-            "sortId"   : getState().addArticle.selectedSortId,
-            "sortName" : encodeURI(encodeURI(getState().addArticle.selectedSortName)),
-            "title"    : encodeURI(encodeURI(getState().addArticle.title)),
-            "content"  : getState().addArticle.content,
-            "tags"     : encodeURI(encodeURI(getState().addArticle.selectedTag.join(",")))
-        };
-        const errInfo = "新增文章连接出错！";
-        fetchComponent.send(self, url, method, body, errInfo, function(data){
-            message.success(data.msg+"！", 3);
-            dispatch(loadingChange(false));
+        jQuery.ajax({
+            url: ENV.baseUrl + "/articleAction/addArticle",
+            type: "POST",
+            data: {
+                "sortId"   : getState().addArticle.selectedSortId,
+                "sortName" : encodeURI(encodeURI(getState().addArticle.selectedSortName)),
+                "title"    : encodeURI(encodeURI(getState().addArticle.title)),
+                "content"  : getState().addArticle.content,
+                "tags"     : encodeURI(encodeURI(getState().addArticle.selectedTag.join(",")))
+            },
+            dataType: "json",
+            success: (data)=>{
+                message.success(data.msg+"！", 3);
+                dispatch(loadingChange(false));
+            }
         });
     }
 }

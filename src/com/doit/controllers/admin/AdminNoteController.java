@@ -286,7 +286,7 @@ public class AdminNoteController {
 			// 获取第一个图片作为封面
 			cover = coverImages.get(0);
 			// 处理服务器和本地的前缀的差异
-			cover = new ENV().baseUrl+cover.substring(cover.indexOf("/plugins"), cover.length());
+			cover = new ENV().baseUrl+cover.substring(cover.indexOf("/admin"), cover.length());
 			System.out.println(cover);
 		}else{
 			cover = new ENV().baseUrl+"/common/images/cover_default.png";
@@ -421,7 +421,7 @@ public class AdminNoteController {
 			// 获取第一个图片作为封面
 			cover = coverImages.get(0);
 			// 处理服务器和本地的前缀的差异
-			cover = new ENV().baseUrl+cover.substring(cover.indexOf("/plugins"), cover.length());
+			cover = new ENV().baseUrl+cover.substring(cover.indexOf("/admin"), cover.length());
 			System.out.println(cover);
 		}else{
 			cover = new ENV().baseUrl+"/common/images/cover_default.png";

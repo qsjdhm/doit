@@ -3,6 +3,7 @@
 import fetchComponent      from '../../components/fetch/js/fetchComponent';
 import { cac }             from '../../utils/index';
 import { message }         from 'antd';
+import jQuery              from 'jquery';
 
 // 页面所使用的事件
 export const SET_SORT_LIST = 'SET_SORT_LIST';
@@ -204,21 +205,23 @@ export function modelSaveTagChange (tag) {
 // 更新笔记
 export function updateNote () {
 	return (dispatch, getState) => {
-		const url = ENV.baseUrl + "/noteAction/updateNote";
-		const method = "POST";
-		const body = {
-			"id"       : getState().editNote.modelSaveId,
-			"sortId"   : getState().editNote.modelSaveSortId,
-			"sortName" : encodeURI(encodeURI(getState().editNote.modelSaveSortName)),
-			"title"    : encodeURI(encodeURI(getState().editNote.modelSaveTitle)),
-			"content"  : getState().editNote.modelSaveContent,
-			"tags"     : encodeURI(encodeURI(getState().editNote.modelSaveTag))
-		};
-		const errInfo = "修改笔记连接出错！";
-		fetchComponent.send(self, url, method, body, errInfo, function(data){
-			message.success(data.msg+"！", 3);
-			dispatch(getNoteList());
-			dispatch(setModelVisible(false));
-		});
+        jQuery.ajax({
+            url: ENV.baseUrl + "/noteAction/updateNote",
+            type: "POST",
+            data: {
+                "id"       : getState().editNote.modelSaveId,
+                "sortId"   : getState().editNote.modelSaveSortId,
+                "sortName" : encodeURI(encodeURI(getState().editNote.modelSaveSortName)),
+                "title"    : encodeURI(encodeURI(getState().editNote.modelSaveTitle)),
+                "content"  : getState().editNote.modelSaveContent,
+                "tags"     : encodeURI(encodeURI(getState().editNote.modelSaveTag))
+            },
+            dataType: "json",
+            success: (data)=>{
+                message.success(data.msg+"！", 3);
+                dispatch(getNoteList());
+                dispatch(setModelVisible(false));
+            }
+        });
 	}
 }
