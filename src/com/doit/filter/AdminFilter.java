@@ -54,14 +54,14 @@ public class AdminFilter extends OncePerRequestFilter {
 				String sessionUser =  OperateLoginUser.getUserId(request.getSession().getId());
 
 				//Object obj = request.getSession().getAttribute("loginedUser");
-				if (null == sessionUser) {
-					System.out.println(sessionUser);
-					response.setCharacterEncoding("UTF-8");
-					response.sendRedirect(new ENV().baseUrl + "/login/dist/#/");
-				} else {
+//				if (null == sessionUser) {
+//					System.out.println(sessionUser);
+//					response.setCharacterEncoding("UTF-8");
+//					response.sendRedirect(new ENV().baseUrl + "/login/dist/#/");
+//				} else {
 					// 如果session中存在登录者实体，则继续
 					filterChain.doFilter(request, response);
-				}
+//				}
 			} else {
 				// 如果不执行过滤，则继续
 				filterChain.doFilter(request, response);
