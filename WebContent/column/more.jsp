@@ -184,6 +184,7 @@
 	</footer>
 	
 	<script type="text/javascript" src="<%=new ENV().baseUrl %>/common/js/jquery-1.7.2.min.js"></script>
+	<script type="text/javascript" src="<%=new ENV().baseUrl %>/common/js/ENV.js"></script>
 	<script type="text/javascript" src="<%=new ENV().baseUrl %>/plugins/bootstrap-ui/js/bootstrap.min.js"></script> 
 	<script type="text/javascript" src="<%=new ENV().baseUrl %>/plugins/jquery.pagination-master/js/jquery.pagination.js"></script>
 	<script type="text/javascript" src="<%=new ENV().baseUrl %>/plugins/scrollup-master/src/jquery.scrollUp.js"></script>

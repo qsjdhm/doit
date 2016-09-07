@@ -36,7 +36,7 @@ function initSearch(){
 		"callback":function(keyword){
 			// 转码关键字 转向搜索页面
 			keyword = encodeURI(encodeURI(keyword));
-			window.location.href="/doit/search/"+keyword+"/0/1/search"; 
+			window.location.href=ENV.baseUrl+"/search/"+keyword+"/0/1/search";
 		}
 	});
 }
@@ -48,7 +48,7 @@ function initPaging(count, pageId){
 		current_page : pageId,
 		items_per_page : 10,
 		num_display_entries : 3,
-		link_to : '/doit/search/'+keyword+'/__id__/1/search',
+		link_to : ENV.baseUrl+'/search/'+keyword+'/__id__/1/search',
 		callback : function(){},
 		prev_text : '上一页',
 		next_text : '下一页'

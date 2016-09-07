@@ -195,6 +195,7 @@
     <input type="hidden" id="titleHiddenInput" value="${articleTitleHtml}" />
     
 	<script type="text/javascript" src="<%=new ENV().baseUrl %>/common/js/jquery-1.7.2.min.js"></script>
+	<script type="text/javascript" src="<%=new ENV().baseUrl %>/common/js/ENV.js"></script>
 	<script type="text/javascript" src="<%=new ENV().baseUrl %>/plugins/bootstrap-ui/js/bootstrap.min.js"></script> 
 	<script type="text/javascript" src="<%=new ENV().baseUrl %>/plugins/scrollup-master/src/jquery.scrollUp.js"></script>
 	<script type="text/javascript" src="<%=new ENV().baseUrl %>/plugins/ueditor1.6.1/third-party/SyntaxHighlighter/shCore.js"></script> 

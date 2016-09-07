@@ -37,7 +37,7 @@ public class AdminFilter extends OncePerRequestFilter {
 		System.out.println(request.getRequestURL());
 		 
 		// 如果是后台管理页面需要过滤
-		if (url.indexOf("admin/") != -1) {
+		if (url.indexOf("admin/dist/") != -1) {
 			// 是否过滤
 			boolean doFilter = true;
 			for (String s : notFilter) {

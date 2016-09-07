@@ -9,6 +9,7 @@ body {
     background-position: 80% bottom;
     border-bottom: 5px solid #333333;
     background-image: url("/doit/common/images/cat.png");
+	//background-image: url("/common/images/cat.png");
     background-repeat: no-repeat;
     background-color: #F6F6F6!important;
     font-family: Microsoft YaHei;

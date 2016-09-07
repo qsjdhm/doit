@@ -60,6 +60,7 @@
 					item += '<div id="comment'+v.id+'" class="comment">';
 					item += '	<a class="avatar">';
 					item += '		<img src="./images/foot.png">';
+					//item += '		<img src="./plugins/comment/images/foot.png">';
 					item += '	</a>';
 					item += '	<div class="content '+topStyle+'">';
 					item += '		<a class="author"> '+v.userName+' </a>';

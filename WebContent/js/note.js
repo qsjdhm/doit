@@ -33,7 +33,7 @@ function initSort(){
 		
 		var sortId = parseInt($(this).attr("classifyTypeId"));
 		// 跳转页面
-		window.location.href="/doit/note/"+sortId+"/0/note"; 
+		window.location.href=ENV.baseUrl+"/note/"+sortId+"/0/note";
 	});
 }
 
@@ -54,7 +54,7 @@ function initSearch(){
 		"callback":function(keyword){
 			// 转码关键字 转向搜索页面
 			keyword = encodeURI(encodeURI(keyword));
-			window.location.href="/doit/search/"+keyword+"/0/1/search"; 
+			window.location.href=ENV.baseUrl+"/search/"+keyword+"/0/1/search";
 		}
 	});
 }
@@ -66,7 +66,7 @@ function initPaging(count, pageId){
 		current_page : pageId,
 		items_per_page : 10,
 		num_display_entries : 3,
-		link_to : '/doit/note/'+nowSortId+'/__id__/note',
+		link_to : ENV.baseUrl+'/note/'+nowSortId+'/__id__/note',
 		callback : function(){},
 		prev_text : '上一页',
 		next_text : '下一页'

@@ -30,7 +30,7 @@ function initSearch(){
 		"callback":function(keyword){
 			// 转码关键字 转向搜索页面
 			keyword = encodeURI(encodeURI(keyword));
-			window.location.href="/doit/search/"+keyword+"/0/1/search"; 
+			window.location.href=ENV.baseUrl+"/search/"+keyword+"/0/1/search";
 		}
 	});
 }
