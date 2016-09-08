@@ -181,7 +181,7 @@ textarea + label,.areadefault{
 }
 
 .content_zoom{
-	background-image: url("/doit/common/images/zoom.png");
+	background-image: url("../../common/images/zoom.png");
     background-position: center center;
     background-repeat: no-repeat;
     cursor: pointer;
