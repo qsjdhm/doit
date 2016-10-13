@@ -65,4 +65,5 @@ const reducers = {
     delUser
 };
 
-module.exports = combineReducers(reducers);
+//module.exports = combineReducers(reducers);
+export default combineReducers(reducers);
