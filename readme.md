@@ -1,0 +1,27 @@
+# DOIT个人博客管理系统
+* 此项目是我的最新版的个人博客源代码。 http://www.52doit.com
+* by zhangyan 2016-10-13            email : qsjdhm@163.com
+
+# 目录介绍
+* src文件夹下面是java代码、WebContent/WEB-INF下是后台配置文件
+* WebContent文件夹下面是前端代码
+* Poss文件夹下面是开始改造大型后台系统代码
+
+#后端使用技术
+* 数据库采用mysql5
+* 后台路由采用spring mvc
+* 静态化采用freemarker+java流生成文件
+* 后台服务采用spring+hibernate来实现快速的搭建整个MVC中的M模块
+
+#前台页面使用技术
+* jquery+bootstrap
+* ueditor
+
+#后台管理系统页面使用技术
+* React+React-redux+React-router+Antd
+* webpack+nodejs
+
+#本人对做这个网站有个总结性的文章：http://52doit.com/show/361可以去学习下
+
+#如果对你有所帮助，欢迎点赞
+

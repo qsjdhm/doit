@@ -64,11 +64,11 @@ module.exports = {
             }
         }),
         new webpack.optimize.CommonsChunkPlugin('common',  'js/common.entry.js'),
-        new webpack.DefinePlugin({
-            "process.env": {
-                NODE_ENV: JSON.stringify("production")
-            }
-        }),
+        //new webpack.DefinePlugin({
+        //    "process.env": {
+        //        NODE_ENV: JSON.stringify("production")
+        //    }
+        //}),
         // 配置全局变量（不同环境加载不同配置文件）
         new webpack.ProvidePlugin({
             ENV: path.resolve(__dirname, "config/production")

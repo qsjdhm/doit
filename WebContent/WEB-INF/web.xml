@@ -11,14 +11,14 @@
 	</listener>
 	
 	<!-- 后台管理过滤器的配置 -->
-	<filter>
+	<!-- <filter>
 		<filter-name>adminFilter</filter-name>
 		<filter-class>com.doit.filter.AdminFilter</filter-class>
 	</filter>
 	<filter-mapping>
 		<filter-name>adminFilter</filter-name>
 		<url-pattern>/*</url-pattern>
-	</filter-mapping>
+	</filter-mapping> -->
 	
 	
 	<!-- 通用上传的action -->
