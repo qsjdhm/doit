@@ -5,7 +5,11 @@
 # 目录介绍
 * src文件夹下面是java代码、WebContent/WEB-INF下是后台配置文件
 * WebContent文件夹下面是前端代码
-* Poss文件夹下面是开始改造大型后台系统代码
+* - login      后台管理系统登录代码
+* - admin      后台管理系统代码
+* - column     前台页面频道代码
+* - common     项目前端一些通用文件
+* - staticFile 静态化生成的前台页面
 
 #后端使用技术
 * 数据库采用mysql5
