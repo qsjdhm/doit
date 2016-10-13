@@ -46,7 +46,7 @@ Network Trash Folder
 Temporary Items
 .apdisk
   
-
+/WebContent/WEB-INF/classes/
 /WebContent/node_modules/
 /WebContent/_admin/.idea/
 /WebContent/_admin/css/
@@ -62,4 +62,5 @@ Temporary Items
 /WebContent/login/dist/
 /WebContent/nadmin/dist/
 /WebContent/admin/dist/
+/WebContent/gitlab/
 /WebContent/npm-debug.log
