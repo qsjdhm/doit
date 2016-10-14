@@ -26,13 +26,13 @@ export default class CardComponent extends React.Component {
                                 <div className="m-f-menu-list">
                                     <ul className="block__list block__list_words">
                                         <li>
-                                            <Link to="/addArticle">新增文章</Link>
+                                            <Link to="/home/addArticle">新增文章</Link>
                                         </li>
                                         <li>
-                                            <Link to="/editArticle">编辑文章</Link>
+                                            <Link to="/home/editArticle">编辑文章</Link>
                                         </li>
                                         <li>
-                                            <Link to="/delArticle">删除文章</Link>
+                                            <Link to="/home/delArticle">删除文章</Link>
                                         </li>
                                     </ul>
                                 </div>
@@ -47,13 +47,13 @@ export default class CardComponent extends React.Component {
                                 <div className="m-f-menu-list">
                                     <ul className="block__list block__list_words">
                                         <li>
-                                            <Link to="/addNote">新增笔记</Link>
+                                            <Link to="/home/addNote">新增笔记</Link>
                                         </li>
                                         <li>
-                                            <Link to="/editNote">编辑笔记</Link>
+                                            <Link to="/home/editNote">编辑笔记</Link>
                                         </li>
                                         <li>
-                                            <Link to="/delNote">删除笔记</Link>
+                                            <Link to="/home/delNote">删除笔记</Link>
                                         </li>
                                     </ul>
                                 </div>
@@ -68,13 +68,13 @@ export default class CardComponent extends React.Component {
                                 <div className="m-f-menu-list">
                                     <ul className="block__list block__list_words">
                                         <li>
-                                            <Link to="/addBook">新增图书</Link>
+                                            <Link to="/home/addBook">新增图书</Link>
                                         </li>
                                         <li>
-                                            <Link to="/editBook">编辑图书</Link>
+                                            <Link to="/home/editBook">编辑图书</Link>
                                         </li>
                                         <li>
-                                            <Link to="/delBook">删除图书</Link>
+                                            <Link to="/home/delBook">删除图书</Link>
                                         </li>
                                     </ul>
                                 </div>
@@ -89,10 +89,10 @@ export default class CardComponent extends React.Component {
                                 <div className="m-f-menu-list">
                                     <ul className="block__list block__list_words">
                                         <li>
-                                            <Link to="/editComment">编辑评论</Link>
+                                            <Link to="/home/editComment">编辑评论</Link>
                                         </li>
                                         <li>
-                                            <Link to="/delComment">删除评论</Link>
+                                            <Link to="/home/delComment">删除评论</Link>
                                         </li>
                                     </ul>
                                 </div>
@@ -107,13 +107,13 @@ export default class CardComponent extends React.Component {
                                 <div className="m-f-menu-list">
                                     <ul className="block__list block__list_words">
                                         <li>
-                                            <Link to="/addLink">新增外链</Link>
+                                            <Link to="/home/addLink">新增外链</Link>
                                         </li>
                                         <li>
-                                            <Link to="/editLink">编辑外链</Link>
+                                            <Link to="/home/editLink">编辑外链</Link>
                                         </li>
                                         <li>
-                                            <Link to="/delLink">删除外链</Link>
+                                            <Link to="/home/delLink">删除外链</Link>
                                         </li>
                                     </ul>
                                 </div>
@@ -128,13 +128,13 @@ export default class CardComponent extends React.Component {
                                 <div className="m-f-menu-list">
                                     <ul className="block__list block__list_words">
                                         <li>
-                                            <Link to="/addSort">新增分类</Link>
+                                            <Link to="/home/addSort">新增分类</Link>
                                         </li>
                                         <li>
-                                            <Link to="/editSort">编辑分类</Link>
+                                            <Link to="/home/editSort">编辑分类</Link>
                                         </li>
                                         <li>
-                                            <Link to="/delSort">删除分类</Link>
+                                            <Link to="/home/delSort">删除分类</Link>
                                         </li>
                                     </ul>
                                 </div>
@@ -149,13 +149,13 @@ export default class CardComponent extends React.Component {
                                 <div className="m-f-menu-list">
                                     <ul className="block__list block__list_words">
                                         <li>
-                                            <Link to="/articleRecom">推荐文章</Link>
+                                            <Link to="/home/articleRecom">推荐文章</Link>
                                         </li>
                                         <li>
-                                            <Link to="/noteRecom">推荐笔记</Link>
+                                            <Link to="/home/noteRecom">推荐笔记</Link>
                                         </li>
                                         <li>
-                                            <Link to="/bookRecom">推荐图书</Link>
+                                            <Link to="/home/bookRecom">推荐图书</Link>
                                         </li>
                                     </ul>
                                 </div>
@@ -170,13 +170,13 @@ export default class CardComponent extends React.Component {
                                 <div className="m-f-menu-list">
                                     <ul className="block__list block__list_words">
                                         <li>
-                                            <Link to="/addUser">新增用户</Link>
+                                            <Link to="/home/addUser">新增用户</Link>
                                         </li>
                                         <li>
-                                            <Link to="/editUser">编辑用户</Link>
+                                            <Link to="/home/editUser">编辑用户</Link>
                                         </li>
                                         <li>
-                                            <Link to="/delUser">删除用户</Link>
+                                            <Link to="/home/delUser">删除用户</Link>
                                         </li>
                                     </ul>
                                 </div>

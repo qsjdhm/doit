@@ -5,23 +5,51 @@
 import React             from 'react';
 import ReactDOM          from 'react-dom';
 import { Router, Route, IndexRoute, hashHistory } from 'react-router';
-import useBasename       from 'history/lib/useBasename'
+import useBasename       from 'history/lib/useBasename';
+import auth              from '../utils/auth';
+import LoginPage         from '../containers/LoginPage';
 import MainPage          from '../containers/MainPage';
 import HomePage          from '../containers/HomePage';
 import NotFound          from '../containers/NotFound';
 
+function redirectToLogin(nextState, replace) {
+    // 如果没有登录就跳转登录页
+    if (!auth.loggedIn()) {
+        replace({
+            pathname: '/',
+            state: { nextPathname: nextState.location.pathname }
+        });
+    }
+}
+
+function redirectToHome(nextState, replace) {
+    // 如果已经登录就直接跳转到home页
+    if (auth.loggedIn()) {
+        replace('/home');
+    }
+}
 
 const rootRoute = {
     component: 'div',
-    path: '/',
+    //component: LoginPage,
+    //path: '/',
     childRoutes: [
         {
-            name: '首页',
+            onEnter: redirectToHome,
+            name: '登录页',
+            path: '/',
             bpath: '#/',
+            component: LoginPage
+        },
+        {
+            onEnter: redirectToLogin,
+            name: '首页',
+            path: '/home',
+            bpath: '#/home',
             component: MainPage,
             indexRoute: {
                 name: '首页',
-                bpath: '#/',
+                bpath: '#/home',
                 component:  HomePage
             },
             childRoutes: [
