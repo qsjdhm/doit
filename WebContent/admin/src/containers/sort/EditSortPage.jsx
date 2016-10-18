@@ -29,7 +29,7 @@ import fetchComponent      from '../../components/fetch/js/fetchComponent';
 
 import '../../css/sort.less';
 
-export default class EditSortPage extends React.Component {
+export class EditSortPage extends React.Component {
 	constructor (props) {
 		super(props);
 	}

@@ -32,7 +32,7 @@ import fetchComponent      from '../../components/fetch/js/fetchComponent';
 
 import '../../css/note.less';
 
-export default class AddNotePage extends React.Component {
+export class AddNotePage extends React.Component {
     constructor (props) {
         super(props);
     }

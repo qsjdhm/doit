@@ -29,7 +29,7 @@ import fetchComponent      from '../../components/fetch/js/fetchComponent';
 
 import '../../css/note.less';
 
-export default class DelNotePage extends React.Component {
+export class DelNotePage extends React.Component {
     constructor (props) {
         super(props);
     }

@@ -29,7 +29,7 @@ import fetchComponent      from '../../components/fetch/js/fetchComponent';
 
 import '../../css/article.less';
 
-export default class DelArticlePage extends React.Component {
+export class DelArticlePage extends React.Component {
     constructor (props) {
         super(props);
     }

@@ -30,7 +30,7 @@ import fetchComponent      from '../../components/fetch/js/fetchComponent';
 
 import '../../css/user.less';
 
-export default class EditUserPage extends React.Component {
+export class EditUserPage extends React.Component {
 	constructor (props) {
 		super(props);
 	}

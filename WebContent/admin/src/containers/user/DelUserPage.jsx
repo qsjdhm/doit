@@ -27,7 +27,7 @@ import fetchComponent      from '../../components/fetch/js/fetchComponent';
 
 import '../../css/user.less';
 
-export default class DelUserPage extends React.Component {
+export class DelUserPage extends React.Component {
     constructor (props) {
         super(props);
     }

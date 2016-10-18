@@ -29,7 +29,7 @@ import fetchComponent      from '../../components/fetch/js/fetchComponent';
 
 import '../../css/link.less';
 
-export default class EditLinkPage extends React.Component {
+export class EditLinkPage extends React.Component {
 	constructor (props) {
 		super(props);
 	}

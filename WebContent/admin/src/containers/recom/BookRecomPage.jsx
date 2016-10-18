@@ -31,7 +31,7 @@ import fetchComponent      from '../../components/fetch/js/fetchComponent';
 
 import '../../css/book.less';
 
-export default class BookRecomPage extends React.Component {
+export class BookRecomPage extends React.Component {
     constructor (props) {
         super(props);
     }

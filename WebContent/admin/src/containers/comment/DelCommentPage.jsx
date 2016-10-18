@@ -27,7 +27,7 @@ import fetchComponent      from '../../components/fetch/js/fetchComponent';
 
 import '../../css/comment.less';
 
-export default class DelCommentPage extends React.Component {
+export class DelCommentPage extends React.Component {
     constructor (props) {
         super(props);
     }

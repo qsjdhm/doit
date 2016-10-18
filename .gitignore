@@ -47,20 +47,9 @@ Temporary Items
 .apdisk
   
 /WebContent/WEB-INF/classes/
-/WebContent/node_modules/
-/WebContent/_admin/.idea/
-/WebContent/_admin/css/
-/WebContent/_admin/js/
-/WebContent/_admin/img/
-/WebContent/_admin/index.html
-/WebContent/_login/.idea/
-/WebContent/_login/css/
-/WebContent/_login/js/
-/WebContent/_login/img/
-/WebContent/_login/index.html
-/WebContent/WEB-INF/applicationContext.xml
-/WebContent/login/dist/
-/WebContent/nadmin/dist/
 /WebContent/admin/dist/
+/WebContent/admin/node_modules/
+/WebContent/admin/npm-debug.log
+/WebContent/WEB-INF/applicationContext.xml
 /WebContent/gitlab/
 /WebContent/npm-debug.log

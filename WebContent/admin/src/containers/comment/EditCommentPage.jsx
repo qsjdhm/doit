@@ -29,7 +29,7 @@ import fetchComponent      from '../../components/fetch/js/fetchComponent';
 
 import '../../css/comment.less';
 
-export default class EditCommentPage extends React.Component {
+export class EditCommentPage extends React.Component {
 	constructor (props) {
 		super(props);
 	}

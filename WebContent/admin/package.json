@@ -3,6 +3,9 @@
   "version": "0.1.0",
   "description": "个人网站后台系统",
   "license": "MIT",
+  "scripts": {
+    "dev": "node server.js"
+  },
   "devDependencies": {
     "antd": "^1.6.3",
     "babel-core": "^6.4.0",
@@ -33,17 +36,16 @@
     "redux-thunk": "^2.1.0",
     "webpack-dev-server": "^1.14.0",
     "jquery": "^3.1.0",
-    "history": "^2.1.2"
-  },
-  "dependencies": {
+    "history": "^2.1.2",
     "express": "3.x",
     "react-redux": "^4.4.5",
     "redux": "^3.5.2",
     "jsx-loader": "^0.13.2",
-    "node-sass": "^3.8.0",
     "react-hot-loader": "^1.3.0",
-    "sass-loader": "^4.0.0",
     "webpack-dev-middleware": "^1.6.1",
     "webpack-hot-middleware": "^2.12.1"
+  },
+  "dependencies": {
+
   }
 }

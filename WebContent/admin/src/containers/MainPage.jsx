@@ -10,7 +10,7 @@ import ReactDOM from 'react-dom';
 import { connect } from 'react-redux';
 
 
-export default class MainPage extends React.Component {
+export class MainPage extends React.Component {
     constructor(props) {
         super(props);
     }

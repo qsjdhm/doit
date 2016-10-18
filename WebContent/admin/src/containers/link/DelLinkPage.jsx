@@ -27,7 +27,7 @@ import fetchComponent      from '../../components/fetch/js/fetchComponent';
 
 import '../../css/link.less';
 
-export default class DelLinkPage extends React.Component {
+export class DelLinkPage extends React.Component {
     constructor (props) {
         super(props);
     }

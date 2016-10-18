@@ -31,7 +31,7 @@ import fetchComponent      from '../../components/fetch/js/fetchComponent';
 
 import '../../css/article.less';
 
-export default class ArticleRecomPage extends React.Component {
+export class ArticleRecomPage extends React.Component {
     constructor (props) {
         super(props);
     }

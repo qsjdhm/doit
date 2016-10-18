@@ -36,7 +36,7 @@ import TagComponent        from '../../components/tag/js/TagComponent';
 
 import '../../css/note.less';
 
-export default class EditNotePage extends React.Component {
+export class EditNotePage extends React.Component {
 	constructor (props) {
 		super(props);
 	}

@@ -36,7 +36,7 @@ import TagComponent        from '../../components/tag/js/TagComponent';
 
 import '../../css/article.less';
 
-export default class EditArticlePage extends React.Component {
+export class EditArticlePage extends React.Component {
     constructor (props) {
         super(props);
     }
