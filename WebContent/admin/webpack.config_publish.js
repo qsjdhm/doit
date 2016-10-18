@@ -5,6 +5,7 @@ var path = require('path');
 var nodeModulesPath = path.resolve(__dirname, 'node_modules');
 var ueditorPath = path.resolve(__dirname, './ueditor1.6.1');
 module.exports = {
+	devtool: 'source-map',
     entry: {
 		main: path.resolve(__dirname, './src/index.jsx'),
         common: ['react','antd','jquery']
@@ -61,18 +62,20 @@ module.exports = {
         new webpack.optimize.UglifyJsPlugin({
             compress: {
                 warnings: false
-            }
+            },
+			sourceMap: true,//这里的soucemap 不能少，可以在线上生成soucemap文件，便于调试
+			mangle: true
         }),
         new webpack.optimize.CommonsChunkPlugin('common',  'js/common.entry.js'),
-        //new webpack.DefinePlugin({
-        //    "process.env": {
-        //        NODE_ENV: JSON.stringify("production")
-        //    }
-        //}),
+        new webpack.DefinePlugin({
+            "process.env": {
+                NODE_ENV: JSON.stringify("production")
+            }
+        }),
         // 配置全局变量（不同环境加载不同配置文件）
         new webpack.ProvidePlugin({
             ENV: path.resolve(__dirname, "config/production")
-        }),
+        })
     ]
 };
 
