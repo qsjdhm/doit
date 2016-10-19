@@ -4,7 +4,7 @@
   "description": "个人网站后台系统",
   "license": "MIT",
   "scripts": {
-    "dev": "node server.js"
+    "dev": "node build/server.js"
   },
   "devDependencies": {
     "antd": "^1.6.3",

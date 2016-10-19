@@ -12,12 +12,12 @@ module.exports = {
         index: [
             'webpack-dev-server/client?http://127.0.0.1:3001',//入口路径
             'webpack/hot/only-dev-server',
-            './src/index.jsx'
+            path.resolve(__dirname, '../src/index.jsx')
         ]
     },
 
     output: {
-        path: path.resolve(__dirname, './dist'),
+        path: path.resolve(__dirname, '../dist'),
         publicPath: 'http://127.0.0.1:3001/dist/',//热加载地址
         hash: true,
         filename: 'index.js'
@@ -60,7 +60,7 @@ module.exports = {
         new ExtractTextPlugin("css/[name].css", {allChunks: true}),
         new HtmlWebpackPlugin({                        //根据模板插入css/js等生成最终HTML
             filename: './index.html',    //生成的html存放路径，相对于 path
-            template:'./src/template/dev_index.html',    //html模板路径
+            template: path.resolve(__dirname, '../src/template/dev_index.html'),    //html模板路径
             inject:'body',    //允许插件修改哪些内容，包括head与body
             hash: true, //为静态资源生成hash值
         }),
@@ -72,7 +72,7 @@ module.exports = {
         }),
         // 配置全局变量（不同环境加载不同配置文件）
         new webpack.ProvidePlugin({
-            ENV: path.resolve(__dirname, "config/development")
+            ENV: path.resolve(__dirname, "../config/development")
         })
     ]
 };
