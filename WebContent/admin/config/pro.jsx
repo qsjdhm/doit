@@ -1,3 +1,3 @@
 //production.js
 //export default { baseUrl: '' };
-module.exports = { baseUrl: "" };
+module.exports = { baseUrl: "/doit" };

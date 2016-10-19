@@ -1,11 +1,12 @@
 var webpack = require('webpack');
+var defaultSettings = require('./webpack.defaults');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
-var ExtractTextPlugin = require('extract-text-webpack-plugin');
+//var ExtractTextPlugin = require('extract-text-webpack-plugin');
 var path = require('path');
 var nodeModulesPath = path.resolve(__dirname, 'node_modules');
 
 module.exports = {
-    devtool: 'inline-source-map' ,
+    devtool: 'cheap-module-eval-source-map',
     devServer: true,
     hotComponents: true,
     entry: {
@@ -15,7 +16,6 @@ module.exports = {
             path.resolve(__dirname, '../src/index.jsx')
         ]
     },
-
     output: {
         path: path.resolve(__dirname, '../dist'),
         publicPath: 'http://127.0.0.1:3001/dist/',//热加载地址
@@ -29,50 +29,20 @@ module.exports = {
     resolve: {
         extensions: ['', '.js', '.jsx']
     },
-
-    module: {
-        loaders: [
-            {
-                test: /\.jsx?$/,
-                loaders: ['react-hot','jsx?harmony','babel?presets[]=es2015,presets[]=react,presets[]=stage-0'],
-                exclude: /node_modules/
-            },{
-                test: /\.js$/,
-                loaders: ['react-hot','babel-loader'],
-                //exclude: [nodeModulesPath, ueditorPath]
-                exclude: /node_modules/,
-                //,query: {presets: ['es2015','react']}
-            },{
-                test: /\.css$/,
-                loader: ExtractTextPlugin.extract("style-loader", "css-loader")
-            },{
-                test: /\.less$/,
-                loader: ExtractTextPlugin.extract('style-loader', 'css-loader!less-loader')
-            },{
-                test: /\.(gif|jpg|png|woff|svg|eot|ttf)\??.*$/,
-                // 超过limit的图片会让 url-loader处理
-                loader: 'url-loader?limit=1&name=i/[name].[ext]'
-            }
-        ]
-    },
+    module: defaultSettings.getDefaultModules(),
     plugins: [
+		defaultSettings.packCss,
+		defaultSettings.packReact,
         new webpack.HotModuleReplacementPlugin(),
-        new ExtractTextPlugin("css/[name].css", {allChunks: true}),
         new HtmlWebpackPlugin({                        //根据模板插入css/js等生成最终HTML
             filename: './index.html',    //生成的html存放路径，相对于 path
             template: path.resolve(__dirname, '../src/template/dev_index.html'),    //html模板路径
             inject:'body',    //允许插件修改哪些内容，包括head与body
             hash: true, //为静态资源生成hash值
         }),
-		// 使用压缩的react包
-        new webpack.DefinePlugin({
-            "process.env": {
-                NODE_ENV: JSON.stringify("development")
-            }
-        }),
         // 配置全局变量（不同环境加载不同配置文件）
         new webpack.ProvidePlugin({
-            ENV: path.resolve(__dirname, "../config/development")
+            ENV: path.resolve(__dirname, "../config/dev")
         })
     ]
 };
