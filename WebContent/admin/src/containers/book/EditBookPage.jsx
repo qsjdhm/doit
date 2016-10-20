@@ -77,7 +77,8 @@ export class EditBookPage extends React.Component {
 	renderTableList() {
 		if (this.props.bookList.length !== 0){
             const self = this;
-            const totalWidth = document.getElementById("page").offsetWidth - 25;
+			const totalWidth     = document.getElementById("page").offsetWidth - 45;
+			const totalHeight    = document.getElementById("container").offsetHeight - 170;
             const idWidth        = totalWidth * 0.0749;
             const titleWidth     = totalWidth * 0.3465;
             const sortWidth      = totalWidth * 0.1737;
@@ -223,7 +224,7 @@ export class EditBookPage extends React.Component {
 							</Col>
 						</Row>
 					</div>
-					<div className="ant-layout-container">
+					<div id="container" className="ant-layout-container">
 						<div className="ant-layout-content">
 							<BreadcrumbComponent
 								data={this.props.routes}

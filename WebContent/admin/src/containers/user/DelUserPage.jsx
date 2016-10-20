@@ -54,7 +54,8 @@ export class DelUserPage extends React.Component {
     // 渲染数据表格
     renderTableList() {
         if (this.props.userList.length !== 0){
-            const totalWidth = document.getElementById("page").offsetWidth - 25;
+			const totalWidth     = document.getElementById("page").offsetWidth - 45;
+			const totalHeight    = document.getElementById("container").offsetHeight - 140;
             const idWidth        = totalWidth * 0.0749;
             const titleWidth     = totalWidth * 0.3537;
             const urlWidth       = totalWidth * 0.4705;
@@ -90,7 +91,7 @@ export class DelUserPage extends React.Component {
 
 
             // 表格的配置
-            const scroll = { y: 350, x: totalWidth };
+            const scroll = { y: totalHeight, x: totalWidth };
 
             return <TableComponent
                 tableColumns={tableColumns}
@@ -143,7 +144,7 @@ export class DelUserPage extends React.Component {
                             </Col>
                         </Row>
                     </div>
-                    <div className="ant-layout-container">
+					<div id="container" className="ant-layout-container">
                         <div className="ant-layout-content">
                             <BreadcrumbComponent
                                 data={this.props.routes}

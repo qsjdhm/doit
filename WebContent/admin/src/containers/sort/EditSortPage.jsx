@@ -82,7 +82,8 @@ export class EditSortPage extends React.Component {
     // 渲染数据表格
 	renderTableList() {
 		if (this.props.sortList.length !== 0){
-            const totalWidth = document.getElementById("page").offsetWidth - 25;
+			const totalWidth     = document.getElementById("page").offsetWidth - 45;
+			const totalHeight    = document.getElementById("container").offsetHeight - 170;
             const idWidth        = totalWidth * 0.0749;
             const titleWidth     = totalWidth * 0.3537;
             const urlWidth       = totalWidth * 0.4705;
@@ -109,7 +110,7 @@ export class EditSortPage extends React.Component {
 
 			// 表格的配置
 			const expandedRowRender = record => <p>{record.Sort_Name}</p>;
-			const scroll = { y: 350, x: totalWidth };
+			const scroll = { y: totalHeight, x: totalWidth };
 
 			return <TableComponent
 				tableColumns={tableColumns}
@@ -137,7 +138,6 @@ export class EditSortPage extends React.Component {
     // 渲染弹出层的分类
     renderModelSortList () {
 		if(this.props.modelDefaultSortId !== '') {
-            console.info(this.props.modelDefaultSortId);
             const fSortList = [
                 {
                     "id" : 3,
@@ -189,7 +189,7 @@ export class EditSortPage extends React.Component {
 							</Col>
 						</Row>
 					</div>
-					<div className="ant-layout-container">
+					<div id="container" className="ant-layout-container">
 						<div className="ant-layout-content">
 							<BreadcrumbComponent
 								data={this.props.routes}

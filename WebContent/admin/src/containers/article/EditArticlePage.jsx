@@ -79,7 +79,8 @@ export class EditArticlePage extends React.Component {
     renderTableList() {
         if (this.props.articleList.length !== 0){
             const self = this;
-            const totalWidth = document.getElementById("page").offsetWidth - 25;
+            const totalWidth     = document.getElementById("page").offsetWidth - 45;
+			const totalHeight    = document.getElementById("container").offsetHeight - 170;
             const idWidth        = totalWidth * 0.0749;
             const titleWidth     = totalWidth * 0.3465;
             const sortWidth      = totalWidth * 0.1737;
@@ -98,6 +99,8 @@ export class EditArticlePage extends React.Component {
                 //, { title: '操作', width: operationWidth, dataIndex: '', key: 'operation', render: (index, item) => <a href='javascript:void(0)' onClick={self.openEditModel.bind(null, index, item)}>修改</a> },
             ];
 
+
+
             // 设置表格操作列配置
             tableColumns.push({
                 title: '操作',
@@ -111,7 +114,7 @@ export class EditArticlePage extends React.Component {
 
             // 表格的配置
             const expandedRowRender = record => <p>{record.Article_Content}</p>;
-            const scroll = { y: 350, x: totalWidth };
+            const scroll = { y: totalHeight, x: totalWidth };
 
             return <TableComponent
                 tableColumns={tableColumns}
@@ -219,7 +222,7 @@ export class EditArticlePage extends React.Component {
                             </Col>
                         </Row>
                     </div>
-                    <div className="ant-layout-container">
+                    <div id="container" className="ant-layout-container">
                         <div className="ant-layout-content">
                             <BreadcrumbComponent
                                 data={this.props.routes}
