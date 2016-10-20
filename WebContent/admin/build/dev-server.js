@@ -14,13 +14,6 @@ new WebpackDevServer(webpack(config), {
     quiet: false,
     noInfo: false,
     stats: { colors: true }
-
-    /*,proxy: {
-        '/api/!*': {
-        target: 'http://localhost:5000',
-        secure: false
-        }
-    }*/
 }).listen(3001, '127.0.0.1', function (err, result) {
     if (err) console.log(err);
     console.log('正在监听host.com:3001');

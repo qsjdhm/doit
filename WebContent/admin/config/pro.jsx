@@ -1,3 +1,4 @@
-//production.js
-//export default { baseUrl: '' };
-module.exports = { baseUrl: "/doit" };
+// 生产环境下配置
+module.exports = {
+    baseUrl: '/doit'
+};
