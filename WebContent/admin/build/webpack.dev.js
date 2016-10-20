@@ -1,9 +1,10 @@
 var webpack = require('webpack');
-var defaultSettings = require('./webpack.defaults');
+var defaultSettings = require('./webpack.base');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
 //var ExtractTextPlugin = require('extract-text-webpack-plugin');
 var path = require('path');
 var nodeModulesPath = path.resolve(__dirname, 'node_modules');
+var pathToReact = path.resolve(nodeModulesPath, 'react/dist/react.min.js');
 
 module.exports = {
     devtool: 'cheap-module-eval-source-map',

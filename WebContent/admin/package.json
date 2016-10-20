@@ -4,7 +4,9 @@
   "description": "个人网站后台系统",
   "license": "MIT",
   "scripts": {
-    "dev": "node build/server.js"
+    "init": "webpack --config build/webpack.dev.js",
+    "dev": "node build/dev-server.js",
+    "pro": "webpack --config build/webpack.pro.js"
   },
   "devDependencies": {
     "antd": "^1.6.3",

@@ -1,5 +1,5 @@
 var webpack = require('webpack');
-var defaultSettings = require('./webpack.defaults');
+var defaultSettings = require('./webpack.base');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
 var path = require('path');
