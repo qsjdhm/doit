@@ -40,7 +40,7 @@ proConfig.plugins = (webpackBase.plugins || []).concat(
             warnings: false
         }
     }),
-    // 打包公用代码
+    // 把入口文件里面的数组common打包成common.entry.js
     new webpack.optimize.CommonsChunkPlugin('common',  'js/common.entry.js'),
     // 配置全局变量（不同环境加载不同配置文件）
     new webpack.ProvidePlugin({
