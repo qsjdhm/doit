@@ -34,7 +34,7 @@ export class DelLinkPage extends React.Component {
 
     componentWillMount () {
         // 获取外链的分类列表
-        this.props.dispatch( getLinkCount() );
+        this.props.dispatch( getLinkCount(true) );
     }
 
     // 渲染分页条

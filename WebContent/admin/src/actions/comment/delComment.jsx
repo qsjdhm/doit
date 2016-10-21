@@ -21,7 +21,7 @@ const setLoading = cac(SET_LOADING, 'data');
 
 
 // 获取评论总数
-export function getCommentCount () {
+export function getCommentCount (pageChange) {
 	return (dispatch, getState) => {
 		const url = ENV.baseUrl + "/commentAction/getCommentCount";
 		const method = "POST";
@@ -29,7 +29,9 @@ export function getCommentCount () {
 		const errInfo = "请求评论总个数连接出错！";
 		fetchComponent.send(this, url, method, body, errInfo, function(data){
 			dispatch(setCommentCount(data.data));
-			dispatch(selectedPageChange(1));
+            if (pageChange) {
+                dispatch(selectedPageChange(1));
+            }
 		});
 	}
 }
@@ -90,7 +92,8 @@ export function delCommentList (selectStr) {
 		const errInfo = "删除评论列表连接出错！";
 		fetchComponent.send(this, url, method, body, errInfo, function(data){
 			message.success(data.msg+"！", 3);
-			dispatch(getCommentList());
+            dispatch(getCommentCount(false));
+            dispatch(getCommentList());
 			dispatch(loadingChange(false));
 			dispatch(setSelectedRowKeys([]));
 			dispatch(setHasSelected(false));

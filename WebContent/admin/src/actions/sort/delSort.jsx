@@ -27,12 +27,12 @@ const setLoading = cac(SET_LOADING, 'data');
 export function selectedSortIdChange (sortId) {
 	return (dispatch, getState) => {
 		dispatch(setSelectedSort(sortId));
-		dispatch(getSortCount());
+		dispatch(getSortCount(true));
 	}
 }
 
 // 获取图书总数
-export function getSortCount () {
+export function getSortCount (pageChange) {
 	return (dispatch, getState) => {
         const url = ENV.baseUrl + "/sortAction/getSortCount";
         const method = "POST";
@@ -42,7 +42,9 @@ export function getSortCount () {
         const errInfo = "请求分类总个数连接出错！";
 		fetchComponent.send(this, url, method, body, errInfo, function(data){
 			dispatch(setSortCount(data.data));
-			dispatch(selectedPageChange(1));
+            if (pageChange) {
+                dispatch(selectedPageChange(1));
+            }
 		});
 	}
 }
@@ -104,6 +106,7 @@ export function delSortList (selectStr) {
 		const errInfo = "删除图书列表连接出错！";
 		fetchComponent.send(this, url, method, body, errInfo, function(data){
 			message.success(data.msg+"！", 3);
+            dispatch(getSortCount(false));
 			dispatch(getSortList());
 			dispatch(loadingChange(false));
 			dispatch(setSelectedRowKeys([]));

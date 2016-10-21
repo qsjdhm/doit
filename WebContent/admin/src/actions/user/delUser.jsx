@@ -21,7 +21,7 @@ const setLoading = cac(SET_LOADING, 'data');
 
 
 // 获取用户总数
-export function getUserCount () {
+export function getUserCount (pageChange) {
 	return (dispatch, getState) => {
 		const url = ENV.baseUrl + "/userAction/getUserCount";
 		const method = "POST";
@@ -29,7 +29,9 @@ export function getUserCount () {
 		const errInfo = "请求用户总个数连接出错！";
 		fetchComponent.send(this, url, method, body, errInfo, function(data){
 			dispatch(setUserCount(data.data));
-			dispatch(selectedPageChange(1));
+            if (pageChange) {
+                dispatch(selectedPageChange(1));
+            }
 		});
 	}
 }
@@ -90,7 +92,8 @@ export function delUserList (selectStr) {
 		const errInfo = "删除用户列表连接出错！";
 		fetchComponent.send(this, url, method, body, errInfo, function(data){
 			message.success(data.msg+"！", 3);
-			dispatch(getUserList());
+            dispatch(getUserCount(false));
+            dispatch(getUserList());
 			dispatch(loadingChange(false));
 			dispatch(setSelectedRowKeys([]));
 			dispatch(setHasSelected(false));

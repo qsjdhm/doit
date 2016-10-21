@@ -47,7 +47,7 @@ export function getSortList () {
 export function selectedSortChange (sortId) {
 	return (dispatch, getState) => {
 		dispatch(setSelectedSort(sortId));
-		dispatch(getNoteCount());
+		dispatch(getNoteCount(true));
 	}
 }
 
@@ -67,7 +67,7 @@ export function getTagList () {
 }
 
 // 获取笔记总数
-export function getNoteCount () {
+export function getNoteCount (pageChange) {
 	return (dispatch, getState) => {
 		const url = ENV.baseUrl + "/noteAction/getNoteCount";
 		const method = "POST";
@@ -77,7 +77,9 @@ export function getNoteCount () {
 		const errInfo = "请求笔记总个数连接出错！";
 		fetchComponent.send(this, url, method, body, errInfo, function(data){
 			dispatch(setNoteCount(data.data));
-			dispatch(selectedPageChange(1));
+            if (pageChange) {
+                dispatch(selectedPageChange(1));
+            }
 		});
 	}
 }
@@ -139,6 +141,7 @@ export function delNoteList (selectStr) {
 		const errInfo = "删除笔记列表连接出错！";
 		fetchComponent.send(this, url, method, body, errInfo, function(data){
 			message.success(data.msg+"！", 3);
+            dispatch(getNoteCount(false));
 			dispatch(getNoteList());
 			dispatch(loadingChange(false));
 			dispatch(setSelectedRowKeys([]));

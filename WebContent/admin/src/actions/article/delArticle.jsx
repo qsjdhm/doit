@@ -30,11 +30,11 @@ const setLoading = cac(SET_LOADING, 'data');
 export function getSortList () {
     return (dispatch, getState) => {
         const url = ENV.baseUrl + "/sortAction/byTypeGetSort";
-        const method = 'POST';
+        const method = "POST";
         const body = {
-            'type' : 'article'
+            "type" : "article"
         };
-        const errInfo = '请求文章分类连接出错！';
+        const errInfo = "请求文章分类连接出错！";
         fetchComponent.send(this, url, method, body, errInfo, function(data){
 			dispatch(getTagList());
 			dispatch(setSortList(data.data));
@@ -47,7 +47,7 @@ export function getSortList () {
 export function selectedSortChange (sortId) {
 	return (dispatch, getState) => {
 		dispatch(setSelectedSort(sortId));
-		dispatch(getArticleCount());
+		dispatch(getArticleCount(false));
 	}
 }
 
@@ -67,7 +67,7 @@ export function getTagList () {
 }
 
 // 获取文章总数
-export function getArticleCount () {
+export function getArticleCount (pageChange) {
 	return (dispatch, getState) => {
 		const url = ENV.baseUrl + "/articleAction/getArticleCount";
 		const method = "POST";
@@ -77,7 +77,9 @@ export function getArticleCount () {
 		const errInfo = "请求文章总个数连接出错！";
 		fetchComponent.send(this, url, method, body, errInfo, function(data){
 			dispatch(setArticleCount(data.data));
-			dispatch(selectedPageChange(1));
+            if (pageChange) {
+                dispatch(selectedPageChange(1));
+            }
 		});
 	}
 }
@@ -102,6 +104,7 @@ export function getArticleList () {
 		};
 		const errInfo = "请求文章列表连接出错！";
 		fetchComponent.send(this, url, method, body, errInfo, function(data){
+            console.info(data);
 			dispatch(setArticleList(data.data));
 		});
 	}
@@ -139,6 +142,7 @@ export function delArticleList (selectStr) {
 		const errInfo = "删除文章列表连接出错！";
 		fetchComponent.send(this, url, method, body, errInfo, function(data){
 			message.success(data.msg+"！", 3);
+            dispatch(getArticleCount(false));
 			dispatch(getArticleList());
 			dispatch(loadingChange(false));
 			dispatch(setSelectedRowKeys([]));

@@ -21,7 +21,7 @@ const setLoading = cac(SET_LOADING, 'data');
 
 
 // 获取外链总数
-export function getLinkCount () {
+export function getLinkCount (pageChange) {
 	return (dispatch, getState) => {
 		const url = ENV.baseUrl + "/linkAction/getLinkCount";
 		const method = "POST";
@@ -29,7 +29,9 @@ export function getLinkCount () {
 		const errInfo = "请求外链总个数连接出错！";
 		fetchComponent.send(this, url, method, body, errInfo, function(data){
 			dispatch(setLinkCount(data.data));
-			dispatch(selectedPageChange(1));
+            if (pageChange) {
+                dispatch(selectedPageChange(1));
+            }
 		});
 	}
 }
@@ -90,7 +92,8 @@ export function delLinkList (selectStr) {
 		const errInfo = "删除外链列表连接出错！";
 		fetchComponent.send(this, url, method, body, errInfo, function(data){
 			message.success(data.msg+"！", 3);
-			dispatch(getLinkList());
+            dispatch(getLinkCount(false));
+            dispatch(getLinkList());
 			dispatch(loadingChange(false));
 			dispatch(setSelectedRowKeys([]));
 			dispatch(setHasSelected(false));

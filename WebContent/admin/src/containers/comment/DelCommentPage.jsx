@@ -34,7 +34,7 @@ export class DelCommentPage extends React.Component {
 
     componentWillMount () {
         // 获取评论的分类列表
-        this.props.dispatch( getCommentCount() );
+        this.props.dispatch( getCommentCount(true) );
     }
 
     // 渲染分页条

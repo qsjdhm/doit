@@ -34,7 +34,7 @@ export class DelUserPage extends React.Component {
 
     componentWillMount () {
         // 获取用户的分类列表
-        this.props.dispatch( getUserCount() );
+        this.props.dispatch( getUserCount(true) );
     }
 
     // 渲染分页条
