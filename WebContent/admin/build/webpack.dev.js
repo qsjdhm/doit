@@ -31,7 +31,7 @@ devConfig.plugins = (webpackBase.plugins || []).concat(
     // html模板
     new HtmlWebpackPlugin({
         favicon: path.resolve(__dirname, '../src/i/favicon.ico'), //favicon路径
-        filename: './index.html',    //生成的html存放路径，相对于 path
+        filename: '../index.html',    //生成的html存放路径，相对于 path
         template: path.resolve(__dirname, '../src/template/dev_index.html'),    //html模板路径
         inject: 'body',    //允许插件修改哪些内容，包括head与body
         hash: true, //为静态资源生成hash值

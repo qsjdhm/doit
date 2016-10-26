@@ -47,6 +47,7 @@ Temporary Items
 .apdisk
   
 /WebContent/WEB-INF/classes/
+/WebContent/admin/index.html
 /WebContent/admin/dist/
 /WebContent/admin/node_modules/
 /WebContent/admin/npm-debug.log

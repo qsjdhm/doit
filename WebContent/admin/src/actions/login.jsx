@@ -24,7 +24,7 @@ export function loginSystem () {
         fetchComponent.send(this, url, method, body, errInfo, function(cbData){
             if(cbData.success === "1"){
                 localStorage["doitToken"] = "luanxiede";
-                window.location.href = ENV.baseUrl + "/admin/dist/#/home";
+                window.location.href = ENV.baseUrl + "/admin/#/home";
             } else {
                 message.error(cbData.msg);
             }

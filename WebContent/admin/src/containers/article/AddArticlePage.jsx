@@ -115,7 +115,7 @@ export class AddArticlePage extends React.Component {
                             </Col>
                         </Row>
                     </div>
-                    <div className="ant-layout-container">
+                    <div id="container" className="ant-layout-container">
                         <div className="ant-layout-content">
                             <BreadcrumbComponent
                                 data={this.props.routes}

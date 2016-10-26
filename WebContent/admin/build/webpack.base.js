@@ -7,6 +7,7 @@ module.exports = {
         presets: ['es2015', 'stage-0', 'react']
     },
     resolve: {
+        // 自动扩展文件后缀名，意味着我们require模块可以省略不写后缀名
         extensions: ['', '.js', '.jsx']
     },
     module: {

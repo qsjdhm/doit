@@ -5,8 +5,8 @@
   "license": "MIT",
   "scripts": {
     "init": "webpack --config build/webpack.dev.js",
-    "dev": "node build/dev-server.js",
-    "pro": "webpack --config build/webpack.pro.js"
+    "dev" : "node build/dev-server.js",
+    "pro" : "webpack --config build/webpack.pro.js"
   },
   "devDependencies": {
     "antd": "^1.6.3",

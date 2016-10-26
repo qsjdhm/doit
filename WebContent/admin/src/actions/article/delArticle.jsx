@@ -47,7 +47,7 @@ export function getSortList () {
 export function selectedSortChange (sortId) {
 	return (dispatch, getState) => {
 		dispatch(setSelectedSort(sortId));
-		dispatch(getArticleCount(false));
+		dispatch(getArticleCount(true));
 	}
 }
 

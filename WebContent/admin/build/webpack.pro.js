@@ -13,7 +13,7 @@ var proConfig = Object.assign(webpackBase, {
     },
     output: {
         path: path.resolve(__dirname, '../dist'),
-        publicPath: "",
+        publicPath: 'dist/',  // js、css、icon资源引用在index.html中的引用路径
         hash: true,
         filename: 'js/[name].entry.js'
     }
@@ -24,7 +24,7 @@ proConfig.plugins = (webpackBase.plugins || []).concat(
     // html模板
     new HtmlWebpackPlugin({
         favicon: path.resolve(__dirname, '../src/i/favicon.ico'), //favicon路径
-        filename: './index.html',    //生成的html存放路径，相对于 path
+        filename: '../index.html',    //生成的html存放路径，相对于 path
         template: path.resolve(__dirname, '../src/template/dev_index.html'),    //html模板路径
         inject: 'body', //js插入的位置，true/'head'/'body'/false
         hash: true, //为静态资源生成hash值
