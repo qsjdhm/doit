@@ -12,7 +12,7 @@ var proConfig = Object.assign(webpackBase, {
         common: ['react','antd','jquery']  // 公用类代码
     },
     output: {
-        path: path.resolve(__dirname, '../dist'),
+        path: path.resolve(__dirname, '../dist'),  // 存放资源路径
         publicPath: 'dist/',  // js、css、icon资源引用在index.html中的引用路径
         hash: true,
         filename: 'js/[name].entry.js'
