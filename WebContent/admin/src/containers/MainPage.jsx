@@ -18,8 +18,8 @@ export class MainPage extends React.Component {
     render() {
         return (
             <div id="main_page">
-                {/* 渲染子组件 */}
-                {this.props.children}
+				{/* 渲染子组件 */}
+				{this.props.children}
 	        </div>
         );
     }
