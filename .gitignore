@@ -45,7 +45,8 @@ $RECYCLE.BIN/
 Network Trash Folder
 Temporary Items
 .apdisk
-  
+
+/build/
 /WebContent/WEB-INF/classes/
 /WebContent/admin/index.html
 /WebContent/admin/dist/
